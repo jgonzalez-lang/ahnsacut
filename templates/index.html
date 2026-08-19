@@ -16,7 +16,7 @@
             --text-title: #0f172a;
             --text-sub: #64748b;
 
-            /* Código Colores ISO 513 */
+            /* Colores ISO 513 */
             --iso-p: #2563eb;
             --iso-m: #eab308;
             --iso-k: #dc2626;
@@ -32,7 +32,6 @@
             overflow-x: hidden;
         }
 
-        /* Sidebar Lateral Corporativo */
         .sidebar {
             width: 220px;
             height: 100vh;
@@ -103,7 +102,6 @@
             font-weight: 600;
         }
 
-        /* Contenido Principal */
         .main-content {
             margin-left: 220px;
             padding: 24px 28px;
@@ -122,7 +120,6 @@
             margin-bottom: 20px;
         }
 
-        /* Tarjetas UI */
         .ui-card {
             background-color: var(--card-bg);
             border-radius: 10px;
@@ -204,6 +201,11 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+        }
+
+        .cnc-card-pasadas {
+            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+            border: 1px solid #3b82f6;
         }
 
         .cnc-label {
@@ -323,7 +325,20 @@
             font-size: 1.4rem;
         }
 
-        /* Colores Dinámicos ISO 513 */
+        /* Contenedor del Icono SVG de Geometría */
+        .svg-geometria-box {
+            width: 55px;
+            height: 55px;
+            background-color: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px;
+        }
+
+        /* Colores Dinámicos ISO */
         .badge-iso-p, .iso-theme-P { background-color: var(--iso-p) !important; color: #ffffff !important; }
         .badge-iso-m, .iso-theme-M { background-color: var(--iso-m) !important; color: #000000 !important; font-weight: 700; }
         .badge-iso-k, .iso-theme-K { background-color: var(--iso-k) !important; color: #ffffff !important; }
@@ -420,7 +435,7 @@
                 </div>
             </div>
 
-            <!-- TARJETA CON LAS ESPECIFICACIONES EXACTAS DE CADA INSERTO SEGÚN LA LISTA MAESTRA -->
+            <!-- TARJETA DEL CATÁLOGO COMPLETO -->
             <div class="row g-3 mb-4">
                 <div class="col-12">
                     <div class="ui-card">
@@ -617,7 +632,7 @@
         <!-- VISTA 2: TORNEADO (CALCULADORA PRINCIPAL) -->
         <div id="vista-torneado" style="display: none;">
             <h1 class="page-title">Torneado CNC</h1>
-            <p class="page-subtitle">Selección de inserto, grado Sumitomo y parámetros de corte.</p>
+            <p class="page-subtitle">Selección de inserto, grado Sumitomo, cálculo de pasadas y parámetros de corte.</p>
 
             <form action="/" method="POST">
                 
@@ -625,16 +640,16 @@
                     
                     <div class="col-lg-6">
                         <div class="ui-card">
-                            <div class="ui-card-title">Material de trabajo</div>
+                            <div class="ui-card-title"><i class="bi bi-search me-2 text-primary"></i>Búsqueda de Material de Trabajo</div>
                             
                             <div class="mb-2">
-                                <label class="form-label small text-muted fw-bold mb-1">Material</label>
-                                <select name="material" id="material" class="form-select form-select-sm" onchange="cargarInsertos()" required>
-                                    <option value="" disabled {% if not material_sel %}selected{% endif %}>Seleccione material</option>
+                                <label class="form-label small text-muted fw-bold mb-1">Buscar Material (Escriba para filtrar)</label>
+                                <input type="text" list="lista-materiales" name="material" id="material" class="form-control form-control-sm fw-semibold text-primary" placeholder="Escriba ej: AISI 4140, 1045, Inoxidable, Aluminio..." value="{{ material_sel }}" oninput="cargarInsertos()" required autocomplete="off">
+                                <datalist id="lista-materiales">
                                     {% for m in materiales %}
-                                        <option value="{{ m }}" {% if m == material_sel %}selected{% endif %}>{{ m }}</option>
+                                        <option value="{{ m }}">
                                     {% endfor %}
-                                </select>
+                                </datalist>
                             </div>
 
                             <div class="row g-2 mt-1">
@@ -669,7 +684,7 @@
 
                     <div class="col-lg-6">
                         <div class="ui-card">
-                            <div class="ui-card-title">Parámetros de operación</div>
+                            <div class="ui-card-title">Parámetros de operación y geometría de la pieza</div>
                             
                             <div class="row g-2 mb-2">
                                 <div class="col-6">
@@ -691,11 +706,15 @@
                             </div>
 
                             <div class="row g-2 mb-3">
-                                <div class="col-6">
-                                    <label class="form-label small text-muted fw-bold mb-1">Diámetro (mm)</label>
-                                    <input type="number" step="0.1" name="diametro" id="diametro" class="form-control form-control-sm" value="{{ diametro_sel if diametro_sel else 50 }}" oninput="actualizarValoresEnVivo()">
+                                <div class="col-4">
+                                    <label class="form-label small text-muted fw-bold mb-1">D. Inicial (mm)</label>
+                                    <input type="number" step="0.1" name="diametro_inicial" id="diametro_inicial" class="form-control form-control-sm" value="{{ diametro_inicial_sel if diametro_inicial_sel else 50 }}" oninput="actualizarValoresEnVivo()">
                                 </div>
-                                <div class="col-6">
+                                <div class="col-4">
+                                    <label class="form-label small text-muted fw-bold mb-1">D. Final (mm)</label>
+                                    <input type="number" step="0.1" name="diametro_final" id="diametro_final" class="form-control form-control-sm" value="{{ diametro_final_sel if diametro_final_sel else 40 }}" oninput="actualizarValoresEnVivo()">
+                                </div>
+                                <div class="col-4">
                                     <label class="form-label small text-muted fw-bold mb-1">Longitud (mm)</label>
                                     <input type="number" step="1" name="longitud" id="longitud" class="form-control form-control-sm" value="{{ longitud_sel if longitud_sel else 100 }}" oninput="actualizarValoresEnVivo()">
                                 </div>
@@ -761,7 +780,15 @@
 
                     <div class="col-lg-6">
                         <div class="ui-card">
-                            <div class="ui-card-title">Inserto seleccionado</div>
+                            <div class="ui-card-title d-flex justify-content-between align-items-center">
+                                <span>Inserto Seleccionado</span>
+                                <!-- ICONO GRÁFICO SVG DINÁMICO -->
+                                <div class="svg-geometria-box" id="contenedorSvgGeometria" title="Forma de Geometría">
+                                    <svg width="40" height="40" viewBox="0 0 100 100" id="svgPlaquita">
+                                        <polygon points="50,10 90,50 50,90 10,50" fill="#2563eb" stroke="#0f172a" stroke-width="4"/>
+                                    </svg>
+                                </div>
+                            </div>
 
                             <div class="row g-2">
                                 <div class="col-6">
@@ -840,46 +867,65 @@
                 </div>
 
                 <div class="ui-card mb-3">
-                    <div class="ui-card-title">Parámetros CNC calculados</div>
+                    <div class="ui-card-title d-flex justify-content-between align-items-center">
+                        <span>Parámetros CNC Calculados y Estimación de Pasadas</span>
+                        <span class="badge bg-primary fs-7" id="badgeNumPasadas">
+                            {% if resultado %}{{ resultado.num_pasadas }} Pasada(s) Requerida(s){% else %}-{% endif %}
+                        </span>
+                    </div>
 
                     <div class="row g-2">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
+                            <div class="cnc-card cnc-card-pasadas">
+                                <span class="cnc-label text-info">N° de Pasadas</span>
+                                <span class="cnc-value text-warning fs-3" id="cncPasadas">{% if resultado %}{{ resultado.num_pasadas }}{% else %}-{% endif %}</span>
+                                <span class="cnc-unit text-light">pasada(s)</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="cnc-card cnc-card-pasadas">
+                                <span class="cnc-label text-info">ap Real por Pasada</span>
+                                <span class="cnc-value text-warning fs-3" id="cncApReal">{% if resultado %}{{ resultado.ap_real_pasada }}{% else %}-{% endif %}</span>
+                                <span class="cnc-unit text-light">mm / pasada</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
                             <div class="cnc-card">
-                                <span class="cnc-label">RPM</span>
+                                <span class="cnc-label">RPM (Promedio)</span>
                                 <span class="cnc-value" id="cncRpm">{% if resultado %}{{ resultado.rpm }}{% else %}-{% endif %}</span>
                                 <span class="cnc-unit">rev/min</span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="cnc-card">
-                                <span class="cnc-label">Avance</span>
-                                <span class="cnc-value" id="cncFn">{% if resultado %}{{ resultado.fn }}{% else %}-{% endif %}</span>
-                                <span class="cnc-unit">mm/rev</span>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="cnc-card">
-                                <span class="cnc-label">Avance máquina</span>
+                                <span class="cnc-label">Avance Máquina</span>
                                 <span class="cnc-value" id="cncVf">{% if resultado %}{{ resultado.vf }}{% else %}-{% endif %}</span>
                                 <span class="cnc-unit">mm/min</span>
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="cnc-card">
-                                <span class="cnc-label">Profundidad ap</span>
+                                <span class="cnc-label">Avance por Rev</span>
+                                <span class="cnc-value" id="cncFn">{% if resultado %}{{ resultado.fn }}{% else %}-{% endif %}</span>
+                                <span class="cnc-unit">mm/rev</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="cnc-card">
+                                <span class="cnc-label">Profundidad ap Teórica</span>
                                 <span class="cnc-value" id="cncAp">{% if resultado %}{{ resultado.ap }}{% else %}-{% endif %}</span>
                                 <span class="cnc-unit">mm</span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="cnc-card">
                                 <span class="cnc-label">Velocidad de corte</span>
                                 <span class="cnc-value" id="cncVc">{% if resultado %}{{ resultado.vc }}{% else %}-{% endif %}</span>
                                 <span class="cnc-unit">m/min</span>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="cnc-card">
                                 <span class="cnc-label">MRR</span>
                                 <span class="cnc-value" id="cncMrr">{% if resultado %}{{ resultado.mrr }}{% else %}-{% endif %}</span>
@@ -889,68 +935,67 @@
 
                         <div class="col-md-4">
                             <div class="cnc-card">
-                                <span class="cnc-label">Potencia</span>
+                                <span class="cnc-label">Potencia de Corte</span>
                                 <span class="cnc-value" id="cncPotencia">{% if resultado %}{{ resultado.potencia }}{% else %}-{% endif %}</span>
                                 <span class="cnc-unit">kW</span>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="cnc-card">
-                                <span class="cnc-label">Torque</span>
+                                <span class="cnc-label">Torque Estimado</span>
                                 <span class="cnc-value" id="cncTorque">{% if resultado %}{{ resultado.torque }}{% else %}-{% endif %}</span>
                                 <span class="cnc-unit">N·m</span>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="cnc-card">
-                                <span class="cnc-label">Tiempo de mecanizado</span>
-                                <span class="cnc-value" id="cncTiempo">{% if resultado %}{{ resultado.tiempo }}{% else %}-{% endif %}</span>
-                                <span class="cnc-unit">min</span>
+                                <span class="cnc-label">Tiempo Total de Mecanizado</span>
+                                <span class="cnc-value text-info fw-bold" id="cncTiempo">{% if resultado %}{{ resultado.tiempo }}{% else %}-{% endif %}</span>
+                                <span class="cnc-unit">min ({{ resultado.num_pasadas }} pasadas)</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="ui-card-rangos mb-3">
-                    <div class="ui-card-title"><i class="bi bi-sliders2 me-2"></i>Rangos recomendados</div>
+                    <div class="ui-card-title"><i class="bi bi-sliders2 me-2"></i>Rangos Recomendados y Remoción Radial</div>
 
                     <div class="row g-2">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="rango-box">
-                                <span class="rango-box-label">Avance recomendado</span>
-                                <span class="rango-box-value" id="rngFnRec">{% if resultado %}{{ resultado.fn }} mm/rev{% else %}-{% endif %}</span>
+                                <span class="rango-box-label">Material a remover en radio</span>
+                                <span class="rango-box-value" id="rngRadial">{% if resultado %}{{ resultado.profundidad_radial_total }} mm{% else %}-{% endif %}</span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="rango-box">
-                                <span class="rango-box-label">Rango de avance</span>
+                                <span class="rango-box-label">Rango de Avance (fn)</span>
                                 <span class="rango-box-value" id="rngFnRango">{% if resultado %}{{ resultado.fn_min }} - {{ resultado.fn_max }} mm/rev{% else %}-{% endif %}</span>
                             </div>
                         </div>
-
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="rango-box">
-                                <span class="rango-box-label">ap recomendado</span>
-                                <span class="rango-box-value" id="rngApRec">{% if resultado %}{{ resultado.ap }} mm{% else %}-{% endif %}</span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="rango-box">
-                                <span class="rango-box-label">Rango de ap</span>
+                                <span class="rango-box-label">Rango de ap Recomendado</span>
                                 <span class="rango-box-value" id="rngApRango">{% if resultado %}{{ resultado.ap_min }} - {{ resultado.ap_max }} mm{% else %}-{% endif %}</span>
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="rango-box">
-                                <span class="rango-box-label">Vc recomendado</span>
+                                <span class="rango-box-label">Vc Recomendado</span>
                                 <span class="rango-box-value" id="rngVcRec">{% if resultado %}{{ resultado.vc }} m/min{% else %}-{% endif %}</span>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="rango-box">
-                                <span class="rango-box-label">Diámetro</span>
-                                <span class="rango-box-value" id="rngDiametro">{% if diametro_sel %}{{ diametro_sel }} mm{% else %}-{% endif %}</span>
+                                <span class="rango-box-label">Diámetro Inicial / Final</span>
+                                <span class="rango-box-value" id="rngDiametros">{% if resultado %}Ø{{ resultado.diametro_inicial }} $\rightarrow$ Ø{{ resultado.diametro_final }} mm{% else %}-{% endif %}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="rango-box">
+                                <span class="rango-box-label">Tiempo por Pasada Teórico</span>
+                                <span class="rango-box-value" id="rngTiempoPasada">{% if resultado %}{{ resultado.tiempo_pasada }} min{% else %}-{% endif %}</span>
                             </div>
                         </div>
                     </div>
@@ -998,6 +1043,45 @@
     <script>
         const tieneResultado = Boolean("{{ 'true' if resultado else '' }}");
 
+        function renderizarSvgGeometria(codigoInserto) {
+            const contSvg = document.getElementById("contenedorSvgGeometria");
+            if (!contSvg) return;
+
+            let letraGeometria = "C";
+            if (codigoInserto && codigoInserto.length > 0) {
+                letraGeometria = codigoInserto.trim().charAt(0).toUpperCase();
+            }
+
+            let svgContent = '';
+            switch (letraGeometria) {
+                case 'C': // Rombo 80°
+                    svgContent = '<polygon points="50,10 90,50 50,90 10,50" fill="#2563eb" stroke="#0f172a" stroke-width="4"/>';
+                    break;
+                case 'D': // Rombo 55° (Más afilado)
+                    svgContent = '<polygon points="50,5 82,50 50,95 18,50" fill="#eab308" stroke="#0f172a" stroke-width="4"/>';
+                    break;
+                case 'V': // Rombo 35° (Súper afilado)
+                    svgContent = '<polygon points="50,2 75,50 50,98 25,50" fill="#64748b" stroke="#0f172a" stroke-width="4"/>';
+                    break;
+                case 'S': // Cuadrado 90°
+                    svgContent = '<rect x="15" y="15" width="70" height="70" rx="4" fill="#dc2626" stroke="#0f172a" stroke-width="4"/>';
+                    break;
+                case 'T': // Triángulo
+                    svgContent = '<polygon points="50,10 90,85 10,85" fill="#eab308" stroke="#0f172a" stroke-width="4"/>';
+                    break;
+                case 'W': // Trigon 80° (6 lados)
+                    svgContent = '<polygon points="50,8 88,30 88,70 50,92 12,70 12,30" fill="#2563eb" stroke="#0f172a" stroke-width="4"/>';
+                    break;
+                case 'R': // Redondo / Círculo Forma R
+                    svgContent = '<circle cx="50" cy="50" r="40" fill="#991b1b" stroke="#0f172a" stroke-width="4"/>';
+                    break;
+                default:
+                    svgContent = '<polygon points="50,10 90,50 50,90 10,50" fill="#2563eb" stroke="#0f172a" stroke-width="4"/>';
+            }
+
+            contSvg.innerHTML = `<svg width="42" height="42" viewBox="0 0 100 100">${svgContent}</svg>`;
+        }
+
         function aplicarColorIso(grupoIso) {
             const boxIso = document.getElementById("boxIso");
             const boxMaterial = document.getElementById("boxMaterial");
@@ -1040,10 +1124,10 @@
         }
 
         function cargarInsertos() {
-            const matSelect = document.getElementById("material");
-            if (!matSelect || !matSelect.value) return;
+            const matInput = document.getElementById("material");
+            if (!matInput || !matInput.value) return;
 
-            const mat = matSelect.value;
+            const mat = matInput.value;
             const insSelect = document.getElementById("inserto");
 
             fetch('/api/insertos?material=' + encodeURIComponent(mat))
@@ -1064,23 +1148,27 @@
         }
 
         function actualizarValoresEnVivo() {
-            const matSelect = document.getElementById("material");
-            if (!matSelect || !matSelect.value) return;
+            const matInput = document.getElementById("material");
+            if (!matInput || !matInput.value) return;
 
-            const mat = matSelect.value;
+            const mat = matInput.value;
             const insSelect = document.getElementById("inserto");
             const ins = insSelect ? insSelect.value : "";
             const opSelect = document.getElementById("operacion");
             const op = opSelect ? opSelect.value : "Desbaste";
-            const diamInput = document.getElementById("diametro");
-            const diam = (diamInput && diamInput.value) ? diamInput.value : 50;
+            
+            const dInitInput = document.getElementById("diametro_inicial");
+            const dInit = (dInitInput && dInitInput.value) ? dInitInput.value : 50;
+            const dFinInput = document.getElementById("diametro_final");
+            const dFin = (dFinInput && dFinInput.value) ? dFinInput.value : 40;
             const longInput = document.getElementById("longitud");
             const long = (longInput && longInput.value) ? longInput.value : 100;
 
             const url = '/api/calcular_ajax?material=' + encodeURIComponent(mat) + 
                         '&inserto=' + encodeURIComponent(ins) + 
                         '&operacion=' + encodeURIComponent(op) + 
-                        '&diametro=' + diam + 
+                        '&diametro_inicial=' + dInit + 
+                        '&diametro_final=' + dFin + 
                         '&longitud=' + long;
 
             fetch(url)
@@ -1101,6 +1189,7 @@
                     }
 
                     aplicarColorIso(data.familia_iso);
+                    renderizarSvgGeometria(data.inserto);
 
                     setTexto("valGrado", data.grado_calidad);
                     setTexto("valRompevirutas", data.rompevirutas);
@@ -1119,6 +1208,11 @@
                     setTexto("valApMin", data.ap_min + ' mm');
                     setTexto("valApMax", data.ap_max + ' mm');
 
+                    // PASADAS Y PARÁMETROS CNC
+                    setTexto("cncPasadas", data.num_pasadas);
+                    setTexto("cncApReal", data.ap_real_pasada + ' mm');
+                    setTexto("badgeNumPasadas", data.num_pasadas + ' Pasada(s) Requerida(s)');
+
                     setTexto("cncRpm", data.rpm);
                     setTexto("cncFn", data.fn);
                     setTexto("cncVf", data.vf);
@@ -1129,12 +1223,12 @@
                     setTexto("cncTorque", data.torque);
                     setTexto("cncTiempo", data.tiempo);
 
-                    setTexto("rngFnRec", data.fn + ' mm/rev');
+                    setTexto("rngRadial", data.profundidad_radial_total + ' mm');
                     setTexto("rngFnRango", data.fn_min + ' - ' + data.fn_max + ' mm/rev');
-                    setTexto("rngApRec", data.ap + ' mm');
                     setTexto("rngApRango", data.ap_min + ' - ' + data.ap_max + ' mm');
                     setTexto("rngVcRec", data.vc + ' m/min');
-                    setTexto("rngDiametro", diam + ' mm');
+                    setTexto("rngDiametros", 'Ø' + dInit + ' -> Ø' + dFin + ' mm');
+                    setTexto("rngTiempoPasada", data.tiempo_pasada + ' min');
 
                     const contLista = document.getElementById("listaNumeradaInsertos");
                     const badgeNum = document.getElementById("badgeNumOpciones");
@@ -1181,8 +1275,8 @@
             if (tieneResultado) {
                 mostrarPestana('torneado');
             }
-            const matSelect = document.getElementById("material");
-            if (matSelect && matSelect.value) {
+            const matInput = document.getElementById("material");
+            if (matInput && matInput.value) {
                 actualizarValoresEnVivo();
             }
         });
