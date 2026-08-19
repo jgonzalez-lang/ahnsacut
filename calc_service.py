@@ -26,20 +26,43 @@ def obtener_factores_operacion(operacion):
         return {"vc_factor": 0.80, "fn_factor": 1.30, "ap_factor": 1.50}
     elif "exterior" in op_lower:
         return {"vc_factor": 1.05, "fn_factor": 1.00, "ap_factor": 1.00}
-    else:  # Desbaste estándar / General
+    else:
         return {"vc_factor": 1.00, "fn_factor": 1.00, "ap_factor": 1.00}
 
+def determinar_tipo_corte_automatico(familia_iso, geometria_inserto, operacion, tipo_corte_mat):
+    """Deduce el tipo de corte único y exacto según la combinación técnica."""
+    geom = geometria_inserto.upper()
+    op_lower = operacion.lower()
+
+    if familia_iso == "H":
+        return "Alta Velocidad (CBN)"
+    if familia_iso == "N":
+        return "General / PCD"
+    if familia_iso == "K":
+        if "pesado" in op_lower:
+            return "Interrupción Pesada"
+        return "Alta Velocidad (CBN)" if geom in ["SNMG", "RNMG"] else "Corte Interrumpido"
+    if familia_iso == "M":
+        if "acabado" in op_lower:
+            return "Corte Continuo"
+        return "Interrupción Ligera"
+    if familia_iso == "S":
+        return "Corte Continuo" if "acabado" in op_lower else "General a Interrumpido"
+    
+    if "acabado" in op_lower:
+        return "Acabado / General"
+    elif "pesado" in op_lower:
+        return "General a Interrumpido"
+    
+    return tipo_corte_mat if tipo_corte_mat else "Continuo a General"
+
 def obtener_grado_y_rompevirutas_estricto(familia_iso, geometria_inserto, operacion, grado_base_mat, rvp_base_mat):
-    """
-    Asigna únicamente los Rompevirutas y Grados Sumitomo de las listas maestras,
-    incluyendo la lógica especial para geometrías redondas Forma R (RNMG / RCMT).
-    """
+    """Asigna los Rompevirutas y Grados Sumitomo de las listas maestras."""
     op_lower = operacion.lower()
     es_acabado = "acabado" in op_lower
     es_desbaste_pesado = "pesado" in op_lower
     es_forma_r = geometria_inserto in ["RNMG", "RCMT", "RCKT"]
 
-    # ISO P (Aceros Carbono y Aleados)
     if familia_iso == "P":
         if es_acabado:
             return "AC8020P", "RF, SU, NRE" if es_forma_r else "SU, FA, FE, FB"
@@ -47,7 +70,6 @@ def obtener_grado_y_rompevirutas_estricto(familia_iso, geometria_inserto, operac
             return "AC8035P", "RP, MP, H1" if es_forma_r else "GE, MP"
         return grado_base_mat, "RP, RM, GU" if es_forma_r else "GU, GE"
 
-    # ISO M (Aceros Inoxidables)
     elif familia_iso == "M":
         if es_acabado:
             return "AC6020M", "EX, EG, RF" if es_forma_r else "EG, EX, FA"
@@ -55,15 +77,12 @@ def obtener_grado_y_rompevirutas_estricto(familia_iso, geometria_inserto, operac
             return "AC6135M", "RM, RS, EH" if es_forma_r else "EH, ET"
         return "AC6135M", "RM, GU" if es_forma_r else "GU, EH"
 
-    # ISO K (Fundiciones) -> Rompevirutas N/A
     elif familia_iso == "K":
         return grado_base_mat, "N/A"
 
-    # ISO N (Aluminio / Cobre / No Ferrosos) -> Rompevirutas N/A
     elif familia_iso == "N":
         return grado_base_mat, "N/A"
 
-    # ISO S (Titanio e Inconel / Superaleaciones)
     elif familia_iso == "S":
         if es_acabado:
             return "AC5015S", "RS, NRE, EX" if es_forma_r else "EG, EX"
@@ -71,14 +90,13 @@ def obtener_grado_y_rompevirutas_estricto(familia_iso, geometria_inserto, operac
             return "AC5025S", "RS, RM, EM" if es_forma_r else "EM, GU"
         return "AC5015S", "RS, RM" if es_forma_r else "EG, EX, EM"
 
-    # ISO H (Aceros Templados) -> Rompevirutas N/A
     elif familia_iso == "H":
         return grado_base_mat, "N/A"
 
     return grado_base_mat, rvp_base_mat
 
 def obtener_material_real_inserto(familia_iso, nombre_material):
-    """Retorna strictly la composición del herramental/inserto."""
+    """Retorna la composición del herramental/inserto."""
     if "D2 (Recocido)" in nombre_material:
         return "Coated Cermet / Cermet"
     
@@ -95,7 +113,7 @@ def obtener_material_real_inserto(familia_iso, nombre_material):
     
     return "Coated Carbide"
 
-def calcular_torneado(nombre_material, codigo_inserto, diametro_mm, longitud_mm=100.0, operacion="Desbaste", tipo_corte=None):
+def calcular_torneado(nombre_material, codigo_inserto, diametro_inicial_mm, diametro_final_mm=40.0, longitud_mm=100.0, operacion="Desbaste", tipo_corte=None):
     mat = next((m for m in TABLA_MATERIALES if m["material"] == nombre_material), None)
     if not mat:
         mat = TABLA_MATERIALES[0]
@@ -106,11 +124,13 @@ def calcular_torneado(nombre_material, codigo_inserto, diametro_mm, longitud_mm=
 
     ins = next((i for i in TABLA_INSERTOS if i["codigo"] == codigo_inserto), TABLA_INSERTOS[0])
 
-    tipo_corte_final = tipo_corte if tipo_corte else mat.get("tipo_corte", "General")
+    iso = mat["familia_iso"]
+    geom = ins.get("geometria", "CNMG")
+
+    tipo_corte_final = determinar_tipo_corte_automatico(iso, geom, operacion, mat.get("tipo_corte"))
 
     mod = MODIFICADORES_OPERACION.get(operacion) or obtener_factores_operacion(operacion)
 
-    iso = mat["familia_iso"]
     vc_base = ins["vc_iso"].get(iso, mat.get("vc_torn", 150))
     vc = round(vc_base * mod["vc_factor"], 1)
 
@@ -122,29 +142,43 @@ def calcular_torneado(nombre_material, codigo_inserto, diametro_mm, longitud_mm=
     ap_max = min(mat.get("ap_max", 3.0), ins.get("ap_max", 3.0))
     ap_auto = round(((ap_min + ap_max) / 2) * mod["ap_factor"], 2)
 
-    diametro_val = float(diametro_mm) if float(diametro_mm) > 0 else 50.0
+    d_init = float(diametro_inicial_mm) if float(diametro_inicial_mm) > 0 else 50.0
+    d_final = float(diametro_final_mm) if float(diametro_final_mm) > 0 else 40.0
     longitud_val = float(longitud_mm) if float(longitud_mm) > 0 else 100.0
 
-    rpm = (vc * 1000) / (math.pi * diametro_val)
+    # Promedio de diámetro para RPM exacta
+    d_promedio = (d_init + d_final) / 2.0
+    rpm = (vc * 1000) / (math.pi * d_promedio)
     vf = rpm * fn_auto
     mrr = (vc * ap_auto * fn_auto)
 
     kc = mat.get("kc", 1800)
     pc = (ap_auto * fn_auto * vc * kc) / (60000 * 0.8)
     mc = (pc * 9550) / rpm if rpm > 0 else 0
-    tc = longitud_val / vf if vf > 0 else 0
+    tc_por_pasada = longitud_val / vf if vf > 0 else 0
+
+    # CÁLCULO DE PASADAS
+    profundidad_radial_total = max(0.0, (d_init - d_final) / 2.0)
+    if profundidad_radial_total > 0 and ap_auto > 0:
+        num_pasadas = math.ceil(profundidad_radial_total / ap_auto)
+        ap_real_pasada = round(profundidad_radial_total / num_pasadas, 2)
+    else:
+        num_pasadas = 1
+        ap_real_pasada = ap_auto
+
+    tiempo_total = round(tc_por_pasada * num_pasadas, 2)
 
     grado_sel, rvp_sel = obtener_grado_y_rompevirutas_estricto(
-        iso, ins.get("geometria", "CNMG"), operacion, mat.get("calidad_rec", "AC8025P"), mat.get("rompevirutas", "N/A")
+        iso, geom, operacion, mat.get("calidad_rec", "AC8025P"), mat.get("rompevirutas", "N/A")
     )
 
     mat_inserto_real = obtener_material_real_inserto(iso, mat["material"])
 
     lista_recomendaciones = []
     for idx, cod in enumerate(todos_compatibles_codigos, 1):
-        geom = cod.split()[0] if " " in cod else cod
+        g_item = cod.split()[0] if " " in cod else cod
         grado_i, rvp_i = obtener_grado_y_rompevirutas_estricto(
-            iso, geom, operacion, mat.get("calidad_rec", "AC8025P"), mat.get("rompevirutas", "N/A")
+            iso, g_item, operacion, mat.get("calidad_rec", "AC8025P"), mat.get("rompevirutas", "N/A")
         )
         
         lista_recomendaciones.append({
@@ -165,6 +199,7 @@ def calcular_torneado(nombre_material, codigo_inserto, diametro_mm, longitud_mm=
         "rompevirutas": rvp_sel,
         "tipo_corte": tipo_corte_final,
         "inserto": ins["codigo"],
+        "geometria_letra": geom[0] if len(geom) > 0 else "C",
         "operacion_seleccionada": operacion,
         "tipo_operacion": ins.get("tipo_operacion", "General"),
         "todos_compatibles": todos_compatibles_codigos,
@@ -181,5 +216,11 @@ def calcular_torneado(nombre_material, codigo_inserto, diametro_mm, longitud_mm=
         "mrr": round(mrr, 1),
         "potencia": round(pc, 2),
         "torque": round(mc, 1),
-        "tiempo": round(tc, 2)
+        "tiempo_pasada": round(tc_por_pasada, 2),
+        "tiempo": tiempo_total,
+        "num_pasadas": num_pasadas,
+        "ap_real_pasada": ap_real_pasada,
+        "profundidad_radial_total": round(profundidad_radial_total, 2),
+        "diametro_inicial": d_init,
+        "diametro_final": d_final
     }
