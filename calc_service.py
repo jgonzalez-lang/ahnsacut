@@ -1,5 +1,15 @@
 # calc_service.py
-
+def obtener_factores_operacion(operacion):
+    """Define modificadores dinámicos para Vc, fn y ap según la operación seleccionada."""
+    op_lower = str(operacion).lower() if operacion else "desbaste"
+    if "acabado" in op_lower:
+        return {"vc_factor": 1.25, "fn_factor": 0.60, "ap_factor": 0.40}
+    elif "pesado" in op_lower:
+        return {"vc_factor": 0.80, "fn_factor": 1.30, "ap_factor": 1.50}
+    elif "exterior" in op_lower:
+        return {"vc_factor": 1.05, "fn_factor": 1.00, "ap_factor": 1.00}
+    else:
+        return {"vc_factor": 1.00, "fn_factor": 1.00, "ap_factor": 1.00}
 import math
 from data_tables import TABLA_MATERIALES, TABLA_INSERTOS, MODIFICADORES_OPERACION
 
@@ -7,18 +17,38 @@ def obtener_materiales():
     """Devuelve la lista limpia de todos los nombres de materiales registrados."""
     return [m["material"] for m in TABLA_MATERIALES]
 
-def obtener_insertos_compatibles(nombre_material):
-    """Filtra y devuelve los códigos de insertos compatibles para un material dado."""
-    mat = next((m for m in TABLA_MATERIALES if m["material"] == nombre_material), None)
-    if not mat:
-        return [i["codigo"] for i in TABLA_INSERTOS]
+def buscar_material(nombre_material):
+    """Búsqueda flexible de material."""
+    if not nombre_material or not isinstance(nombre_material, str):
+        return TABLA_MATERIALES[0]
     
-    compatibles = [i["codigo"] for i in TABLA_INSERTOS if i["geometria"] in mat.get("codigos_inserto", [])]
+    nom_clean = nombre_material.strip().lower()
+    
+    for m in TABLA_MATERIALES:
+        if m["material"].lower() == nom_clean:
+            return m
+            
+    for m in TABLA_MATERIALES:
+        if nom_clean in m["material"].lower() or m["material"].lower() in nom_clean:
+            return m
+            
+    return TABLA_MATERIALES[0]
+
+def obtener_insertos_compatibles(nombre_material):
+    """Devuelve los insertos compatibles con el material seleccionado."""
+    mat = buscar_material(nombre_material)
+    codigos_permitidos = mat.get("codigos_inserto", [])
+    
+    compatibles = [i["codigo"] for i in TABLA_INSERTOS if i["geometria"] in codigos_permitidos]
     resto = [i["codigo"] for i in TABLA_INSERTOS if i["codigo"] not in compatibles]
+    
     return compatibles + resto if compatibles else [i["codigo"] for i in TABLA_INSERTOS]
 
 def obtener_factores_operacion(operacion):
-    """Define modificadores dinámicos para Vc, fn y ap según la operación seleccionada."""
+    """Define modificadores dinámicos para Vc, fn y ap según la operación."""
+    if not isinstance(operacion, str):
+        operacion = "Desbaste"
+    
     op_lower = operacion.lower()
     if "acabado" in op_lower:
         return {"vc_factor": 1.25, "fn_factor": 0.60, "ap_factor": 0.40}
@@ -30,8 +60,10 @@ def obtener_factores_operacion(operacion):
         return {"vc_factor": 1.00, "fn_factor": 1.00, "ap_factor": 1.00}
 
 def determinar_tipo_corte_automatico(familia_iso, geometria_inserto, operacion, tipo_corte_mat):
-    """Deduce el tipo de corte único y exacto según la combinación técnica."""
-    geom = geometria_inserto.upper()
+    """Deduce el tipo de corte según el grupo ISO."""
+    geom = str(geometria_inserto).upper()
+    if not isinstance(operacion, str):
+        operacion = "Desbaste"
     op_lower = operacion.lower()
 
     if familia_iso == "H":
@@ -57,7 +89,9 @@ def determinar_tipo_corte_automatico(familia_iso, geometria_inserto, operacion, 
     return tipo_corte_mat if tipo_corte_mat else "Continuo a General"
 
 def obtener_grado_y_rompevirutas_estricto(familia_iso, geometria_inserto, operacion, grado_base_mat, rvp_base_mat):
-    """Asigna los Rompevirutas y Grados Sumitomo de las listas maestras."""
+    """Asigna Rompevirutas y Grados Sumitomo según las listas maestras."""
+    if not isinstance(operacion, str):
+        operacion = "Desbaste"
     op_lower = operacion.lower()
     es_acabado = "acabado" in op_lower
     es_desbaste_pesado = "pesado" in op_lower
@@ -96,8 +130,8 @@ def obtener_grado_y_rompevirutas_estricto(familia_iso, geometria_inserto, operac
     return grado_base_mat, rvp_base_mat
 
 def obtener_material_real_inserto(familia_iso, nombre_material):
-    """Retorna la composición del herramental/inserto."""
-    if "D2 (Recocido)" in nombre_material:
+    """Retorna la composición del herramental."""
+    if "D2 (Recocido)" in str(nombre_material):
         return "Coated Cermet / Cermet"
     
     if familia_iso in ["P", "M", "S"]:
@@ -105,7 +139,7 @@ def obtener_material_real_inserto(familia_iso, nombre_material):
     elif familia_iso == "N":
         return "PCD / Cemented Carbide"
     elif familia_iso == "K":
-        if "G25" in nombre_material:
+        if "G25" in str(nombre_material):
             return "Ceramic / CBN"
         return "Coated Carbide"
     elif familia_iso == "H":
@@ -114,9 +148,12 @@ def obtener_material_real_inserto(familia_iso, nombre_material):
     return "Coated Carbide"
 
 def calcular_torneado(nombre_material, codigo_inserto, diametro_inicial_mm, diametro_final_mm=40.0, longitud_mm=100.0, operacion="Desbaste", tipo_corte=None):
+    if not nombre_material or not str(nombre_material).strip():
+        return None
+
     mat = next((m for m in TABLA_MATERIALES if m["material"] == nombre_material), None)
     if not mat:
-        mat = TABLA_MATERIALES[0]
+        return None
 
     todos_compatibles_codigos = obtener_insertos_compatibles(mat["material"])
     if not codigo_inserto or codigo_inserto not in [i["codigo"] for i in TABLA_INSERTOS]:
@@ -142,6 +179,7 @@ def calcular_torneado(nombre_material, codigo_inserto, diametro_inicial_mm, diam
     ap_max = min(mat.get("ap_max", 3.0), ins.get("ap_max", 3.0))
     ap_auto = round(((ap_min + ap_max) / 2) * mod["ap_factor"], 2)
 
+    # CORRECCIÓN DE NOMBRES DE VARIABLES AQUI:
     d_init = float(diametro_inicial_mm) if float(diametro_inicial_mm) > 0 else 50.0
     d_final = float(diametro_final_mm) if float(diametro_final_mm) > 0 else 40.0
     longitud_val = float(longitud_mm) if float(longitud_mm) > 0 else 100.0
