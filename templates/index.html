@@ -644,7 +644,7 @@
                             
                             <div class="mb-2">
                                 <label class="form-label small text-muted fw-bold mb-1">Buscar Material (Escriba para filtrar)</label>
-                                <input type="text" list="lista-materiales" name="material" id="material" class="form-control form-control-sm fw-semibold text-primary" placeholder="Escriba ej: AISI 4140, 1045, Inoxidable, Aluminio..." value="{{ material_sel }}" oninput="cargarInsertos()" required autocomplete="off">
+                                <input type="text" list="lista-materiales" name="material" id="material" class="form-control form-control-sm fw-semibold text-primary" placeholder="Escriba ej: AISI 4140, 1045, Inoxidable, Aluminio..." value="{% if resultado %}{{ material_sel }}{% endif %}" oninput="cargarInsertos()" autocomplete="off">
                                 <datalist id="lista-materiales">
                                     {% for m in materiales %}
                                         <option value="{{ m }}">
@@ -796,12 +796,12 @@
                                         <span class="info-box-label">Inserto</span>
                                         <span class="info-box-value text-primary">
                                             <select name="inserto" id="inserto" class="form-select border-0 p-0 fs-6 fw-bold text-primary" style="background: transparent;" onchange="actualizarValoresEnVivo()">
-                                                {% if resultado %}
-                                                    <option selected>{{ resultado.inserto }}</option>
-                                                {% else %}
-                                                    <option>-</option>
-                                                {% endif %}
-                                            </select>
+    {% if resultado %}
+        <option selected>{{ resultado.inserto }}</option>
+    {% else %}
+        <option value="" selected disabled>Seleccione material primero...</option>
+    {% endif %}
+</select>
                                         </span>
                                     </div>
                                 </div>
@@ -989,7 +989,7 @@
                         <div class="col-md-4">
                             <div class="rango-box">
                                 <span class="rango-box-label">Diámetro Inicial / Final</span>
-                                <span class="rango-box-value" id="rngDiametros">{% if resultado %}Ø{{ resultado.diametro_inicial }} $\rightarrow$ Ø{{ resultado.diametro_final }} mm{% else %}-{% endif %}</span>
+                                <span class="rango-box-value" id="rngDiametros">{% if resultado %}Ø{{ resultado.diametro_inicial }} → Ø{{ resultado.diametro_final }} mm{% else %}-{% endif %}</span>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -1041,245 +1041,248 @@
     </div>
 
     <script>
-        const tieneResultado = Boolean("{{ 'true' if resultado else '' }}");
+    const tieneResultado = Boolean("{{ 'true' if resultado else '' }}");
 
-        function renderizarSvgGeometria(codigoInserto) {
-            const contSvg = document.getElementById("contenedorSvgGeometria");
-            if (!contSvg) return;
+    function renderizarSvgGeometria(codigoInserto) {
+        const contSvg = document.getElementById("contenedorSvgGeometria");
+        if (!contSvg) return;
 
-            let letraGeometria = "C";
-            if (codigoInserto && codigoInserto.length > 0) {
-                letraGeometria = codigoInserto.trim().charAt(0).toUpperCase();
-            }
-
-            let svgContent = '';
-            switch (letraGeometria) {
-                case 'C': // Rombo 80°
-                    svgContent = '<polygon points="50,10 90,50 50,90 10,50" fill="#2563eb" stroke="#0f172a" stroke-width="4"/>';
-                    break;
-                case 'D': // Rombo 55° (Más afilado)
-                    svgContent = '<polygon points="50,5 82,50 50,95 18,50" fill="#eab308" stroke="#0f172a" stroke-width="4"/>';
-                    break;
-                case 'V': // Rombo 35° (Súper afilado)
-                    svgContent = '<polygon points="50,2 75,50 50,98 25,50" fill="#64748b" stroke="#0f172a" stroke-width="4"/>';
-                    break;
-                case 'S': // Cuadrado 90°
-                    svgContent = '<rect x="15" y="15" width="70" height="70" rx="4" fill="#dc2626" stroke="#0f172a" stroke-width="4"/>';
-                    break;
-                case 'T': // Triángulo
-                    svgContent = '<polygon points="50,10 90,85 10,85" fill="#eab308" stroke="#0f172a" stroke-width="4"/>';
-                    break;
-                case 'W': // Trigon 80° (6 lados)
-                    svgContent = '<polygon points="50,8 88,30 88,70 50,92 12,70 12,30" fill="#2563eb" stroke="#0f172a" stroke-width="4"/>';
-                    break;
-                case 'R': // Redondo / Círculo Forma R
-                    svgContent = '<circle cx="50" cy="50" r="40" fill="#991b1b" stroke="#0f172a" stroke-width="4"/>';
-                    break;
-                default:
-                    svgContent = '<polygon points="50,10 90,50 50,90 10,50" fill="#2563eb" stroke="#0f172a" stroke-width="4"/>';
-            }
-
-            contSvg.innerHTML = `<svg width="42" height="42" viewBox="0 0 100 100">${svgContent}</svg>`;
+        let letraGeometria = "C";
+        if (codigoInserto && codigoInserto.length > 0) {
+            letraGeometria = codigoInserto.trim().charAt(0).toUpperCase();
         }
 
-        function aplicarColorIso(grupoIso) {
-            const boxIso = document.getElementById("boxIso");
-            const boxMaterial = document.getElementById("boxMaterial");
-            if (!boxIso || !boxMaterial) return;
-            
-            ['iso-theme-P', 'iso-theme-M', 'iso-theme-K', 'iso-theme-N', 'iso-theme-S', 'iso-theme-H'].forEach(c => {
-                boxIso.classList.remove(c);
-                boxMaterial.classList.remove(c);
-            });
-
-            if (grupoIso) {
-                const claseIso = 'iso-theme-' + grupoIso;
-                boxIso.classList.add(claseIso);
-                boxMaterial.classList.add(claseIso);
-            }
+        let svgContent = '';
+        switch (letraGeometria) {
+            case 'C':
+                svgContent = '<polygon points="50,10 90,50 50,90 10,50" fill="#2563eb" stroke="#0f172a" stroke-width="4"/>';
+                break;
+            case 'D':
+                svgContent = '<polygon points="50,5 82,50 50,95 18,50" fill="#eab308" stroke="#0f172a" stroke-width="4"/>';
+                break;
+            case 'V':
+                svgContent = '<polygon points="50,2 75,50 50,98 25,50" fill="#64748b" stroke="#0f172a" stroke-width="4"/>';
+                break;
+            case 'S':
+                svgContent = '<rect x="15" y="15" width="70" height="70" rx="4" fill="#dc2626" stroke="#0f172a" stroke-width="4"/>';
+                break;
+            case 'T':
+                svgContent = '<polygon points="50,10 90,85 10,85" fill="#eab308" stroke="#0f172a" stroke-width="4"/>';
+                break;
+            case 'W':
+                svgContent = '<polygon points="50,8 88,30 88,70 50,92 12,70 12,30" fill="#2563eb" stroke="#0f172a" stroke-width="4"/>';
+                break;
+            case 'R':
+                svgContent = '<circle cx="50" cy="50" r="40" fill="#991b1b" stroke="#0f172a" stroke-width="4"/>';
+                break;
+            default:
+                svgContent = '<polygon points="50,10 90,50 50,90 10,50" fill="#2563eb" stroke="#0f172a" stroke-width="4"/>';
         }
 
-        function mostrarPestana(pestana) {
-            const vDash = document.getElementById("vista-dashboard");
-            const vTorn = document.getElementById("vista-torneado");
-            
-            document.querySelectorAll(".sidebar-nav a").forEach(el => el.classList.remove("active"));
+        contSvg.innerHTML = `<svg width="42" height="42" viewBox="0 0 100 100">${svgContent}</svg>`;
+    }
 
-            if (pestana === "dashboard") {
-                if (vDash) vDash.style.display = "block";
-                if (vTorn) vTorn.style.display = "none";
-                const nDash = document.getElementById("nav-dashboard");
-                if (nDash) nDash.classList.add("active");
-            } else {
-                if (vDash) vDash.style.display = "none";
-                if (vTorn) vTorn.style.display = "block";
-                const nTorn = document.getElementById("nav-torneado");
-                if (nTorn) nTorn.classList.add("active");
-            }
-        }
-
-        function setTexto(id, val) {
-            const el = document.getElementById(id);
-            if (el) el.textContent = (val !== undefined && val !== null) ? val : '-';
-        }
-
-        function cargarInsertos() {
-            const matInput = document.getElementById("material");
-            if (!matInput || !matInput.value) return;
-
-            const mat = matInput.value;
-            const insSelect = document.getElementById("inserto");
-
-            fetch('/api/insertos?material=' + encodeURIComponent(mat))
-                .then(r => r.json())
-                .then(data => {
-                    if (insSelect && data.length > 0) {
-                        insSelect.innerHTML = '';
-                        data.forEach((codigo) => {
-                            const opt = document.createElement("option");
-                            opt.value = codigo;
-                            opt.textContent = codigo;
-                            insSelect.appendChild(opt);
-                        });
-                    }
-                    actualizarValoresEnVivo();
-                })
-                .catch(err => console.error("Error en cargarInsertos:", err));
-        }
-
-        function actualizarValoresEnVivo() {
-            const matInput = document.getElementById("material");
-            if (!matInput || !matInput.value) return;
-
-            const mat = matInput.value;
-            const insSelect = document.getElementById("inserto");
-            const ins = insSelect ? insSelect.value : "";
-            const opSelect = document.getElementById("operacion");
-            const op = opSelect ? opSelect.value : "Desbaste";
-            
-            const dInitInput = document.getElementById("diametro_inicial");
-            const dInit = (dInitInput && dInitInput.value) ? dInitInput.value : 50;
-            const dFinInput = document.getElementById("diametro_final");
-            const dFin = (dFinInput && dFinInput.value) ? dFinInput.value : 40;
-            const longInput = document.getElementById("longitud");
-            const long = (longInput && longInput.value) ? longInput.value : 100;
-
-            const url = '/api/calcular_ajax?material=' + encodeURIComponent(mat) + 
-                        '&inserto=' + encodeURIComponent(ins) + 
-                        '&operacion=' + encodeURIComponent(op) + 
-                        '&diametro_inicial=' + dInit + 
-                        '&diametro_final=' + dFin + 
-                        '&longitud=' + long;
-
-            fetch(url)
-                .then(r => r.json())
-                .then(data => {
-                    if (!data || Object.keys(data).length === 0) return;
-
-                    setTexto("valIso", data.familia_iso);
-                    setTexto("valDureza", data.dureza);
-                    setTexto("valSubiso", data.subclasificacion_iso);
-                    setTexto("valMaterial", data.material);
-
-                    const tcDisplay = document.getElementById("tipo_corte_display");
-                    const tcHidden = document.getElementById("tipo_corte");
-                    if (data.tipo_corte) {
-                        if (tcDisplay) tcDisplay.value = data.tipo_corte;
-                        if (tcHidden) tcHidden.value = data.tipo_corte;
-                    }
-
-                    aplicarColorIso(data.familia_iso);
-                    renderizarSvgGeometria(data.inserto);
-
-                    setTexto("valGrado", data.grado_calidad);
-                    setTexto("valRompevirutas", data.rompevirutas);
-                    setTexto("valCat", data.familia_iso);
-                    setTexto("valTipoCorteBox", data.tipo_corte);
-                    setTexto("valRvpLista", data.rompevirutas);
-
-                    setTexto("valCategoriaInserto", data.categoria_inserto || "Coated Carbide");
-
-                    setTexto("valTipoOp", data.tipo_operacion);
-                    setTexto("valOpSeleccionada", data.operacion_seleccionada || 'Desbaste');
-                    setTexto("valGradoBase", data.grado_calidad);
-                    setTexto("valRvpInserto", data.rompevirutas);
-                    setTexto("valFnMin", data.fn_min + ' mm/rev');
-                    setTexto("valFnMax", data.fn_max + ' mm/rev');
-                    setTexto("valApMin", data.ap_min + ' mm');
-                    setTexto("valApMax", data.ap_max + ' mm');
-
-                    // PASADAS Y PARÁMETROS CNC
-                    setTexto("cncPasadas", data.num_pasadas);
-                    setTexto("cncApReal", data.ap_real_pasada + ' mm');
-                    setTexto("badgeNumPasadas", data.num_pasadas + ' Pasada(s) Requerida(s)');
-
-                    setTexto("cncRpm", data.rpm);
-                    setTexto("cncFn", data.fn);
-                    setTexto("cncVf", data.vf);
-                    setTexto("cncAp", data.ap);
-                    setTexto("cncVc", data.vc);
-                    setTexto("cncMrr", data.mrr);
-                    setTexto("cncPotencia", data.potencia);
-                    setTexto("cncTorque", data.torque);
-                    setTexto("cncTiempo", data.tiempo);
-
-                    setTexto("rngRadial", data.profundidad_radial_total + ' mm');
-                    setTexto("rngFnRango", data.fn_min + ' - ' + data.fn_max + ' mm/rev');
-                    setTexto("rngApRango", data.ap_min + ' - ' + data.ap_max + ' mm');
-                    setTexto("rngVcRec", data.vc + ' m/min');
-                    setTexto("rngDiametros", 'Ø' + dInit + ' -> Ø' + dFin + ' mm');
-                    setTexto("rngTiempoPasada", data.tiempo_pasada + ' min');
-
-                    const contLista = document.getElementById("listaNumeradaInsertos");
-                    const badgeNum = document.getElementById("badgeNumOpciones");
-
-                    let lista = data.lista_recomendaciones;
-                    if (!lista || lista.length === 0) {
-                        lista = (data.todos_compatibles || []).map((cod, i) => ({
-                            numero: i + 1,
-                            codigo_inserto: cod,
-                            grado_sumitomo: data.grado_calidad || '-',
-                            rompevirutas: data.rompevirutas || 'N/A',
-                            es_principal: (cod === data.inserto)
-                        }));
-                    }
-
-                    if (contLista && lista.length > 0) {
-                        if (badgeNum) badgeNum.textContent = lista.length + ' Opciones';
-                        
-                        let htmlHTML = '';
-                        lista.forEach((item, index) => {
-                            const num = item.numero || (index + 1);
-                            const badge = item.es_principal 
-                                ? '<span class="badge bg-warning text-dark fw-bold"><i class="bi bi-star-fill me-1"></i>Selección Actual</span>'
-                                : '<span class="badge bg-light text-secondary border">Compatible</span>';
-
-                            htmlHTML += '<li class="list-group-item d-flex justify-content-between align-items-center py-2 px-3">' +
-                                '<div class="ms-2 me-auto">' +
-                                    '<div class="fw-bold text-dark">' + num + '. ' + item.codigo_inserto + '</div>' +
-                                    '<small class="text-muted">' +
-                                        'Grado Sumitomo: <span class="fw-semibold text-primary">' + item.grado_sumitomo + '</span> | ' +
-                                        'Rompevirutas: <span class="fw-semibold text-secondary">' + item.rompevirutas + '</span>' +
-                                    '</small>' +
-                                '</div>' +
-                                badge +
-                            '</li>';
-                        });
-                        contLista.innerHTML = htmlHTML;
-                    }
-                })
-                .catch(err => console.error("Error en actualizarValoresEnVivo:", err));
-        }
-
-        document.addEventListener("DOMContentLoaded", function() {
-            if (tieneResultado) {
-                mostrarPestana('torneado');
-            }
-            const matInput = document.getElementById("material");
-            if (matInput && matInput.value) {
-                actualizarValoresEnVivo();
-            }
+    function aplicarColorIso(grupoIso) {
+        const boxIso = document.getElementById("boxIso");
+        const boxMaterial = document.getElementById("boxMaterial");
+        if (!boxIso || !boxMaterial) return;
+        
+        ['iso-theme-P', 'iso-theme-M', 'iso-theme-K', 'iso-theme-N', 'iso-theme-S', 'iso-theme-H'].forEach(c => {
+            boxIso.classList.remove(c);
+            boxMaterial.classList.remove(c);
         });
-    </script>
+
+        if (grupoIso) {
+            const claseIso = 'iso-theme-' + grupoIso;
+            boxIso.classList.add(claseIso);
+            boxMaterial.classList.add(claseIso);
+        }
+    }
+
+    function mostrarPestana(pestana) {
+        const vDash = document.getElementById("vista-dashboard");
+        const vTorn = document.getElementById("vista-torneado");
+        
+        document.querySelectorAll(".sidebar-nav a").forEach(el => el.classList.remove("active"));
+
+        if (pestana === "dashboard") {
+            if (vDash) vDash.style.display = "block";
+            if (vTorn) vTorn.style.display = "none";
+            const nDash = document.getElementById("nav-dashboard");
+            if (nDash) nDash.classList.add("active");
+        } else {
+            if (vDash) vDash.style.display = "none";
+            if (vTorn) vTorn.style.display = "block";
+            const nTorn = document.getElementById("nav-torneado");
+            if (nTorn) nTorn.classList.add("active");
+        }
+    }
+
+    function setTexto(id, val) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = (val !== undefined && val !== null) ? val : '-';
+    }
+
+    function cargarInsertos() {
+    const matInput = document.getElementById("material");
+    if (!matInput || !matInput.value || !matInput.value.trim()) return;
+
+    const mat = matInput.value.trim();
+    const insSelect = document.getElementById("inserto");
+
+    fetch('/api/insertos?material=' + encodeURIComponent(mat))
+        .then(r => r.json())
+        .then(data => {
+            if (insSelect && Array.isArray(data) && data.length > 0) {
+                const valorPrevio = insSelect.value;
+                insSelect.innerHTML = '';
+                data.forEach((codigo) => {
+                    const opt = document.createElement("option");
+                    opt.value = codigo;
+                    opt.textContent = codigo;
+                    if (codigo === valorPrevio) opt.selected = true;
+                    insSelect.appendChild(opt);
+                });
+            }
+            actualizarValoresEnVivo();
+        })
+        .catch(err => console.error("Error en cargarInsertos:", err));
+}
+
+function actualizarValoresEnVivo() {
+    const matInput = document.getElementById("material");
+    if (!matInput || !matInput.value || !matInput.value.trim()) return;
+
+    const mat = matInput.value.trim();
+    const insSelect = document.getElementById("inserto");
+    const ins = insSelect ? insSelect.value : "";
+    const opSelect = document.getElementById("operacion");
+    const op = opSelect ? opSelect.value : "Desbaste";
+    
+    const dInitInput = document.getElementById("diametro_inicial");
+    const dInit = (dInitInput && dInitInput.value) ? dInitInput.value : 50;
+    const dFinInput = document.getElementById("diametro_final");
+    const dFin = (dFinInput && dFinInput.value) ? dFinInput.value : 40;
+    const longInput = document.getElementById("longitud");
+    const long = (longInput && longInput.value) ? longInput.value : 100;
+
+    const url = '/api/calcular_ajax?material=' + encodeURIComponent(mat) + 
+                '&inserto=' + encodeURIComponent(ins) + 
+                '&operacion=' + encodeURIComponent(op) + 
+                '&diametro_inicial=' + dInit + 
+                '&diametro_final=' + dFin + 
+                '&longitud=' + long;
+
+    fetch(url)
+        .then(r => r.json())
+        .then(data => {
+            if (!data || Object.keys(data).length === 0) return;
+
+            setTexto("valIso", data.familia_iso);
+            setTexto("valDureza", data.dureza);
+            setTexto("valSubiso", data.subclasificacion_iso);
+            setTexto("valMaterial", data.material);
+
+            const tcDisplay = document.getElementById("tipo_corte_display");
+            const tcHidden = document.getElementById("tipo_corte");
+            if (data.tipo_corte) {
+                if (tcDisplay) tcDisplay.value = data.tipo_corte;
+                if (tcHidden) tcHidden.value = data.tipo_corte;
+            }
+
+            aplicarColorIso(data.familia_iso);
+            renderizarSvgGeometria(data.inserto);
+
+            setTexto("valGrado", data.grado_calidad);
+            setTexto("valRompevirutas", data.rompevirutas);
+            setTexto("valCat", data.familia_iso);
+            setTexto("valTipoCorteBox", data.tipo_corte);
+            setTexto("valRvpLista", data.rompevirutas);
+
+            setTexto("valCategoriaInserto", data.categoria_inserto || "Coated Carbide");
+            setTexto("valTipoOp", data.tipo_operacion);
+            setTexto("valOpSeleccionada", data.operacion_seleccionada || 'Desbaste');
+            setTexto("valGradoBase", data.grado_calidad);
+            setTexto("valRvpInserto", data.rompevirutas);
+            setTexto("valFnMin", data.fn_min + ' mm/rev');
+            setTexto("valFnMax", data.fn_max + ' mm/rev');
+            setTexto("valApMin", data.ap_min + ' mm');
+            setTexto("valApMax", data.ap_max + ' mm');
+
+            setTexto("cncPasadas", data.num_pasadas);
+            setTexto("cncApReal", data.ap_real_pasada + ' mm');
+            setTexto("badgeNumPasadas", data.num_pasadas + ' Pasada(s) Requerida(s)');
+
+            setTexto("cncRpm", data.rpm);
+            setTexto("cncFn", data.fn);
+            setTexto("cncVf", data.vf);
+            setTexto("cncAp", data.ap);
+            setTexto("cncVc", data.vc);
+            setTexto("cncMrr", data.mrr);
+            setTexto("cncPotencia", data.potencia);
+            setTexto("cncTorque", data.torque);
+            setTexto("cncTiempo", data.tiempo);
+
+            setTexto("rngRadial", data.profundidad_radial_total + ' mm');
+            setTexto("rngFnRango", data.fn_min + ' - ' + data.fn_max + ' mm/rev');
+            setTexto("rngApRango", data.ap_min + ' - ' + data.ap_max + ' mm');
+            setTexto("rngVcRec", data.vc + ' m/min');
+            setTexto("rngDiametros", 'Ø' + dInit + ' → Ø' + dFin + ' mm');
+            setTexto("rngTiempoPasada", data.tiempo_pasada + ' min');
+
+            const contLista = document.getElementById("listaNumeradaInsertos");
+            const badgeNum = document.getElementById("badgeNumOpciones");
+
+            let lista = data.lista_recomendaciones;
+            if (!lista || lista.length === 0) {
+                lista = (data.todos_compatibles || []).map((cod, i) => ({
+                    numero: i + 1,
+                    codigo_inserto: cod,
+                    grado_sumitomo: data.grado_calidad || '-',
+                    rompevirutas: data.rompevirutas || 'N/A',
+                    es_principal: (cod === data.inserto)
+                }));
+            }
+
+            if (contLista && lista.length > 0) {
+                if (badgeNum) badgeNum.textContent = lista.length + ' Opciones';
+                
+                let htmlHTML = '';
+                lista.forEach((item, index) => {
+                    const num = item.numero || (index + 1);
+                    const badge = item.es_principal 
+                        ? '<span class="badge bg-warning text-dark fw-bold"><i class="bi bi-star-fill me-1"></i>Selección Actual</span>'
+                        : '<span class="badge bg-light text-secondary border">Compatible</span>';
+
+                    htmlHTML += '<li class="list-group-item d-flex justify-content-between align-items-center py-2 px-3">' +
+                        '<div class="ms-2 me-auto">' +
+                            '<div class="fw-bold text-dark">' + num + '. ' + item.codigo_inserto + '</div>' +
+                            '<small class="text-muted">' +
+                                'Grado Sumitomo: <span class="fw-semibold text-primary">' + item.grado_sumitomo + '</span> | ' +
+                                'Rompevirutas: <span class="fw-semibold text-secondary">' + item.rompevirutas + '</span>' +
+                            '</small>' +
+                        '</div>' +
+                        badge +
+                    '</li>';
+                });
+                contLista.innerHTML = htmlHTML;
+            }
+        })
+        .catch(err => console.error("Error en actualizarValoresEnVivo:", err));
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Si viene de procesar un cálculo por POST, muestra la pestaña torneado
+    if (tieneResultado) {
+        mostrarPestana('torneado');
+    } else {
+        // En carga limpia, vacía explícitamente el valor por si el navegador lo autocompletó
+        const matInput = document.getElementById("material");
+        if (matInput) {
+            matInput.value = "";
+        }
+    }
+});
+</script>
 </body>
 </html>
