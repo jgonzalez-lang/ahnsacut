@@ -1,55 +1,29 @@
 # calc_service.py
-def obtener_factores_operacion(operacion):
-    """Define modificadores dinámicos para Vc, fn y ap según la operación seleccionada."""
-    op_lower = str(operacion).lower() if operacion else "desbaste"
-    if "acabado" in op_lower:
-        return {"vc_factor": 1.25, "fn_factor": 0.60, "ap_factor": 0.40}
-    elif "pesado" in op_lower:
-        return {"vc_factor": 0.80, "fn_factor": 1.30, "ap_factor": 1.50}
-    elif "exterior" in op_lower:
-        return {"vc_factor": 1.05, "fn_factor": 1.00, "ap_factor": 1.00}
-    else:
-        return {"vc_factor": 1.00, "fn_factor": 1.00, "ap_factor": 1.00}
+
 import math
-from data_tables import TABLA_MATERIALES, TABLA_INSERTOS, MODIFICADORES_OPERACION
+from data_tables import (
+    TABLA_MATERIALES, 
+    TABLA_INSERTOS, 
+    MODIFICADORES_OPERACION, 
+    CLASIFICACION_MATERIAL_INSERTO,
+    MATRIZ_DIENTES_SUMITOMO,
+    MATRIZ_PARAMETROS_FRESADO
+)
 
 def obtener_materiales():
-    """Devuelve la lista limpia de todos los nombres de materiales registrados."""
     return [m["material"] for m in TABLA_MATERIALES]
 
-def buscar_material(nombre_material):
-    """Búsqueda flexible de material."""
-    if not nombre_material or not isinstance(nombre_material, str):
-        return TABLA_MATERIALES[0]
-    
-    nom_clean = nombre_material.strip().lower()
-    
-    for m in TABLA_MATERIALES:
-        if m["material"].lower() == nom_clean:
-            return m
-            
-    for m in TABLA_MATERIALES:
-        if nom_clean in m["material"].lower() or m["material"].lower() in nom_clean:
-            return m
-            
-    return TABLA_MATERIALES[0]
-
 def obtener_insertos_compatibles(nombre_material):
-    """Devuelve los insertos compatibles con el material seleccionado."""
-    mat = buscar_material(nombre_material)
-    codigos_permitidos = mat.get("codigos_inserto", [])
+    mat = next((m for m in TABLA_MATERIALES if m["material"] == nombre_material), None)
+    if not mat:
+        return [i["codigo"] for i in TABLA_INSERTOS]
     
-    compatibles = [i["codigo"] for i in TABLA_INSERTOS if i["geometria"] in codigos_permitidos]
+    compatibles = [i["codigo"] for i in TABLA_INSERTOS if i["geometria"] in mat.get("codigos_inserto", [])]
     resto = [i["codigo"] for i in TABLA_INSERTOS if i["codigo"] not in compatibles]
-    
     return compatibles + resto if compatibles else [i["codigo"] for i in TABLA_INSERTOS]
 
 def obtener_factores_operacion(operacion):
-    """Define modificadores dinámicos para Vc, fn y ap según la operación."""
-    if not isinstance(operacion, str):
-        operacion = "Desbaste"
-    
-    op_lower = operacion.lower()
+    op_lower = str(operacion).lower() if operacion else "desbaste"
     if "acabado" in op_lower:
         return {"vc_factor": 1.25, "fn_factor": 0.60, "ap_factor": 0.40}
     elif "pesado" in op_lower:
@@ -60,10 +34,7 @@ def obtener_factores_operacion(operacion):
         return {"vc_factor": 1.00, "fn_factor": 1.00, "ap_factor": 1.00}
 
 def determinar_tipo_corte_automatico(familia_iso, geometria_inserto, operacion, tipo_corte_mat):
-    """Deduce el tipo de corte según el grupo ISO."""
-    geom = str(geometria_inserto).upper()
-    if not isinstance(operacion, str):
-        operacion = "Desbaste"
+    geom = geometria_inserto.upper()
     op_lower = operacion.lower()
 
     if familia_iso == "H":
@@ -89,9 +60,6 @@ def determinar_tipo_corte_automatico(familia_iso, geometria_inserto, operacion, 
     return tipo_corte_mat if tipo_corte_mat else "Continuo a General"
 
 def obtener_grado_y_rompevirutas_estricto(familia_iso, geometria_inserto, operacion, grado_base_mat, rvp_base_mat):
-    """Asigna Rompevirutas y Grados Sumitomo según las listas maestras."""
-    if not isinstance(operacion, str):
-        operacion = "Desbaste"
     op_lower = operacion.lower()
     es_acabado = "acabado" in op_lower
     es_desbaste_pesado = "pesado" in op_lower
@@ -130,8 +98,7 @@ def obtener_grado_y_rompevirutas_estricto(familia_iso, geometria_inserto, operac
     return grado_base_mat, rvp_base_mat
 
 def obtener_material_real_inserto(familia_iso, nombre_material):
-    """Retorna la composición del herramental."""
-    if "D2 (Recocido)" in str(nombre_material):
+    if "D2 (Recocido)" in nombre_material:
         return "Coated Cermet / Cermet"
     
     if familia_iso in ["P", "M", "S"]:
@@ -139,7 +106,7 @@ def obtener_material_real_inserto(familia_iso, nombre_material):
     elif familia_iso == "N":
         return "PCD / Cemented Carbide"
     elif familia_iso == "K":
-        if "G25" in str(nombre_material):
+        if "G25" in nombre_material:
             return "Ceramic / CBN"
         return "Coated Carbide"
     elif familia_iso == "H":
@@ -179,12 +146,10 @@ def calcular_torneado(nombre_material, codigo_inserto, diametro_inicial_mm, diam
     ap_max = min(mat.get("ap_max", 3.0), ins.get("ap_max", 3.0))
     ap_auto = round(((ap_min + ap_max) / 2) * mod["ap_factor"], 2)
 
-    # CORRECCIÓN DE NOMBRES DE VARIABLES AQUI:
     d_init = float(diametro_inicial_mm) if float(diametro_inicial_mm) > 0 else 50.0
     d_final = float(diametro_final_mm) if float(diametro_final_mm) > 0 else 40.0
     longitud_val = float(longitud_mm) if float(longitud_mm) > 0 else 100.0
 
-    # Promedio de diámetro para RPM exacta
     d_promedio = (d_init + d_final) / 2.0
     rpm = (vc * 1000) / (math.pi * d_promedio)
     vf = rpm * fn_auto
@@ -195,7 +160,6 @@ def calcular_torneado(nombre_material, codigo_inserto, diametro_inicial_mm, diam
     mc = (pc * 9550) / rpm if rpm > 0 else 0
     tc_por_pasada = longitud_val / vf if vf > 0 else 0
 
-    # CÁLCULO DE PASADAS
     profundidad_radial_total = max(0.0, (d_init - d_final) / 2.0)
     if profundidad_radial_total > 0 and ap_auto > 0:
         num_pasadas = math.ceil(profundidad_radial_total / ap_auto)
@@ -261,4 +225,138 @@ def calcular_torneado(nombre_material, codigo_inserto, diametro_inicial_mm, diam
         "profundidad_radial_total": round(profundidad_radial_total, 2),
         "diametro_inicial": d_init,
         "diametro_final": d_final
+    }
+
+def obtener_dientes_automaticos(serie, dc):
+    s_key = "DGC" if "DGC" in serie else "WEZ"
+    matriz = MATRIZ_DIENTES_SUMITOMO.get(s_key, {})
+    dc_int = int(dc)
+    
+    if dc_int in matriz:
+        return matriz[dc_int]
+    
+    llaves = sorted(matriz.keys())
+    cercana = min(llaves, key=lambda x: abs(x - dc_int))
+    return matriz[cercana]
+
+# MATRIZ OFICIAL DE ROMPEVIRUTAS SUMITOMO SEGÚN GRUPO ISO
+    MATRIZ_ROMPEVIRUTAS_FRESADO = {
+        "DGC": {
+            "P": "FL / G / H (General a Pesado)",
+            "M": "FG / G (Inoxidables)",
+            "K": "G / H (Fundición)",
+            "N": "S / L (Aluminio)",
+            "S": "G / FG (Superaleaciones)",
+            "H": "H (Templados)"
+        },
+        "WEZ": {
+            "P": "G / L (General / Ligero)",
+            "M": "F / G (Inoxidables)",
+            "K": "G / H (Fundición)",
+            "N": "S (Aluminio / No Ferrosos)",
+            "S": "F / G (Titanio e Inconel)",
+            "H": "H (Aceros Templados)"
+        }
+    }
+    
+    rompevirutas_fresado = MATRIZ_ROMPEVIRUTAS_FRESADO.get(serie_key, {}).get(iso, "General")
+
+def calcular_fresado_sumitomo(nombre_material, serie_fresa, tipo_inserto_dgc="SNMT 13T6", diametro_mm=50.0, dientes=None, ap_mm=2.0, ae_mm=25.0, longitud_mm=100.0, fz_manual=None, tipo_corte="General"):
+    mat_name = str(nombre_material).strip().lower() if nombre_material else ""
+    
+    mat = None
+    if mat_name:
+        # Búsqueda por coincidencia parcial (encuentra "1045", "4140", "304", "inox", "aluminio", etc.)
+        mat = next((m for m in TABLA_MATERIALES if mat_name in m["material"].lower()), None)
+    
+    # Si no hay coincidencia o la casilla está vacía, no retorna vacío si hay texto
+    if not mat and mat_name:
+        mat = TABLA_MATERIALES[0] # Toma el primer material como base para evitar responder {}
+
+    if not mat:
+        return {}
+
+    iso = mat.get("familia_iso", "P")
+    serie_upper = str(serie_fresa).upper()
+    serie_key = "WEZ" if "WEZ" in serie_upper else "DGC"
+
+    dc = float(diametro_mm) if diametro_mm and float(diametro_mm) > 0 else 50.0
+    z = int(dientes) if dientes and int(dientes) > 0 else obtener_dientes_automaticos(serie_key, dc)
+    ap = float(ap_mm) if ap_mm and float(ap_mm) > 0 else 2.0
+    ae = float(ae_mm) if ae_mm and float(ae_mm) > 0 else (dc * 0.5)
+    longitud = float(longitud_mm) if longitud_mm and float(longitud_mm) > 0 else 100.0
+
+    vc = float(mat.get("vc_fres", 210.0))
+    fz = 0.25
+    grado = "ACP2000"
+    codigo_inserto_sug = "SNMT 13T6ANER-G"
+    geom_cuerpo = "Planeado 45°"
+
+    if serie_key in MATRIZ_PARAMETROS_FRESADO and iso in MATRIZ_PARAMETROS_FRESADO[serie_key]:
+        params_iso = MATRIZ_PARAMETROS_FRESADO[serie_key][iso]
+        
+        if serie_key == "DGC":
+            sub_key = "ONMT" if "ONMT" in str(tipo_inserto_dgc).upper() else "SNMT"
+            config = params_iso.get(sub_key, {}) if isinstance(params_iso, dict) else {}
+            vc = float(config.get("vc", vc))
+            fz = float(config.get("fz_opt", 0.25))
+            grado = config.get("grado", "ACP2000")
+            insertos = config.get("insertos", ["SNMT 13T6ANER-G"])
+            codigo_inserto_sug = insertos[0] if insertos else "SNMT 13T6ANER-G"
+            geom_cuerpo = f"Planeado 45° ({sub_key})"
+        else:
+            config = params_iso if isinstance(params_iso, dict) else {}
+            vc = float(config.get("vc", vc))
+            fz = float(config.get("fz_opt", 0.18))
+            grado = config.get("grado", "ACP2000")
+            insertos = config.get("insertos", ["AOMT 110350-G"])
+            codigo_inserto_sug = insertos[0] if insertos else "AOMT 110350-G"
+            geom_cuerpo = "Escuadrado 90° (AOMT)"
+
+    if fz_manual and float(fz_manual) > 0:
+        fz = float(fz_manual)
+    else:
+        if (ae / dc) < 0.3:
+            fz *= 1.20
+
+    rpm = (vc * 1000.0) / (math.pi * dc) if dc > 0 else 0
+    vf = rpm * fz * z
+    vc_calc = (math.pi * dc * rpm) / 1000.0
+    mrr = (ap * ae * vf) / 1000.0
+    tiempo_maquinado = longitud / vf if vf > 0 else 0
+    vtr = mrr * tiempo_maquinado
+
+    kc = mat.get("kc", 1800)
+    pc = (mrr * kc) / (60000.0 * 0.8)
+
+    # MATRIZ DE ROMPEVIRUTAS DE FRESADO
+    MATRIZ_ROMPEVIRUTAS = {
+        "DGC": {"P": "FL / G / H", "M": "FG / G", "K": "G / H", "N": "S / L", "S": "G / FG", "H": "H"},
+        "WEZ": {"P": "G / L", "M": "F / G", "K": "G / H", "N": "S", "S": "F / G", "H": "H"}
+    }
+    rompevirutas_fresado = MATRIZ_ROMPEVIRUTAS.get(serie_key, {}).get(iso, "General")
+
+    return {
+        "material": mat["material"],
+        "familia_iso": iso,
+        "dureza": mat.get("dureza", "-"),
+        "serie_fresa": serie_fresa,
+        "geometria_cuerpo": geom_cuerpo,
+        "codigo_inserto": codigo_inserto_sug,
+        "grado_sumitomo": grado,
+        "rompevirutas": rompevirutas_fresado,
+        "material_inserto_tipo": CLASIFICACION_MATERIAL_INSERTO.get(grado, "CVD Coated Carbide"),
+        "diametro": dc,
+        "dientes": z,
+        "ap": ap,
+        "ae": ae,
+        "longitud": longitud,
+        "vc": round(vc_calc, 1),
+        "fz": round(fz, 3),
+        "rpm": round(rpm, 1),
+        "vf": round(vf, 2),
+        "mrr": round(mrr, 2),
+        "tiempo": round(tiempo_maquinado, 2),
+        "vtr": round(vtr, 2),
+        "potencia": round(pc, 2)
     }
