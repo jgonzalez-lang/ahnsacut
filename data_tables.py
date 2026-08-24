@@ -15,7 +15,7 @@ TABLA_MATERIALES = [
         "familia_iso": "P", "subclasificacion_iso": "P10–P30", "categoria": "Mild Steel",
         "codigos_inserto": ["CNMG", "DNMG", "WNMG", "TNMG", "SNMG", "VNMG", "CCMT", "DCMT", "TCMT"],
         "dureza": "120 HB", "kc": 1500,
-        "vc_fres": 220, "vc_torn": 250, "vc_barr": 140, "vc_rosc": 250,
+        "vc_fres": 250, "vc_torn": 250, "vc_barr": 140, "vc_rosc": 250,
         "fn_min": 0.15, "fn_max": 0.40, "ap_min": 1.0, "ap_max": 5.0,
         "calidad_rec": "AC8025", "rompevirutas": "GU, GE", "tipo_corte": "General a Interrumpido"
     },
@@ -24,7 +24,7 @@ TABLA_MATERIALES = [
         "familia_iso": "P", "subclasificacion_iso": "P10–P30", "categoria": "Mild Steel",
         "codigos_inserto": ["CNMG", "DNMG", "WNMG", "TNMG", "SNMG", "VNMG", "CCMT", "DCMT", "TCMT"],
         "dureza": "140 HB", "kc": 1600,
-        "vc_fres": 210, "vc_torn": 230, "vc_barr": 130, "vc_rosc": 220,
+        "vc_fres": 250, "vc_torn": 230, "vc_barr": 130, "vc_rosc": 220,
         "fn_min": 0.15, "fn_max": 0.40, "ap_min": 1.0, "ap_max": 5.0,
         "calidad_rec": "AC8025", "rompevirutas": "GU, GE", "tipo_corte": "General a Interrumpido"
     },
@@ -33,7 +33,7 @@ TABLA_MATERIALES = [
         "familia_iso": "P", "subclasificacion_iso": "P10–P20", "categoria": "Carbon & Alloy",
         "codigos_inserto": ["CNMG", "DNMG", "WNMG", "TNMG", "SNMG", "VNMG", "CCMT", "DCMT", "TCMT"],
         "dureza": "180 HB", "kc": 1800,
-        "vc_fres": 190, "vc_torn": 210, "vc_barr": 120, "vc_rosc": 200,
+        "vc_fres": 200, "vc_torn": 210, "vc_barr": 120, "vc_rosc": 200,
         "fn_min": 0.10, "fn_max": 0.35, "ap_min": 0.5, "ap_max": 4.0,
         "calidad_rec": "AC8020", "rompevirutas": "GU, GE, SU", "tipo_corte": "Continuo a General"
     },
@@ -42,7 +42,7 @@ TABLA_MATERIALES = [
         "familia_iso": "P", "subclasificacion_iso": "P10–P20", "categoria": "Carbon & Alloy",
         "codigos_inserto": ["CNMG", "DNMG", "WNMG", "TNMG", "SNMG", "VNMG", "CCMT", "DCMT", "TCMT"],
         "dureza": "280 HB", "kc": 2100,
-        "vc_fres": 150, "vc_torn": 170, "vc_barr": 95, "vc_rosc": 150,
+        "vc_fres": 200, "vc_torn": 170, "vc_barr": 95, "vc_rosc": 150,
         "fn_min": 0.10, "fn_max": 0.35, "ap_min": 0.5, "ap_max": 4.0,
         "calidad_rec": "AC8020", "rompevirutas": "GU, GE, SU", "tipo_corte": "Continuo a General"
     },
@@ -51,7 +51,7 @@ TABLA_MATERIALES = [
         "familia_iso": "P", "subclasificacion_iso": "P10–P20", "categoria": "Carbon & Alloy",
         "codigos_inserto": ["CNMG", "DNMG", "WNMG", "TNMG", "SNMG", "VNMG", "CCMT", "DCMT", "TCMT"],
         "dureza": "320 HB", "kc": 2300,
-        "vc_fres": 130, "vc_torn": 145, "vc_barr": 80, "vc_rosc": 120,
+        "vc_fres": 180, "vc_torn": 145, "vc_barr": 80, "vc_rosc": 120,
         "fn_min": 0.10, "fn_max": 0.35, "ap_min": 0.5, "ap_max": 4.0,
         "calidad_rec": "AC8020", "rompevirutas": "GU, GE, SU", "tipo_corte": "Continuo a General"
     },
@@ -60,7 +60,7 @@ TABLA_MATERIALES = [
         "familia_iso": "P", "subclasificacion_iso": "P01–P20", "categoria": "Tool Steel",
         "codigos_inserto": ["CNMG", "DNMG", "WNMG", "TNMG", "SNMG", "VNMG", "CCMT", "DCMT", "TCMT"],
         "dureza": "220 HB", "kc": 2200,
-        "vc_fres": 110, "vc_torn": 130, "vc_barr": 70, "vc_rosc": 100,
+        "vc_fres": 150, "vc_torn": 130, "vc_barr": 70, "vc_rosc": 100,
         "fn_min": 0.05, "fn_max": 0.25, "ap_min": 0.2, "ap_max": 3.0,
         "calidad_rec": "T1500Z / T1500A", "rompevirutas": "FB, FE, FA", "tipo_corte": "Acabado / General"
     },
@@ -69,7 +69,7 @@ TABLA_MATERIALES = [
         "familia_iso": "M", "subclasificacion_iso": "M20–M40", "categoria": "Stainless Steel",
         "codigos_inserto": ["CNMG", "DNMG", "WNMG", "TNMG", "SNMG", "VNMG", "CCMT", "DCMT", "TCMT"],
         "dureza": "170 HB", "kc": 2000,
-        "vc_fres": 120, "vc_torn": 140, "vc_barr": 75, "vc_rosc": 120,
+        "vc_fres": 200, "vc_torn": 140, "vc_barr": 75, "vc_rosc": 120,
         "fn_min": 0.08, "fn_max": 0.35, "ap_min": 0.3, "ap_max": 4.0,
         "calidad_rec": "AC6135", "rompevirutas": "GU, EH", "tipo_corte": "Interrupción Ligera"
     },
@@ -78,7 +78,7 @@ TABLA_MATERIALES = [
         "familia_iso": "M", "subclasificacion_iso": "M20–M40", "categoria": "Stainless Steel",
         "codigos_inserto": ["CNMG", "DNMG", "WNMG", "TNMG", "SNMG", "VNMG", "CCMT", "DCMT", "TCMT"],
         "dureza": "185 HB", "kc": 2100,
-        "vc_fres": 110, "vc_torn": 130, "vc_barr": 65, "vc_rosc": 100,
+        "vc_fres": 200, "vc_torn": 130, "vc_barr": 65, "vc_rosc": 100,
         "fn_min": 0.08, "fn_max": 0.35, "ap_min": 0.3, "ap_max": 4.0,
         "calidad_rec": "AC6135", "rompevirutas": "GU, EH", "tipo_corte": "Interrupción Ligera"
     },
@@ -87,7 +87,7 @@ TABLA_MATERIALES = [
         "familia_iso": "M", "subclasificacion_iso": "M10–M30", "categoria": "Stainless Steel",
         "codigos_inserto": ["CNMG", "DNMG", "WNMG", "TNMG", "SNMG", "VNMG", "CCMT", "DCMT", "TCMT"],
         "dureza": "200 HB", "kc": 1900,
-        "vc_fres": 140, "vc_torn": 160, "vc_barr": 85, "vc_rosc": 140,
+        "vc_fres": 200, "vc_torn": 160, "vc_barr": 85, "vc_rosc": 140,
         "fn_min": 0.08, "fn_max": 0.30, "ap_min": 0.3, "ap_max": 3.0,
         "calidad_rec": "AC6030", "rompevirutas": "EG, GU, EX", "tipo_corte": "Corte Continuo"
     },
@@ -96,7 +96,7 @@ TABLA_MATERIALES = [
         "familia_iso": "M", "subclasificacion_iso": "M20–M40", "categoria": "Stainless Steel",
         "codigos_inserto": ["CNMG", "DNMG", "WNMG", "TNMG", "SNMG", "VNMG", "CCMT", "DCMT", "TCMT"],
         "dureza": "260 HB", "kc": 2400,
-        "vc_fres": 85, "vc_torn": 100, "vc_barr": 50, "vc_rosc": 80,
+        "vc_fres": 180, "vc_torn": 100, "vc_barr": 50, "vc_rosc": 80,
         "fn_min": 0.08, "fn_max": 0.35, "ap_min": 0.3, "ap_max": 4.0,
         "calidad_rec": "AC6135", "rompevirutas": "GU, EH", "tipo_corte": "Interrupción Ligera"
     },
@@ -114,7 +114,7 @@ TABLA_MATERIALES = [
         "familia_iso": "K", "subclasificacion_iso": "K10–K20", "categoria": "Cast Iron",
         "codigos_inserto": ["CNMG", "DNMG", "WNMG", "SNMG", "TNMG"],
         "dureza": "160 HB", "kc": 1300,
-        "vc_fres": 180, "vc_torn": 200, "vc_barr": 110, "vc_rosc": 180,
+        "vc_fres": 200, "vc_torn": 200, "vc_barr": 110, "vc_rosc": 180,
         "fn_min": 0.15, "fn_max": 0.45, "ap_min": 1.0, "ap_max": 5.0,
         "calidad_rec": "AC4015K", "rompevirutas": "N/A", "tipo_corte": "General a Interrumpido"
     },
@@ -123,7 +123,7 @@ TABLA_MATERIALES = [
         "familia_iso": "K", "subclasificacion_iso": "K10–K30", "categoria": "Cast Iron",
         "codigos_inserto": ["CNMG", "DNMG", "WNMG", "SNMG", "TNMG"],
         "dureza": "260 HB", "kc": 1500,
-        "vc_fres": 130, "vc_torn": 150, "vc_barr": 85, "vc_rosc": 140,
+        "vc_fres": 180, "vc_torn": 150, "vc_barr": 85, "vc_rosc": 140,
         "fn_min": 0.20, "fn_max": 0.50, "ap_min": 1.5, "ap_max": 6.0,
         "calidad_rec": "AC4125K", "rompevirutas": "N/A", "tipo_corte": "Interrupción Pesada"
     },
@@ -132,7 +132,7 @@ TABLA_MATERIALES = [
         "familia_iso": "N", "subclasificacion_iso": "N10–N30", "categoria": "Aluminum",
         "codigos_inserto": ["CNMG", "DNMG", "WNMG", "TNMG", "SNMG", "VNMG", "CCMT", "DCMT", "TCMT"],
         "dureza": "95 HB", "kc": 700,
-        "vc_fres": 550, "vc_torn": 650, "vc_barr": 300, "vc_rosc": 450,
+        "vc_fres": 750, "vc_torn": 650, "vc_barr": 300, "vc_rosc": 450,
         "fn_min": 0.05, "fn_max": 0.30, "ap_min": 0.2, "ap_max": 4.0,
         "calidad_rec": "DA1000 / H1", "rompevirutas": "N/A", "tipo_corte": "General / PCD"
     },
@@ -141,7 +141,7 @@ TABLA_MATERIALES = [
         "familia_iso": "N", "subclasificacion_iso": "N10–N30", "categoria": "Aluminum",
         "codigos_inserto": ["CNMG", "DNMG", "WNMG", "TNMG", "SNMG", "VNMG", "CCMT", "DCMT", "TCMT"],
         "dureza": "150 HB", "kc": 800,
-        "vc_fres": 480, "vc_torn": 550, "vc_barr": 260, "vc_rosc": 400,
+        "vc_fres": 750, "vc_torn": 550, "vc_barr": 260, "vc_rosc": 400,
         "fn_min": 0.05, "fn_max": 0.30, "ap_min": 0.2, "ap_max": 4.0,
         "calidad_rec": "DA1000 / H1", "rompevirutas": "N/A", "tipo_corte": "General / PCD"
     },
@@ -150,7 +150,7 @@ TABLA_MATERIALES = [
         "familia_iso": "N", "subclasificacion_iso": "N10–N20", "categoria": "Non-Ferrous",
         "codigos_inserto": ["CNMG", "DNMG", "WNMG", "TNMG", "SNMG", "VNMG", "CCMT", "DCMT", "TCMT"],
         "dureza": "130 HB", "kc": 750,
-        "vc_fres": 380, "vc_torn": 420, "vc_barr": 220, "vc_rosc": 350,
+        "vc_fres": 750, "vc_torn": 420, "vc_barr": 220, "vc_rosc": 350,
         "fn_min": 0.05, "fn_max": 0.30, "ap_min": 0.2, "ap_max": 3.0,
         "calidad_rec": "DA150 / H1", "rompevirutas": "N/A", "tipo_corte": "General / PCD"
     },
@@ -159,7 +159,7 @@ TABLA_MATERIALES = [
         "familia_iso": "N", "subclasificacion_iso": "N10–N20", "categoria": "Non-Ferrous",
         "codigos_inserto": ["CNMG", "DNMG", "WNMG", "TNMG", "SNMG", "VNMG", "CCMT", "DCMT", "TCMT"],
         "dureza": "180 HB", "kc": 900,
-        "vc_fres": 160, "vc_torn": 180, "vc_barr": 95, "vc_rosc": 180,
+        "vc_fres": 600, "vc_torn": 180, "vc_barr": 95, "vc_rosc": 180,
         "fn_min": 0.05, "fn_max": 0.30, "ap_min": 0.2, "ap_max": 3.0,
         "calidad_rec": "DA150 / H1", "rompevirutas": "N/A", "tipo_corte": "General / PCD"
     },
@@ -168,7 +168,7 @@ TABLA_MATERIALES = [
         "familia_iso": "S", "subclasificacion_iso": "S01–S15", "categoria": "HRSA / Titanium",
         "codigos_inserto": ["CNMG", "DNMG", "WNMG", "TNMG", "SNMG", "VNMG", "CCMT", "DCMT", "TCMT"],
         "dureza": "330 HB", "kc": 2800,
-        "vc_fres": 55, "vc_torn": 65, "vc_barr": 35, "vc_rosc": 60,
+        "vc_fres": 50, "vc_torn": 65, "vc_barr": 35, "vc_rosc": 60,
         "fn_min": 0.10, "fn_max": 0.35, "ap_min": 0.5, "ap_max": 4.0,
         "calidad_rec": "AC9115", "rompevirutas": "EG, EX, EM", "tipo_corte": "Corte Continuo"
     },
@@ -177,7 +177,7 @@ TABLA_MATERIALES = [
         "familia_iso": "S", "subclasificacion_iso": "S01–S15", "categoria": "HRSA / Nickel",
         "codigos_inserto": ["CNMG", "DNMG", "WNMG", "TNMG", "SNMG", "VNMG", "CCMT", "DCMT", "TCMT"],
         "dureza": "360 HB", "kc": 3100,
-        "vc_fres": 35, "vc_torn": 42, "vc_barr": 22, "vc_rosc": 40,
+        "vc_fres": 50, "vc_torn": 42, "vc_barr": 22, "vc_rosc": 40,
         "fn_min": 0.10, "fn_max": 0.35, "ap_min": 0.5, "ap_max": 4.0,
         "calidad_rec": "AC5015S", "rompevirutas": "EX, EG", "tipo_corte": "Corte Continuo"
     },
@@ -186,7 +186,7 @@ TABLA_MATERIALES = [
         "familia_iso": "S", "subclasificacion_iso": "S01–S15", "categoria": "HRSA / Nickel",
         "codigos_inserto": ["CNMG", "DNMG", "WNMG", "TNMG", "SNMG", "VNMG", "CCMT", "DCMT", "TCMT"],
         "dureza": "210 HB", "kc": 2900,
-        "vc_fres": 40, "vc_torn": 48, "vc_barr": 25, "vc_rosc": 50,
+        "vc_fres": 50, "vc_torn": 48, "vc_barr": 25, "vc_rosc": 50,
         "fn_min": 0.10, "fn_max": 0.35, "ap_min": 0.5, "ap_max": 4.0,
         "calidad_rec": "AC5015S", "rompevirutas": "EX, EG", "tipo_corte": "Corte Continuo"
     },
@@ -195,7 +195,7 @@ TABLA_MATERIALES = [
         "familia_iso": "H", "subclasificacion_iso": "H20–H30", "categoria": "Hardened Steel",
         "codigos_inserto": ["CNMG", "SNMG", "VNMG"],
         "dureza": "58 HRC", "kc": 3500,
-        "vc_fres": 50, "vc_torn": 60, "vc_barr": 30, "vc_rosc": 50,
+        "vc_fres": 60, "vc_torn": 60, "vc_barr": 30, "vc_rosc": 50,
         "fn_min": 0.10, "fn_max": 0.30, "ap_min": 0.3, "ap_max": 3.0,
         "calidad_rec": "BNC2125 / BNC2135", "rompevirutas": "N/A", "tipo_corte": "Alta Velocidad (CBN)"
     },
@@ -220,3 +220,129 @@ TABLA_INSERTOS = [
     {"codigo": "TNMG 160408", "geometria": "TNMG", "tipo_operacion": "Desbaste Pesado", "vc_iso": {"P": 200, "M": 120, "K": 160, "N": 450, "S": 55, "H": 60}, "fn_min": 0.20, "fn_max": 0.45, "ap_min": 1.5, "ap_max": 5.0},
     {"codigo": "CCMT 060204", "geometria": "CCMT", "tipo_operacion": "Acabado", "vc_iso": {"P": 250, "M": 170, "K": 210, "N": 580, "S": 80, "H": 85}, "fn_min": 0.05, "fn_max": 0.18, "ap_min": 0.2, "ap_max": 2.0}
 ]
+
+MATRIZ_DIENTES_SUMITOMO = {
+    "DGC": {
+        40: 3, 50: 4, 63: 5, 80: 6, 100: 7, 125: 8, 160: 10, 200: 12, 250: 14
+    },
+    "WEZ": {
+        14: 1, 16: 2, 18: 2, 20: 3, 22: 3, 25: 3, 28: 4, 30: 4, 32: 4, 35: 5, 
+        40: 5, 50: 6, 63: 7, 80: 8, 100: 10, 125: 11, 160: 12
+    }
+}
+
+MATRIZ_PARAMETROS_FRESADO = {
+    "DGC": {
+        "P": {
+            "SNMT": {
+                "vc": 250.0, "fz_opt": 0.25, "fz_min": 0.10, "fz_max": 0.40, "ap_max": 4.0, "grado": "ACP2000",
+                "insertos": ["SNMT 13T6ANER-G", "SNMT 13T6ANER-FL", "SNMT 13T6ANER-H"]
+            },
+            "ONMT": {
+                "vc": 250.0, "fz_opt": 0.30, "fz_min": 0.10, "fz_max": 0.50, "ap_max": 2.0, "grado": "ACP2000",
+                "insertos": ["ONMT 05T6ANER-G", "ONMT 05T6ANER-L"]
+            }
+        },
+        "M": {
+            "SNMT": {
+                "vc": 200.0, "fz_opt": 0.23, "fz_min": 0.15, "fz_max": 0.30, "ap_max": 3.0, "grado": "ACS2500",
+                "insertos": ["SNET 13T6ANER-G", "SNET 13T6ANER-FG"]
+            },
+            "ONMT": {
+                "vc": 200.0, "fz_opt": 0.23, "fz_min": 0.15, "fz_max": 0.30, "ap_max": 2.0, "grado": "ACS2500",
+                "insertos": ["ONET 05T6ANER-G", "ONET 05T6ANER-L"]
+            }
+        },
+        "K": {
+            "SNMT": {
+                "vc": 200.0, "fz_opt": 0.25, "fz_min": 0.10, "fz_max": 0.40, "ap_max": 5.0, "grado": "ACK2000",
+                "insertos": ["SNMT 13T6ANER-G", "SNMT 13T6ANER-H"]
+            },
+            "ONMT": {
+                "vc": 200.0, "fz_opt": 0.30, "fz_min": 0.10, "fz_max": 0.50, "ap_max": 2.0, "grado": "ACK2000",
+                "insertos": ["ONMT 05T6ANER-G"]
+            }
+        },
+        "N": {
+            "SNMT": {
+                "vc": 750.0, "fz_opt": 0.23, "fz_min": 0.15, "fz_max": 0.30, "ap_max": 3.0, "grado": "DL1000",
+                "insertos": ["13T6ANFR-S"]
+            },
+            "ONMT": {
+                "vc": 750.0, "fz_opt": 0.23, "fz_min": 0.15, "fz_max": 0.30, "ap_max": 2.0, "grado": "DL1000",
+                "insertos": ["ONMT 05T6ANER-L"]
+            }
+        },
+        "S": {
+            "SNMT": {
+                "vc": 50.0, "fz_opt": 0.20, "fz_min": 0.10, "fz_max": 0.30, "ap_max": 3.0, "grado": "ACS3000",
+                "insertos": ["SNET 13T6ANER-G"]
+            },
+            "ONMT": {
+                "vc": 50.0, "fz_opt": 0.20, "fz_min": 0.10, "fz_max": 0.30, "ap_max": 2.0, "grado": "ACS3000",
+                "insertos": ["ONET 05T6ANER-G"]
+            }
+        },
+        "H": {
+            "SNMT": {
+                "vc": 60.0, "fz_opt": 0.15, "fz_min": 0.08, "fz_max": 0.25, "ap_max": 2.0, "grado": "BN350",
+                "insertos": ["SNMT 13T6ANER-H"]
+            },
+            "ONMT": {
+                "vc": 60.0, "fz_opt": 0.15, "fz_min": 0.08, "fz_max": 0.25, "ap_max": 1.5, "grado": "BN350",
+                "insertos": ["ONMT 05T6ANER-G"]
+            }
+        }
+    },
+    "WEZ": {
+        "P": {
+            "vc": 220.0, "fz_opt": 0.18, "fz_min": 0.10, "fz_max": 0.30, "ap_max": 10.0, "grado": "ACP2000",
+            "insertos": ["AOMT 110350-G", "AOMT 170550-G", "AOMT 110350-L"]
+        },
+        "M": {
+            "vc": 180.0, "fz_opt": 0.15, "fz_min": 0.08, "fz_max": 0.25, "ap_max": 8.0, "grado": "ACS2500",
+            "insertos": ["AOMT 110350-F", "AOMT 170550-G"]
+        },
+        "K": {
+            "vc": 180.0, "fz_opt": 0.18, "fz_min": 0.10, "fz_max": 0.30, "ap_max": 10.0, "grado": "ACK2000",
+            "insertos": ["AOMT 110350-G", "AOMT 170550-H"]
+        },
+        "N": {
+            "vc": 700.0, "fz_opt": 0.20, "fz_min": 0.12, "fz_max": 0.35, "ap_max": 8.0, "grado": "DL2000",
+            "insertos": ["AOMT 110350-S"]
+        },
+        "S": {
+            "vc": 45.0, "fz_opt": 0.12, "fz_min": 0.08, "fz_max": 0.20, "ap_max": 6.0, "grado": "ACS3000",
+            "insertos": ["AOMT 110350-F"]
+        },
+        "H": {
+            "vc": 50.0, "fz_opt": 0.10, "fz_min": 0.05, "fz_max": 0.18, "ap_max": 4.0, "grado": "ACX20",
+            "insertos": ["AOMT 110350-H"]
+        }
+    }
+}
+
+CLASIFICACION_MATERIAL_INSERTO = {
+    "ACU2500": "CVD Coated Carbide (Universal Multi-Material)",
+    "ACP2000": "CVD Coated Carbide (Aceros P10-P25)",
+    "ACP3000": "CVD Coated Carbide (Aceros Tenaz P25-P40)",
+    "ACS1000": "PVD Coated Carbide (Inox/Superaleaciones Ultra-Sharp)",
+    "ACS2500": "PVD Coated Carbide (Inoxidables y Titanio)",
+    "ACS3000": "PVD Coated Carbide (Superaleaciones Alta Resistencia)",
+    "ACM200": "PVD Coated Carbide (Inox M10-M20)",
+    "ACM300": "PVD Coated Carbide (Inox M20-M35)",
+    "ACK2000": "CVD Coated Carbide (Fundición K10-K20)",
+    "ACK3000": "CVD Coated Carbide (Fundición Tenaz K25-K35)",
+    "DL1000": "DLC Coated Carbide (Aluminio/No Ferrosos)",
+    "DL2000": "DLC Coated Carbide (Aluminio Alta Velocidad)",
+    "T2500A": "Cermet (Acabado Aceros)",
+    "T4500A": "Cermet Coated (Acabado/Medio)",
+    "H20": "Uncoated Cemented Carbide",
+    "EH520": "Cemented Carbide Tenaz",
+    "BN7125": "CBN Uncoated (Fundición Alta Velocidad)",
+    "BNC8115": "CBN Coated (Fundición Alta Precisión)",
+    "BNS8125": "CBN Coated (Fundición Interrumpida)",
+    "BN350": "CBN Uncoated (Aceros Templados H)",
+    "DA1000": "PCD (Diamante Policristalino)",
+    "ACX20": "Coated Cermet High-Precision"
+}
