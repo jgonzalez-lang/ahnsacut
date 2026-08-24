@@ -16,7 +16,6 @@
             --text-title: #0f172a;
             --text-sub: #64748b;
 
-            /* Colores ISO 513 */
             --iso-p: #2563eb;
             --iso-m: #eab308;
             --iso-k: #dc2626;
@@ -75,9 +74,7 @@
             margin: 0;
         }
 
-        .sidebar-nav li {
-            margin-bottom: 6px;
-        }
+        .sidebar-nav li { margin-bottom: 6px; }
 
         .sidebar-nav a {
             display: block;
@@ -325,7 +322,6 @@
             font-size: 1.4rem;
         }
 
-        /* Contenedor del Icono SVG de Geometría */
         .svg-geometria-box {
             width: 55px;
             height: 55px;
@@ -338,7 +334,6 @@
             padding: 4px;
         }
 
-        /* Colores Dinámicos ISO */
         .badge-iso-p, .iso-theme-P { background-color: var(--iso-p) !important; color: #ffffff !important; }
         .badge-iso-m, .iso-theme-M { background-color: var(--iso-m) !important; color: #000000 !important; font-weight: 700; }
         .badge-iso-k, .iso-theme-K { background-color: var(--iso-k) !important; color: #ffffff !important; }
@@ -352,9 +347,7 @@
             transition: all 0.2s ease;
         }
         
-        .info-box-iso .info-box-label {
-            font-weight: 700;
-        }
+        .info-box-iso .info-box-label { font-weight: 700; }
 
         .iso-theme-M .info-box-label, .iso-theme-M .info-box-value { color: #000000 !important; }
         .iso-theme-P .info-box-label, .iso-theme-P .info-box-value,
@@ -362,6 +355,73 @@
         .iso-theme-N .info-box-label, .iso-theme-N .info-box-value,
         .iso-theme-S .info-box-label, .iso-theme-S .info-box-value,
         .iso-theme-H .info-box-label, .iso-theme-H .info-box-value { color: #ffffff !important; }
+
+        .nav-pills .nav-link {
+            font-weight: 700;
+            color: #475569;
+            border-radius: 8px;
+            padding: 12px 24px;
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+        }
+
+        .nav-pills .nav-link.active {
+            background-color: #2563eb;
+            color: #ffffff;
+            border-color: #2563eb;
+        }
+
+        #modalZoomBody {
+            background-color: #090d16;
+            cursor: grab;
+            user-select: none;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #modalImageZoomTarget {
+            will-change: transform;
+            transform-origin: 0 0;
+            backface-visibility: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .img-thumb-catalog {
+            width: 70px;
+            height: 50px;
+            object-fit: cover;
+            background-color: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 10px;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .sidebar-brand img { max-height: 45px; }
+
+            .sidebar-nav {
+                display: flex;
+                flex-direction: row;
+                overflow-x: auto;
+                white-space: nowrap;
+                padding-bottom: 5px;
+                gap: 5px;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 15px 10px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -369,11 +429,11 @@
     <!-- Sidebar Lateral -->
     <div class="sidebar">
         <div class="sidebar-brand">
-            <img src="{{ url_for('static', filename='logo.png') }}" alt="AHNSA TOOLS AhnsaCut">
+            <img src="/static/logo.png" alt="AHNSA TOOLS AhnsaCut">
         </div>
         <ul class="sidebar-nav">
             <li><a id="nav-dashboard" onclick="mostrarPestana('dashboard')" class="active"><i class="bi bi-speedometer me-2"></i>Dashboard</a></li>
-            <li><a id="nav-fresado" onclick="mostrarPestana('torneado')"><i class="bi bi-disc me-2"></i>Fresado</a></li>
+            <li><a id="nav-fresado" onclick="mostrarPestana('fresado')"><i class="bi bi-disc me-2"></i>Fresado</a></li>
             <li><a id="nav-torneado" onclick="mostrarPestana('torneado')"><i class="bi bi-gear-wide-connected me-2"></i>Torneado</a></li>
             <li><a id="nav-barrenado" onclick="mostrarPestana('torneado')"><i class="bi bi-pin-angle me-2"></i>Barrenado</a></li>
             <li><a id="nav-roscado" onclick="mostrarPestana('torneado')"><i class="bi bi-symmetry-horizontal me-2"></i>Roscado</a></li>
@@ -393,7 +453,7 @@
                     <div class="dash-metric-card">
                         <div>
                             <span class="info-box-label">Materiales Registrados</span>
-                            <span class="dash-metric-value">22</span>
+                            <span class="dash-metric-value">{{ stats.total_materiales if stats else 22 }}</span>
                         </div>
                         <div class="dash-metric-icon bg-primary bg-opacity-10 text-primary">
                             <i class="bi bi-layers-half"></i>
@@ -404,7 +464,7 @@
                     <div class="dash-metric-card">
                         <div>
                             <span class="info-box-label">Catálogo de Insertos</span>
-                            <span class="dash-metric-value">21</span>
+                            <span class="dash-metric-value">{{ stats.total_insertos if stats else 21 }}</span>
                         </div>
                         <div class="dash-metric-icon bg-success bg-opacity-10 text-success">
                             <i class="bi bi-gear-fill"></i>
@@ -415,7 +475,7 @@
                     <div class="dash-metric-card">
                         <div>
                             <span class="info-box-label">Grupos ISO</span>
-                            <span class="dash-metric-value">6</span>
+                            <span class="dash-metric-value">{{ stats.familias_iso if stats else 6 }}</span>
                         </div>
                         <div class="dash-metric-icon bg-warning bg-opacity-10 text-warning">
                             <i class="bi bi-diagram-3-fill"></i>
@@ -426,7 +486,7 @@
                     <div class="dash-metric-card">
                         <div>
                             <span class="info-box-label">Eficiencia Máquina</span>
-                            <span class="dash-metric-value text-primary">99.8%</span>
+                            <span class="dash-metric-value text-primary">{{ stats.eficiencia_sistema if stats else "99.8%" }}</span>
                         </div>
                         <div class="dash-metric-icon bg-info bg-opacity-10 text-info">
                             <i class="bi bi-activity"></i>
@@ -445,7 +505,6 @@
                         </div>
                         
                         <div class="row g-2">
-                            <!-- ISO P (Aceros) - AZUL -->
                             <div class="col-xl-3 col-lg-4 col-sm-6">
                                 <div class="p-2 border rounded d-flex align-items-center justify-content-between bg-light h-100">
                                     <div class="me-2 overflow-hidden">
@@ -482,8 +541,6 @@
                                     <span class="badge badge-iso-p px-2 py-1 fs-7 flex-shrink-0">ISO P</span>
                                 </div>
                             </div>
-
-                            <!-- ISO M (Inoxidables) - AMARILLO -->
                             <div class="col-xl-3 col-lg-4 col-sm-6">
                                 <div class="p-2 border rounded d-flex align-items-center justify-content-between bg-light h-100">
                                     <div class="me-2 overflow-hidden">
@@ -511,8 +568,6 @@
                                     <span class="badge badge-iso-m px-2 py-1 fs-7 flex-shrink-0">ISO M</span>
                                 </div>
                             </div>
-
-                            <!-- ISO K (Fundición) - ROJO -->
                             <div class="col-xl-3 col-lg-4 col-sm-6">
                                 <div class="p-2 border rounded d-flex align-items-center justify-content-between bg-light h-100">
                                     <div class="me-2 overflow-hidden">
@@ -522,8 +577,6 @@
                                     <span class="badge badge-iso-k px-2 py-1 fs-7 flex-shrink-0">ISO K</span>
                                 </div>
                             </div>
-
-                            <!-- ISO N (Aluminio) - VERDE -->
                             <div class="col-xl-3 col-lg-4 col-sm-6">
                                 <div class="p-2 border rounded d-flex align-items-center justify-content-between bg-light h-100">
                                     <div class="me-2 overflow-hidden">
@@ -533,8 +586,6 @@
                                     <span class="badge badge-iso-n px-2 py-1 fs-7 flex-shrink-0">ISO N</span>
                                 </div>
                             </div>
-
-                            <!-- ISO S (Superaleaciones Forma R) - GRANATE -->
                             <div class="col-xl-3 col-lg-4 col-sm-6">
                                 <div class="p-2 border rounded d-flex align-items-center justify-content-between bg-light h-100">
                                     <div class="me-2 overflow-hidden">
@@ -544,8 +595,6 @@
                                     <span class="badge badge-iso-s px-2 py-1 fs-7 flex-shrink-0">ISO S</span>
                                 </div>
                             </div>
-
-                            <!-- ISO H (Templados) - GRIS -->
                             <div class="col-xl-3 col-lg-4 col-sm-6">
                                 <div class="p-2 border rounded d-flex align-items-center justify-content-between bg-light h-100">
                                     <div class="me-2 overflow-hidden">
@@ -555,7 +604,6 @@
                                     <span class="badge badge-iso-h px-2 py-1 fs-7 flex-shrink-0">ISO H</span>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -629,7 +677,7 @@
             </div>
         </div>
 
-        <!-- VISTA 2: TORNEADO (CALCULADORA PRINCIPAL) -->
+        <!-- VISTA 2: TORNEADO -->
         <div id="vista-torneado" style="display: none;">
             <h1 class="page-title">Torneado CNC</h1>
             <p class="page-subtitle">Selección de inserto, grado Sumitomo, cálculo de pasadas y parámetros de corte.</p>
@@ -782,7 +830,6 @@
                         <div class="ui-card">
                             <div class="ui-card-title d-flex justify-content-between align-items-center">
                                 <span>Inserto Seleccionado</span>
-                                <!-- ICONO GRÁFICO SVG DINÁMICO -->
                                 <div class="svg-geometria-box" id="contenedorSvgGeometria" title="Forma de Geometría">
                                     <svg width="40" height="40" viewBox="0 0 100 100" id="svgPlaquita">
                                         <polygon points="50,10 90,50 50,90 10,50" fill="#2563eb" stroke="#0f172a" stroke-width="4"/>
@@ -796,12 +843,12 @@
                                         <span class="info-box-label">Inserto</span>
                                         <span class="info-box-value text-primary">
                                             <select name="inserto" id="inserto" class="form-select border-0 p-0 fs-6 fw-bold text-primary" style="background: transparent;" onchange="actualizarValoresEnVivo()">
-    {% if resultado %}
-        <option selected>{{ resultado.inserto }}</option>
-    {% else %}
-        <option value="" selected disabled>Seleccione material primero...</option>
-    {% endif %}
-</select>
+                                                {% if resultado %}
+                                                    <option selected>{{ resultado.inserto }}</option>
+                                                {% else %}
+                                                    <option value="" selected disabled>-</option>
+                                                {% endif %}
+                                            </select>
                                         </span>
                                     </div>
                                 </div>
@@ -951,7 +998,7 @@
                             <div class="cnc-card">
                                 <span class="cnc-label">Tiempo Total de Mecanizado</span>
                                 <span class="cnc-value text-info fw-bold" id="cncTiempo">{% if resultado %}{{ resultado.tiempo }}{% else %}-{% endif %}</span>
-                                <span class="cnc-unit">min ({{ resultado.num_pasadas }} pasadas)</span>
+                                <span class="cnc-unit">min ({% if resultado %}{{ resultado.num_pasadas }}{% else %}-{% endif %} pasadas)</span>
                             </div>
                         </div>
                     </div>
@@ -1001,7 +1048,7 @@
                     </div>
                 </div>
 
-                <!-- TARJETA: LISTA NUMERADA -->
+                <!-- TARJETAS CON LISTA NUMERADA DE OPCIONES -->
                 <div class="ui-card mb-3">
                     <div class="ui-card-title d-flex justify-content-between align-items-center mb-2">
                         <span><i class="bi bi-list-ol me-2 text-primary"></i>Lista de Opciones de Inserto y Grado Sumitomo Recomendados</span>
@@ -1038,251 +1085,615 @@
             </form>
         </div>
 
+        <!-- VISTA 3: FRESADO CNC SUMITOMO -->
+        <div id="vista-fresado" style="display: none;">
+            <h1 class="page-title">Fresado CNC Sumitomo</h1>
+            <p class="page-subtitle">Calculadora de los 6 parámetros clave de fresado y catálogo oficial interactivo.</p>
+
+            <!-- PESTAÑAS DE NAVEGACIÓN DGC / WEZ -->
+            <ul class="nav nav-pills mb-4" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="pill-dgc-tab" data-bs-toggle="pill" data-bs-target="#pill-dgc" type="button" role="tab" onclick="seleccionarSerieDesdeTab('DGC (Dual-G-Cutter 45°)')">
+                        <i class="bi bi-pie-chart-fill me-2"></i>Serie DGC (Dual-G-Cutter 45°)
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pill-wez-tab" data-bs-toggle="pill" data-bs-target="#pill-wez" type="button" role="tab" onclick="seleccionarSerieDesdeTab('WEZ (WaveMill 90°)')">
+                        <i class="bi bi-bounding-box me-2"></i>Serie WEZ (WaveMill 90°)
+                    </button>
+                </li>
+            </ul>
+
+            <!-- CALCULADORA INTERACTIVA DE PARÁMETROS DE FRESADO -->
+            <div class="ui-card mb-4">
+                <div class="ui-card-title">
+                    <i class="bi bi-calculator me-2 text-primary"></i>Calculadora de Parámetros de Fresado (6 Métricas CNC)
+                </div>
+
+                <div class="row g-2 mb-3 align-items-end">
+                    <div class="col-md-3">
+                        <label class="form-label small text-muted fw-bold mb-1">Buscar Material</label>
+                        <input type="text" list="lista-materiales" id="material_fresado" class="form-control form-control-sm fw-semibold text-primary" placeholder="Escriba ej: 4140, 1045, 316..." oninput="actualizarFresadoEnVivo()" onchange="actualizarFresadoEnVivo()">
+                    </div>
+                    <div class="col-md-2" id="contenedor_tipo_inserto_dgc">
+                        <label class="form-label small text-muted fw-bold mb-1">Tipo Inserto DGC</label>
+                        <select id="tipo_inserto_dgc" class="form-select form-select-sm" onchange="alCambiarMaterialOFresa()">
+                            <option value="SNMT 13T6">SNMT 13T6 (8 Filos - 45°)</option>
+                            <option value="ONMT 05T6">ONMT 05T6 (16 Filos - 45°)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small text-muted fw-bold mb-1">Rompevirutas Recomendado</label>
+                        <input type="text" id="valRompevirutasFresado" class="form-control form-control-sm bg-light fw-bold text-warning-emphasis" value="-" readonly>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small text-muted fw-bold mb-1">Diámetro Dc (mm)</label>
+                        <input type="number" id="dc_fresado" class="form-control form-control-sm" value="50" oninput="alCambiarDiametro()" onchange="alCambiarDiametro()">
+                    </div>
+                    <div class="col-md-1">
+                        <label class="form-label small text-muted fw-bold mb-1">Filos z</label>
+                        <input type="number" id="z_fresado" class="form-control form-control-sm" value="4" oninput="actualizarFresadoEnVivo()">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small text-muted fw-bold mb-1">Avance Fz (mm/t)</label>
+                        <input type="number" step="0.01" id="fz_fresado" class="form-control form-control-sm fw-bold text-primary" placeholder="Auto por Tabla" oninput="actualizarFresadoEnVivo()">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small text-muted fw-bold mb-1">Prof. Axial ap (mm)</label>
+                        <input type="number" step="0.1" id="ap_fresado" class="form-control form-control-sm" value="2.0" oninput="actualizarFresadoEnVivo()">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small text-muted fw-bold mb-1">Ancho Radial ae (mm)</label>
+                        <input type="number" step="0.1" id="ae_fresado" class="form-control form-control-sm" value="25.0" oninput="actualizarFresadoEnVivo()">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small text-muted fw-bold mb-1">Longitud L (mm)</label>
+                        <input type="number" step="1" id="longitud_fresado" class="form-control form-control-sm" value="100" oninput="actualizarFresadoEnVivo()">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-calc w-100 btn-sm py-1 fw-bold" onclick="actualizarFresadoEnVivo()">
+                            <i class="bi bi-cpu me-1"></i>Calcular
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TARJETAS DE LOS 6 CÁLCULOS CNC -->
+                <div class="row g-2">
+                    <div class="col-md-2 col-6">
+                        <div class="cnc-card cnc-card-pasadas">
+                            <span class="cnc-label text-info">1. RPM</span>
+                            <span class="cnc-value text-warning fs-4" id="fresRpm">0</span>
+                            <span class="cnc-unit text-light">rev/min</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-6">
+                        <div class="cnc-card cnc-card-pasadas">
+                            <span class="cnc-label text-info">2. Feed Rate (F)</span>
+                            <span class="cnc-value text-warning fs-4" id="fresVf">0</span>
+                            <span class="cnc-unit text-light">mm/min</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-6">
+                        <div class="cnc-card">
+                            <span class="cnc-label">3. Vel. Corte (Vc)</span>
+                            <span class="cnc-value" id="fresValVc">0 m/min</span>
+                            <span class="cnc-unit">m/min</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-6">
+                        <div class="cnc-card">
+                            <span class="cnc-label">4. MRR</span>
+                            <span class="cnc-value" id="fresMrr">0</span>
+                            <span class="cnc-unit">cm³/min</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-6">
+                        <div class="cnc-card">
+                            <span class="cnc-label">5. Tiempo (T)</span>
+                            <span class="cnc-value text-info fw-bold" id="fresTiempo">0</span>
+                            <span class="cnc-unit">min</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-6">
+                        <div class="cnc-card">
+                            <span class="cnc-label">6. VTR (Vol. Total)</span>
+                            <span class="cnc-value" id="fresVtr">0</span>
+                            <span class="cnc-unit">cm³</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABLAS DE FRESADO DGC Y WEZ -->
+<div class="tab-content" id="pills-tabContent">
+    
+    <!-- PESTAÑA DGC (Dual-G-Cutter 45°) -->
+    <div class="tab-pane fade show active" id="pill-dgc" role="tabpanel">
+        <div class="ui-card mb-3">
+            <div class="ui-card-title"><i class="bi bi-collection me-2 text-primary"></i>Tablas de Referencia Oficial Serie DGC (45°)</div>
+            <div class="list-group list-group-flush">
+                
+                <div class="list-group-item d-flex justify-content-between align-items-center py-3">
+                    <div class="d-flex align-items-center me-3">
+                        <img src="/static/grades_milling.png" class="rounded border me-3 img-thumb-catalog" alt="Grados Parte 1">
+                        <div>
+                            <h6 class="mb-0 fw-bold">Grados Oficiales para Fresado Sumitomo (Parte 1)</h6>
+                            <small class="text-muted">Clasificación de grados P, M, K, N, S, H.</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-primary fw-semibold" onclick="abrirModalZoom(this)" data-img="/static/grades_milling.png" data-title="Grados Oficiales para Fresado Sumitomo (Parte 1)">
+                        <i class="bi bi-zoom-in me-1"></i>Ver Tabla
+                    </button>
+                </div>
+
+                <div class="list-group-item d-flex justify-content-between align-items-center py-3">
+                    <div class="d-flex align-items-center me-3">
+                        <img src="/static/grades_milling1.png" class="rounded border me-3 img-thumb-catalog" alt="Grados Parte 2">
+                        <div>
+                            <h6 class="mb-0 fw-bold">Grados Oficiales para Fresado Sumitomo (Parte 2 - Complemento HD)</h6>
+                            <small class="text-muted">Detalles adicionales y mapa de aplicación HD.</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-primary fw-semibold" onclick="abrirModalZoom(this)" data-img="/static/grades_milling1.png" data-title="Grados Oficiales para Fresado Sumitomo (Parte 2 - Complemento HD)">
+                        <i class="bi bi-zoom-in me-1"></i>Ver Tabla HD
+                    </button>
+                </div>
+
+                <div class="list-group-item d-flex justify-content-between align-items-center py-3">
+                    <div class="d-flex align-items-center me-3">
+                        <img src="/static/dgc_condiciones.png" class="rounded border me-3 img-thumb-catalog" alt="Condiciones DGC">
+                        <div>
+                            <h6 class="mb-0 fw-bold">Condiciones Recomendadas de Corte DGC (SNMT / ONMT)</h6>
+                            <small class="text-muted">Rangos de Vc, fz, ap max y grados Sumitomo por material ISO.</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-primary fw-semibold" onclick="abrirModalZoom(this)" data-img="/static/dgc_condiciones.png" data-title="Condiciones Recomendadas Serie DGC">
+                        <i class="bi bi-zoom-in me-1"></i>Ver Tabla HD
+                    </button>
+                </div>
+
+                <div class="list-group-item d-flex justify-content-between align-items-center py-3">
+                    <div class="d-flex align-items-center me-3">
+                        <img src="/static/dgc_chipbreaker.png" class="rounded border me-3 img-thumb-catalog" alt="Chipbreaker DGC">
+                        <div>
+                            <h6 class="mb-0 fw-bold">Guía de Selección de Chipbreakers DGC</h6>
+                            <small class="text-muted">Rompevirutas FL, L, FG, G, H, S, W según la aplicación.</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-primary fw-semibold" onclick="abrirModalZoom(this)" data-img="/static/dgc_chipbreaker.png" data-title="Guía de Chipbreakers Serie DGC">
+                        <i class="bi bi-zoom-in me-1"></i>Ver Guía HD
+                    </button>
+                </div>
+
+                <div class="list-group-item d-flex justify-content-between align-items-center py-3">
+                    <div class="d-flex align-items-center me-3">
+                        <img src="/static/dgc_filos.png" class="rounded border me-3 img-thumb-catalog" alt="Filos DGC">
+                        <div>
+                            <h6 class="mb-0 fw-bold">Matriz de Diámetros y Cantidad de Dientes (DGC)</h6>
+                            <small class="text-muted">Relación de diámetros Ø40 a Ø250 mm y número de filos z.</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-primary fw-semibold" onclick="abrirModalZoom(this)" data-img="/static/dgc_filos.png" data-title="Matriz de Diámetros y Filos Serie DGC">
+                        <i class="bi bi-zoom-in me-1"></i>Ver Matriz HD
+                    </button>
+                </div>
+
+            </div>
+        </div>
     </div>
 
-    <script>
-    const tieneResultado = Boolean("{{ 'true' if resultado else '' }}");
-
-    function renderizarSvgGeometria(codigoInserto) {
-        const contSvg = document.getElementById("contenedorSvgGeometria");
-        if (!contSvg) return;
-
-        let letraGeometria = "C";
-        if (codigoInserto && codigoInserto.length > 0) {
-            letraGeometria = codigoInserto.trim().charAt(0).toUpperCase();
-        }
-
-        let svgContent = '';
-        switch (letraGeometria) {
-            case 'C':
-                svgContent = '<polygon points="50,10 90,50 50,90 10,50" fill="#2563eb" stroke="#0f172a" stroke-width="4"/>';
-                break;
-            case 'D':
-                svgContent = '<polygon points="50,5 82,50 50,95 18,50" fill="#eab308" stroke="#0f172a" stroke-width="4"/>';
-                break;
-            case 'V':
-                svgContent = '<polygon points="50,2 75,50 50,98 25,50" fill="#64748b" stroke="#0f172a" stroke-width="4"/>';
-                break;
-            case 'S':
-                svgContent = '<rect x="15" y="15" width="70" height="70" rx="4" fill="#dc2626" stroke="#0f172a" stroke-width="4"/>';
-                break;
-            case 'T':
-                svgContent = '<polygon points="50,10 90,85 10,85" fill="#eab308" stroke="#0f172a" stroke-width="4"/>';
-                break;
-            case 'W':
-                svgContent = '<polygon points="50,8 88,30 88,70 50,92 12,70 12,30" fill="#2563eb" stroke="#0f172a" stroke-width="4"/>';
-                break;
-            case 'R':
-                svgContent = '<circle cx="50" cy="50" r="40" fill="#991b1b" stroke="#0f172a" stroke-width="4"/>';
-                break;
-            default:
-                svgContent = '<polygon points="50,10 90,50 50,90 10,50" fill="#2563eb" stroke="#0f172a" stroke-width="4"/>';
-        }
-
-        contSvg.innerHTML = `<svg width="42" height="42" viewBox="0 0 100 100">${svgContent}</svg>`;
-    }
-
-    function aplicarColorIso(grupoIso) {
-        const boxIso = document.getElementById("boxIso");
-        const boxMaterial = document.getElementById("boxMaterial");
-        if (!boxIso || !boxMaterial) return;
-        
-        ['iso-theme-P', 'iso-theme-M', 'iso-theme-K', 'iso-theme-N', 'iso-theme-S', 'iso-theme-H'].forEach(c => {
-            boxIso.classList.remove(c);
-            boxMaterial.classList.remove(c);
-        });
-
-        if (grupoIso) {
-            const claseIso = 'iso-theme-' + grupoIso;
-            boxIso.classList.add(claseIso);
-            boxMaterial.classList.add(claseIso);
-        }
-    }
-
-    function mostrarPestana(pestana) {
-        const vDash = document.getElementById("vista-dashboard");
-        const vTorn = document.getElementById("vista-torneado");
-        
-        document.querySelectorAll(".sidebar-nav a").forEach(el => el.classList.remove("active"));
-
-        if (pestana === "dashboard") {
-            if (vDash) vDash.style.display = "block";
-            if (vTorn) vTorn.style.display = "none";
-            const nDash = document.getElementById("nav-dashboard");
-            if (nDash) nDash.classList.add("active");
-        } else {
-            if (vDash) vDash.style.display = "none";
-            if (vTorn) vTorn.style.display = "block";
-            const nTorn = document.getElementById("nav-torneado");
-            if (nTorn) nTorn.classList.add("active");
-        }
-    }
-
-    function setTexto(id, val) {
-        const el = document.getElementById(id);
-        if (el) el.textContent = (val !== undefined && val !== null) ? val : '-';
-    }
-
-    function cargarInsertos() {
-    const matInput = document.getElementById("material");
-    if (!matInput || !matInput.value || !matInput.value.trim()) return;
-
-    const mat = matInput.value.trim();
-    const insSelect = document.getElementById("inserto");
-
-    fetch('/api/insertos?material=' + encodeURIComponent(mat))
-        .then(r => r.json())
-        .then(data => {
-            if (insSelect && Array.isArray(data) && data.length > 0) {
-                const valorPrevio = insSelect.value;
-                insSelect.innerHTML = '';
-                data.forEach((codigo) => {
-                    const opt = document.createElement("option");
-                    opt.value = codigo;
-                    opt.textContent = codigo;
-                    if (codigo === valorPrevio) opt.selected = true;
-                    insSelect.appendChild(opt);
-                });
-            }
-            actualizarValoresEnVivo();
-        })
-        .catch(err => console.error("Error en cargarInsertos:", err));
-}
-
-function actualizarValoresEnVivo() {
-    const matInput = document.getElementById("material");
-    if (!matInput || !matInput.value || !matInput.value.trim()) return;
-
-    const mat = matInput.value.trim();
-    const insSelect = document.getElementById("inserto");
-    const ins = insSelect ? insSelect.value : "";
-    const opSelect = document.getElementById("operacion");
-    const op = opSelect ? opSelect.value : "Desbaste";
-    
-    const dInitInput = document.getElementById("diametro_inicial");
-    const dInit = (dInitInput && dInitInput.value) ? dInitInput.value : 50;
-    const dFinInput = document.getElementById("diametro_final");
-    const dFin = (dFinInput && dFinInput.value) ? dFinInput.value : 40;
-    const longInput = document.getElementById("longitud");
-    const long = (longInput && longInput.value) ? longInput.value : 100;
-
-    const url = '/api/calcular_ajax?material=' + encodeURIComponent(mat) + 
-                '&inserto=' + encodeURIComponent(ins) + 
-                '&operacion=' + encodeURIComponent(op) + 
-                '&diametro_inicial=' + dInit + 
-                '&diametro_final=' + dFin + 
-                '&longitud=' + long;
-
-    fetch(url)
-        .then(r => r.json())
-        .then(data => {
-            if (!data || Object.keys(data).length === 0) return;
-
-            setTexto("valIso", data.familia_iso);
-            setTexto("valDureza", data.dureza);
-            setTexto("valSubiso", data.subclasificacion_iso);
-            setTexto("valMaterial", data.material);
-
-            const tcDisplay = document.getElementById("tipo_corte_display");
-            const tcHidden = document.getElementById("tipo_corte");
-            if (data.tipo_corte) {
-                if (tcDisplay) tcDisplay.value = data.tipo_corte;
-                if (tcHidden) tcHidden.value = data.tipo_corte;
-            }
-
-            aplicarColorIso(data.familia_iso);
-            renderizarSvgGeometria(data.inserto);
-
-            setTexto("valGrado", data.grado_calidad);
-            setTexto("valRompevirutas", data.rompevirutas);
-            setTexto("valCat", data.familia_iso);
-            setTexto("valTipoCorteBox", data.tipo_corte);
-            setTexto("valRvpLista", data.rompevirutas);
-
-            setTexto("valCategoriaInserto", data.categoria_inserto || "Coated Carbide");
-            setTexto("valTipoOp", data.tipo_operacion);
-            setTexto("valOpSeleccionada", data.operacion_seleccionada || 'Desbaste');
-            setTexto("valGradoBase", data.grado_calidad);
-            setTexto("valRvpInserto", data.rompevirutas);
-            setTexto("valFnMin", data.fn_min + ' mm/rev');
-            setTexto("valFnMax", data.fn_max + ' mm/rev');
-            setTexto("valApMin", data.ap_min + ' mm');
-            setTexto("valApMax", data.ap_max + ' mm');
-
-            setTexto("cncPasadas", data.num_pasadas);
-            setTexto("cncApReal", data.ap_real_pasada + ' mm');
-            setTexto("badgeNumPasadas", data.num_pasadas + ' Pasada(s) Requerida(s)');
-
-            setTexto("cncRpm", data.rpm);
-            setTexto("cncFn", data.fn);
-            setTexto("cncVf", data.vf);
-            setTexto("cncAp", data.ap);
-            setTexto("cncVc", data.vc);
-            setTexto("cncMrr", data.mrr);
-            setTexto("cncPotencia", data.potencia);
-            setTexto("cncTorque", data.torque);
-            setTexto("cncTiempo", data.tiempo);
-
-            setTexto("rngRadial", data.profundidad_radial_total + ' mm');
-            setTexto("rngFnRango", data.fn_min + ' - ' + data.fn_max + ' mm/rev');
-            setTexto("rngApRango", data.ap_min + ' - ' + data.ap_max + ' mm');
-            setTexto("rngVcRec", data.vc + ' m/min');
-            setTexto("rngDiametros", 'Ø' + dInit + ' → Ø' + dFin + ' mm');
-            setTexto("rngTiempoPasada", data.tiempo_pasada + ' min');
-
-            const contLista = document.getElementById("listaNumeradaInsertos");
-            const badgeNum = document.getElementById("badgeNumOpciones");
-
-            let lista = data.lista_recomendaciones;
-            if (!lista || lista.length === 0) {
-                lista = (data.todos_compatibles || []).map((cod, i) => ({
-                    numero: i + 1,
-                    codigo_inserto: cod,
-                    grado_sumitomo: data.grado_calidad || '-',
-                    rompevirutas: data.rompevirutas || 'N/A',
-                    es_principal: (cod === data.inserto)
-                }));
-            }
-
-            if (contLista && lista.length > 0) {
-                if (badgeNum) badgeNum.textContent = lista.length + ' Opciones';
+    <!-- PESTAÑA WEZ (WaveMill 90°) -->
+    <div class="tab-pane fade" id="pill-wez" role="tabpanel">
+        <div class="ui-card mb-3">
+            <div class="ui-card-title"><i class="bi bi-collection me-2 text-primary"></i>Tablas de Referencia Oficial Serie WEZ (90°)</div>
+            <div class="list-group list-group-flush">
                 
-                let htmlHTML = '';
-                lista.forEach((item, index) => {
-                    const num = item.numero || (index + 1);
-                    const badge = item.es_principal 
-                        ? '<span class="badge bg-warning text-dark fw-bold"><i class="bi bi-star-fill me-1"></i>Selección Actual</span>'
-                        : '<span class="badge bg-light text-secondary border">Compatible</span>';
+                <div class="list-group-item d-flex justify-content-between align-items-center py-3">
+                    <div class="d-flex align-items-center me-3">
+                        <img src="/static/grades_milling.png" class="rounded border me-3 img-thumb-catalog" alt="Grados Parte 1">
+                        <div>
+                            <h6 class="mb-0 fw-bold">Grados Oficiales para Fresado Sumitomo (Parte 1)</h6>
+                            <small class="text-muted">Clasificación de grados P, M, K, N, S, H.</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-primary fw-semibold" onclick="abrirModalZoom(this)" data-img="/static/grades_milling.png" data-title="Grados Oficiales para Fresado Sumitomo (Parte 1)">
+                        <i class="bi bi-zoom-in me-1"></i>Ver Tabla
+                    </button>
+                </div>
 
-                    htmlHTML += '<li class="list-group-item d-flex justify-content-between align-items-center py-2 px-3">' +
-                        '<div class="ms-2 me-auto">' +
-                            '<div class="fw-bold text-dark">' + num + '. ' + item.codigo_inserto + '</div>' +
-                            '<small class="text-muted">' +
-                                'Grado Sumitomo: <span class="fw-semibold text-primary">' + item.grado_sumitomo + '</span> | ' +
-                                'Rompevirutas: <span class="fw-semibold text-secondary">' + item.rompevirutas + '</span>' +
-                            '</small>' +
-                        '</div>' +
-                        badge +
-                    '</li>';
-                });
-                contLista.innerHTML = htmlHTML;
+                <div class="list-group-item d-flex justify-content-between align-items-center py-3">
+                    <div class="d-flex align-items-center me-3">
+                        <img src="/static/grades_milling1.png" class="rounded border me-3 img-thumb-catalog" alt="Grados Parte 2">
+                        <div>
+                            <h6 class="mb-0 fw-bold">Grados Oficiales para Fresado Sumitomo (Parte 2 - Complemento HD)</h6>
+                            <small class="text-muted">Detalles adicionales y mapa de aplicación HD.</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-primary fw-semibold" onclick="abrirModalZoom(this)" data-img="/static/grades_milling1.png" data-title="Grados Oficiales para Fresado Sumitomo (Parte 2 - Complemento HD)">
+                        <i class="bi bi-zoom-in me-1"></i>Ver Tabla HD
+                    </button>
+                </div>
+
+                <div class="list-group-item d-flex justify-content-between align-items-center py-3">
+                    <div class="d-flex align-items-center me-3">
+                        <img src="/static/wez_condiciones.png" class="rounded border me-3 img-thumb-catalog" alt="Condiciones WEZ">
+                        <div>
+                            <h6 class="mb-0 fw-bold">Condiciones Recomendadas de Corte WEZ (Parte 1)</h6>
+                            <small class="text-muted">Parámetros generales AOMT por grupo ISO.</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-primary fw-semibold" onclick="abrirModalZoom(this)" data-img="/static/wez_condiciones.png" data-title="Condiciones Recomendadas Serie WEZ (Parte 1)">
+                        <i class="bi bi-zoom-in me-1"></i>Ver Tabla
+                    </button>
+                </div>
+
+                <div class="list-group-item d-flex justify-content-between align-items-center py-3">
+                    <div class="d-flex align-items-center me-3">
+                        <img src="/static/wez_condiciones1.png" class="rounded border me-3 img-thumb-catalog" alt="Condiciones WEZ HD">
+                        <div>
+                            <h6 class="mb-0 fw-bold">Condiciones Recomendadas de Corte WEZ (Parte 2 - Complemento HD)</h6>
+                            <small class="text-muted">Rangos detallados Vc, fz, ap max AOMT (Alta Resolución).</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-primary fw-semibold" onclick="abrirModalZoom(this)" data-img="/static/wez_condiciones1.png" data-title="Condiciones Recomendadas Serie WEZ (Parte 2 - Complemento HD)">
+                        <i class="bi bi-zoom-in me-1"></i>Ver Tabla HD
+                    </button>
+                </div>
+
+                <div class="list-group-item d-flex justify-content-between align-items-center py-3">
+                    <div class="d-flex align-items-center me-3">
+                        <img src="/static/wez_chipbreaker.png" class="rounded border me-3 img-thumb-catalog" alt="Chipbreaker WEZ">
+                        <div>
+                            <h6 class="mb-0 fw-bold">Guía de Selección de Chipbreakers WEZ</h6>
+                            <small class="text-muted">Rompevirutas L, G, H, F, P, S según la aplicación.</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-primary fw-semibold" onclick="abrirModalZoom(this)" data-img="/static/wez_chipbreaker.png" data-title="Guía de Chipbreakers Serie WEZ">
+                        <i class="bi bi-zoom-in me-1"></i>Ver Guía HD
+                    </button>
+                </div>
+
+                <div class="list-group-item d-flex justify-content-between align-items-center py-3">
+                    <div class="d-flex align-items-center me-3">
+                        <img src="/static/wez_filos.png" class="rounded border me-3 img-thumb-catalog" alt="Filos WEZ">
+                        <div>
+                            <h6 class="mb-0 fw-bold">Matriz de Diámetros y Cantidad de Dientes WEZ (Parte 1)</h6>
+                            <small class="text-muted">Relación general de diámetros y filos z.</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-primary fw-semibold" onclick="abrirModalZoom(this)" data-img="/static/wez_filos.png" data-title="Matriz de Diámetros y Filos WEZ (Parte 1)">
+                        <i class="bi bi-zoom-in me-1"></i>Ver Matriz
+                    </button>
+                </div>
+
+                <div class="list-group-item d-flex justify-content-between align-items-center py-3">
+                    <div class="d-flex align-items-center me-3">
+                        <img src="/static/wez_filos1.png" class="rounded border me-3 img-thumb-catalog" alt="Filos WEZ HD">
+                        <div>
+                            <h6 class="mb-0 fw-bold">Matriz de Diámetros y Cantidad de Dientes WEZ (Parte 2 - Complemento HD)</h6>
+                            <small class="text-muted">Esquema ampliado Ø14 a Ø160 mm (Alta Resolución).</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-primary fw-semibold" onclick="abrirModalZoom(this)" data-img="/static/wez_filos1.png" data-title="Matriz de Diámetros y Filos WEZ (Parte 2 - Complemento HD)">
+                        <i class="bi bi-zoom-in me-1"></i>Ver Matriz HD
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+    <!-- MODAL DE ZOOM -->
+    <div class="modal fade" id="modalImageZoom" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-fullscreen p-2">
+            <div class="modal-content bg-dark text-white border-secondary">
+                <div class="modal-header border-secondary py-2 d-flex justify-content-between align-items-center">
+                    <h5 class="modal-title fs-6 fw-bold mb-0" id="modalImageZoomTitle">
+                        <i class="bi bi-zoom-in me-2 text-primary"></i>Vista Detallada del Catálogo Sumitomo
+                    </h5>
+                    
+                    <div class="d-flex align-items-center gap-2">
+                        <button type="button" class="btn btn-sm btn-outline-light px-2 py-1" onclick="aplicarBotonZoom(-0.3)" title="Alejar (-)">
+                            <i class="bi bi-zoom-out"></i>
+                        </button>
+                        <span class="badge bg-primary px-2 py-1" id="zoomLevelIndicator" style="font-size: 0.85rem; min-width: 55px;">100%</span>
+                        <button type="button" class="btn btn-sm btn-outline-light px-2 py-1" onclick="aplicarBotonZoom(0.3)" title="Acercar (+)">
+                            <i class="bi bi-zoom-in"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary px-2 py-1" onclick="resetearZoom()" title="Centrar y Restablecer">
+                            <i class="bi bi-arrows-angle-contract"></i>
+                        </button>
+                        <button type="button" class="btn-close btn-close-white ms-3" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                </div>
+                
+                <div class="modal-body p-0 overflow-hidden position-relative" id="modalZoomBody">
+                    <img src="" id="modalImageZoomTarget" class="rounded" style="max-width: 90vw; max-height: 85vh; object-fit: contain;" alt="Catálogo Ampliado">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const tieneResultado = Boolean("{{ 'true' if resultado else '' }}");
+
+        const MATRIZ_DIENTES = {
+            "DGC": { 40: 3, 50: 4, 63: 5, 80: 6, 100: 7, 125: 8, 160: 10, 200: 12, 250: 14 },
+            "WEZ": { 14: 1, 16: 2, 18: 2, 20: 3, 22: 3, 25: 3, 28: 4, 30: 4, 32: 4, 35: 5, 40: 5, 50: 6, 63: 7, 80: 8, 100: 10, 125: 11, 160: 12 }
+        };
+
+        var serieSeleccionadaActual = "DGC";
+
+        // MOTOR DE ZOOM
+        let scale = 1;
+        let pX = 0;
+        let pY = 0;
+        let isDragging = false;
+        let startX = 0;
+        let startY = 0;
+
+        function abrirModalZoom(element) {
+            const urlImagen = element.getAttribute("data-img");
+            const titulo = element.getAttribute("data-title");
+            const imgTarget = document.getElementById("modalImageZoomTarget");
+            const titleTarget = document.getElementById("modalImageZoomTitle");
+            
+            if (imgTarget && titleTarget) {
+                imgTarget.src = urlImagen;
+                titleTarget.innerHTML = `<i class="bi bi-zoom-in me-2 text-primary"></i>${titulo}`;
+                resetearZoom();
+                const modalZoom = new bootstrap.Modal(document.getElementById('modalImageZoom'));
+                modalZoom.show();
             }
-        })
-        .catch(err => console.error("Error en actualizarValoresEnVivo:", err));
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-    // Si viene de procesar un cálculo por POST, muestra la pestaña torneado
-    if (tieneResultado) {
-        mostrarPestana('torneado');
-    } else {
-        // En carga limpia, vacía explícitamente el valor por si el navegador lo autocompletó
-        const matInput = document.getElementById("material");
-        if (matInput) {
-            matInput.value = "";
         }
-    }
-});
-</script>
+
+        function resetearZoom() {
+            scale = 1;
+            pX = 0;
+            pY = 0;
+            renderMatrizZoom();
+        }
+
+        function aplicarBotonZoom(delta) {
+            let nextScale = scale + delta;
+            if (nextScale < 0.8) nextScale = 0.8;
+            if (nextScale > 6.0) nextScale = 6.0;
+            scale = nextScale;
+            renderMatrizZoom();
+        }
+
+        function renderMatrizZoom() {
+            const img = document.getElementById("modalImageZoomTarget");
+            const badge = document.getElementById("zoomLevelIndicator");
+            
+            if (img) img.style.transform = `translate(${pX}px, ${pY}px) scale(${scale})`;
+            if (badge) badge.textContent = Math.round(scale * 100) + "%";
+        }
+
+        function alCambiarMaterialOFresa() {
+            var fzElem = document.getElementById("fz_fresado");
+            if (fzElem) fzElem.value = "";
+            actualizarFresadoEnVivo();
+        }
+
+        function seleccionarSerieDesdeTab(serie) {
+            serieSeleccionadaActual = serie.indexOf("WEZ") !== -1 ? "WEZ" : "DGC";
+            var contDgc = document.getElementById("contenedor_tipo_inserto_dgc");
+            if (contDgc) contDgc.style.display = serieSeleccionadaActual === "DGC" ? "block" : "none";
+            alCambiarDiametro();
+            alCambiarMaterialOFresa();
+        }
+
+        function setTexto(id, val) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = (val !== undefined && val !== null) ? val : '0';
+        }
+
+        function alCambiarDiametro() {
+            const dcInput = document.getElementById("dc_fresado");
+            const zInput = document.getElementById("z_fresado");
+
+            if (dcInput && zInput) {
+                const sKey = serieSeleccionadaActual.includes("DGC") ? "DGC" : "WEZ";
+                const dcVal = parseInt(dcInput.value) || 50;
+                const matriz = MATRIZ_DIENTES[sKey];
+                
+                if (matriz[dcVal]) {
+                    zInput.value = matriz[dcVal];
+                } else {
+                    const llaves = Object.keys(matriz).map(Number);
+                    const cercana = llaves.reduce((prev, curr) => Math.abs(curr - dcVal) < Math.abs(prev - dcVal) ? curr : prev);
+                    zInput.value = matriz[cercana];
+                }
+            }
+            actualizarFresadoEnVivo();
+        }
+
+        function cargarInsertos() {
+            const matInput = document.getElementById("material");
+            if (!matInput || !matInput.value || !matInput.value.trim()) return;
+
+            const mat = matInput.value.trim();
+            const insSelect = document.getElementById("inserto");
+
+            fetch('/api/insertos?material=' + encodeURIComponent(mat))
+                .then(r => r.json())
+                .then(data => {
+                    if (insSelect && Array.isArray(data) && data.length > 0) {
+                        const valorPrevio = insSelect.value;
+                        insSelect.innerHTML = '';
+                        data.forEach((codigo) => {
+                            const opt = document.createElement("option");
+                            opt.value = codigo;
+                            opt.textContent = codigo;
+                            if (codigo === valorPrevio) opt.selected = true;
+                            insSelect.appendChild(opt);
+                        });
+                    }
+                    actualizarValoresEnVivo();
+                })
+                .catch(err => console.error("Error en cargarInsertos:", err));
+        }
+
+        function actualizarValoresEnVivo() {
+            const matInput = document.getElementById("material");
+            if (!matInput || !matInput.value || !matInput.value.trim()) return;
+
+            const mat = matInput.value.trim();
+            const insSelect = document.getElementById("inserto");
+            const ins = insSelect ? insSelect.value : "";
+            const opSelect = document.getElementById("operacion");
+            const op = opSelect ? opSelect.value : "Desbaste";
+            
+            const dInitInput = document.getElementById("diametro_inicial");
+            const dInit = (dInitInput && dInitInput.value) ? dInitInput.value : 50;
+            const dFinInput = document.getElementById("diametro_final");
+            const dFin = (dFinInput && dFinInput.value) ? dFinInput.value : 40;
+            const longInput = document.getElementById("longitud");
+            const long = (longInput && longInput.value) ? longInput.value : 100;
+
+            const url = '/api/calcular_ajax?material=' + encodeURIComponent(mat) + 
+                        '&inserto=' + encodeURIComponent(ins) + 
+                        '&operacion=' + encodeURIComponent(op) + 
+                        '&diametro_inicial=' + dInit + 
+                        '&diametro_final=' + dFin + 
+                        '&longitud=' + long;
+
+            fetch(url)
+                .then(r => r.json())
+                .then(data => {
+                    if (!data || Object.keys(data).length === 0) return;
+
+                    setTexto("valIso", data.familia_iso);
+                    setTexto("valDureza", data.dureza);
+                    setTexto("valSubiso", data.subclasificacion_iso);
+                    setTexto("valMaterial", data.material);
+
+                    setTexto("valGrado", data.grado_calidad);
+                    setTexto("valRompevirutas", data.rompevirutas);
+                    setTexto("valCat", data.familia_iso);
+
+                    setTexto("cncPasadas", data.num_pasadas);
+                    setTexto("cncApReal", data.ap_real_pasada + ' mm');
+
+                    setTexto("cncRpm", data.rpm);
+                    setTexto("cncFn", data.fn);
+                    setTexto("cncVf", data.vf);
+                    setTexto("cncAp", data.ap);
+                    setTexto("cncVc", data.vc);
+                    setTexto("cncMrr", data.mrr);
+                    setTexto("cncPotencia", data.potencia);
+                    setTexto("cncTorque", data.torque);
+                    setTexto("cncTiempo", data.tiempo);
+                })
+                .catch(err => console.error("Error en actualizarValoresEnVivo:", err));
+        }
+
+        function actualizarFresadoEnVivo() {
+            var matInput = document.getElementById("material_fresado");
+            var mat = (matInput && matInput.value) ? matInput.value.trim() : "";
+
+            if (!mat) {
+                setTexto("fresRpm", "0");
+                setTexto("fresVf", "0");
+                setTexto("fresValVc", "0 m/min");
+                setTexto("fresMrr", "0");
+                setTexto("fresTiempo", "0");
+                setTexto("fresVtr", "0");
+                
+                var fzElem = document.getElementById("fz_fresado");
+                if (fzElem) fzElem.value = "";
+                
+                var rvpElem = document.getElementById("valRompevirutasFresado");
+                if (rvpElem) rvpElem.value = "-";
+                return;
+            }
+
+            var tipoInsertoDgc = document.getElementById("tipo_inserto_dgc") ? document.getElementById("tipo_inserto_dgc").value : "SNMT 13T6";
+            var dc = parseFloat(document.getElementById("dc_fresado") ? document.getElementById("dc_fresado").value : 50) || 50;
+            var z = parseInt(document.getElementById("z_fresado") ? document.getElementById("z_fresado").value : 4) || 4;
+            var ap = parseFloat(document.getElementById("ap_fresado") ? document.getElementById("ap_fresado").value : 2) || 2;
+            var ae = parseFloat(document.getElementById("ae_fresado") ? document.getElementById("ae_fresado").value : 25) || 25;
+            var long = parseFloat(document.getElementById("longitud_fresado") ? document.getElementById("longitud_fresado").value : 100) || 100;
+            
+            var fzElem = document.getElementById("fz_fresado");
+            var fzVal = (fzElem && fzElem.value && !isNaN(parseFloat(fzElem.value))) ? parseFloat(fzElem.value) : 0;
+
+            var sKey = serieSeleccionadaActual.includes("WEZ") ? "WEZ" : "DGC";
+
+            var url = "/api/calcular_fresado_ajax?material=" + encodeURIComponent(mat) +
+                        "&serie=" + encodeURIComponent(sKey) +
+                        "&tipo_inserto=" + encodeURIComponent(tipoInsertoDgc) +
+                        "&diametro=" + dc +
+                        "&dientes=" + z +
+                        "&fz=" + (fzVal > 0 ? fzVal : "") +
+                        "&ap=" + ap +
+                        "&ae=" + ae +
+                        "&longitud=" + long;
+
+            fetch(url)
+                .then(function(response) { return response.json(); })
+                .then(function(data) {
+                    if (data && Object.keys(data).length > 0) {
+                        if (fzVal <= 0 && data.fz !== undefined && fzElem) {
+                            fzElem.value = data.fz;
+                        }
+
+                        setTexto("fresRpm", data.rpm !== undefined ? data.rpm : "0");
+                        setTexto("fresVf", data.vf !== undefined ? data.vf : "0");
+                        setTexto("fresValVc", data.vc !== undefined ? data.vc + " m/min" : "0 m/min");
+                        setTexto("fresMrr", data.mrr !== undefined ? data.mrr : "0");
+                        setTexto("fresTiempo", data.tiempo !== undefined ? data.tiempo : "0");
+                        setTexto("fresVtr", data.vtr !== undefined ? data.vtr : "0");
+
+                        var rvpElem = document.getElementById("valRompevirutasFresado");
+                        if (rvpElem && data.rompevirutas) {
+                            rvpElem.value = data.rompevirutas;
+                        }
+                    }
+                })
+                .catch(function(err) {
+                    console.warn("Error en fresado:", err);
+                });
+        }
+
+        function mostrarPestana(pestana) {
+            const vDash = document.getElementById("vista-dashboard");
+            const vTorn = document.getElementById("vista-torneado");
+            const vFres = document.getElementById("vista-fresado");
+            
+            document.querySelectorAll(".sidebar-nav a").forEach(el => el.classList.remove("active"));
+
+            if (vDash) vDash.style.display = "none";
+            if (vTorn) vTorn.style.display = "none";
+            if (vFres) vFres.style.display = "none";
+
+            if (pestana === "dashboard") {
+                if (vDash) vDash.style.display = "block";
+                document.getElementById("nav-dashboard")?.classList.add("active");
+            } else if (pestana === "fresado") {
+                if (vFres) vFres.style.display = "block";
+                document.getElementById("nav-fresado")?.classList.add("active");
+                actualizarFresadoEnVivo();
+            } else {
+                if (vTorn) vTorn.style.display = "block";
+                document.getElementById("nav-torneado")?.classList.add("active");
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            if (tieneResultado) {
+                mostrarPestana('torneado');
+            } else {
+                const matInput = document.getElementById("material");
+                if (matInput) matInput.value = "";
+                const matFresInput = document.getElementById("material_fresado");
+                if (matFresInput) matFresInput.value = "";
+            }
+        });
+    </script>
 </body>
 </html>
