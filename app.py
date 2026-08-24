@@ -1,9 +1,24 @@
 # app.py
+
+import os
 from flask import Flask, render_template, request, jsonify
-from calc_service import obtener_materiales, obtener_insertos_compatibles, calcular_torneado
+from calc_service import (
+    obtener_materiales, 
+    obtener_insertos_compatibles, 
+    calcular_torneado, 
+    calcular_fresado_sumitomo
+)
 from data_tables import TABLA_MATERIALES, TABLA_INSERTOS
 
 app = Flask(__name__)
+
+# Desactivar cache del navegador para forzar la recarga limpia
+@app.after_request
+def add_header(response):
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -43,7 +58,7 @@ def index():
     stats_dashboard = {
         "total_materiales": len(TABLA_MATERIALES),
         "total_insertos": len(TABLA_INSERTOS),
-        "familias_iso": len(set(m["familia_iso"] for m in TABLA_MATERIALES)),
+        "familias_iso": len(set(m["familia_iso"] for m in TABLA_MATERIALES if "familia_iso" in m)),
         "eficiencia_sistema": "99.8%"
     }
 
@@ -98,6 +113,63 @@ def api_calcular_ajax():
         operacion=operacion
     )
     return jsonify(res if res else {})
+
+@app.route('/api/calcular_fresado_ajax', methods=['GET'])
+def api_calcular_fresado_ajax():
+    try:
+        material = request.args.get('material', '').strip()
+        serie = request.args.get('serie', 'DGC')
+        tipo_inserto = request.args.get('tipo_inserto', 'SNMT 13T6')
+        tipo_corte = request.args.get('tipo_corte', 'General')
+        
+        try:
+            dc = float(request.args.get('diametro', 50))
+        except (ValueError, TypeError):
+            dc = 50.0
+
+        try:
+            z_val = request.args.get('dientes', '')
+            z = int(z_val) if z_val and str(z_val).isdigit() else None
+        except (ValueError, TypeError):
+            z = None
+
+        try:
+            ap = float(request.args.get('ap', 2.0))
+        except (ValueError, TypeError):
+            ap = 2.0
+
+        try:
+            ae = float(request.args.get('ae', 25.0))
+        except (ValueError, TypeError):
+            ae = 25.0
+
+        try:
+            longitud = float(request.args.get('longitud', 100.0))
+        except (ValueError, TypeError):
+            longitud = 100.0
+
+        try:
+            fz_raw = request.args.get('fz', '')
+            fz_manual = float(fz_raw) if fz_raw and str(fz_raw).replace('.', '', 1).isdigit() and float(fz_raw) > 0 else None
+        except (ValueError, TypeError):
+            fz_manual = None
+
+        res = calcular_fresado_sumitomo(
+            nombre_material=material,
+            serie_fresa=serie,
+            tipo_inserto_dgc=tipo_inserto,
+            diametro_mm=dc,
+            dientes=z,
+            ap_mm=ap,
+            ae_mm=ae,
+            longitud_mm=longitud,
+            fz_manual=fz_manual,
+            tipo_corte=tipo_corte
+        )
+        return jsonify(res if res else {})
+    except Exception as err:
+        print("Error en api_calcular_fresado_ajax:", err)
+        return jsonify({})
 
 if __name__ == '__main__':
     app.run(debug=True)
