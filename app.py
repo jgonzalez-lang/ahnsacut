@@ -114,62 +114,237 @@ def api_calcular_ajax():
     )
     return jsonify(res if res else {})
 
-@app.route('/api/calcular_fresado_ajax', methods=['GET'])
-def api_calcular_fresado_ajax():
+import math
+from flask import request, jsonify
+from sqlalchemy import text
+
+@app.route('/api/calcular_barrenado_ajax')
+def calcular_barrenado_ajax():
+    global db  # <--- Añade esta línea al inicio
+    material = request.args.get('material', '').strip()
+    
     try:
-        material = request.args.get('material', '').strip()
-        serie = request.args.get('serie', 'DGC')
-        tipo_inserto = request.args.get('tipo_inserto', 'SNMT 13T6')
-        tipo_corte = request.args.get('tipo_corte', 'General')
-        
-        try:
-            dc = float(request.args.get('diametro', 50))
-        except (ValueError, TypeError):
-            dc = 50.0
+        diametro = float(request.args.get('diametro') or 0)
+        profundidad = float(request.args.get('profundidad') or 0)
+        angulo = float(request.args.get('angulo') or 140.0)
+    except (ValueError, TypeError):
+        return jsonify({'error': 'Diámetro o profundidad inválidos'}), 400
 
-        try:
-            z_val = request.args.get('dientes', '')
-            z = int(z_val) if z_val and str(z_val).isdigit() else None
-        except (ValueError, TypeError):
-            z = None
+    vc_raw = request.args.get('vc', '').strip()
+    fn_raw = request.args.get('fn', '').strip()
+    tipo_agujero = request.args.get('tipo_agujero', 'pasante')
 
-        try:
-            ap = float(request.args.get('ap', 2.0))
-        except (ValueError, TypeError):
-            ap = 2.0
+    if diametro <= 0 or profundidad <= 0:
+        return jsonify({'error': 'Valores deben ser mayores a 0'}), 400
 
+    # 1. Identificar Grupo ISO
+    iso_detectado = 'P'
+    if material:
+        mat_lower = material.lower()
+        # Búsqueda segura en BBDD sin generar advertencias si 'db' no está globalizado
         try:
-            ae = float(request.args.get('ae', 25.0))
-        except (ValueError, TypeError):
-            ae = 25.0
+            if 'db' in globals():
+                query = text("SELECT familia_iso FROM material WHERE LOWER(material) LIKE :m LIMIT 1")
+                res = db.session.execute(query, {"m": f"%{mat_lower}%"}).fetchone()
+                if res and res[0]:
+                    iso_detectado = res[0].strip().upper()
+        except Exception:
+            pass
 
-        try:
-            longitud = float(request.args.get('longitud', 100.0))
-        except (ValueError, TypeError):
-            longitud = 100.0
+        # Fallback de coincidencia por subcadena
+        if iso_detectado not in ['P', 'M', 'K', 'N', 'S', 'H']:
+            if any(x in mat_lower for x in ['304', '316', 'inox', 'inoxidable']):
+                iso_detectado = 'M'
+            elif any(x in mat_lower for x in ['gris', 'nodular', 'fundicion', 'fundición', 'cast iron']):
+                iso_detectado = 'K'
+            elif any(x in mat_lower for x in ['aluminio', 'al ', '6061', '7075', 'bronce', 'cobre']):
+                iso_detectado = 'N'
+            elif any(x in mat_lower for x in ['titanio', 'inconel', 'hastelloy', 'waspaloy']):
+                iso_detectado = 'S'
+            elif any(x in mat_lower for x in ['templado', 'hrc', 'd2', 'skd']):
+                iso_detectado = 'H'
 
-        try:
-            fz_raw = request.args.get('fz', '')
-            fz_manual = float(fz_raw) if fz_raw and str(fz_raw).replace('.', '', 1).isdigit() and float(fz_raw) > 0 else None
-        except (ValueError, TypeError):
-            fz_manual = None
+    # 2. Matriz Base por ISO + Recubrimientos Oficiales de Mercado
+    TABLA_ISO_BARRENADO = {
+        'P': {'vc_base': 85.0,  'k_fn': 0.012, 'kc': 1900, 'nombre': 'Aceros al Carbono / Aleados', 'recubrimiento': 'TiAlN / AlTiN (Multicapa)'},
+        'M': {'vc_base': 45.0,  'k_fn': 0.010, 'kc': 2100, 'nombre': 'Aceros Inoxidables',         'recubrimiento': 'TiAlN Nano-Lube'},
+        'K': {'vc_base': 95.0,  'k_fn': 0.015, 'kc': 1200, 'nombre': 'Fundición de Hierro',        'recubrimiento': 'TiCN / TiAlN (Anti-abrasión)'},
+        'N': {'vc_base': 150.0, 'k_fn': 0.018, 'kc': 700,  'nombre': 'Aluminio / No Ferrosos',     'recubrimiento': 'Bright Polish / DLC'},
+        'S': {'vc_base': 28.0,  'k_fn': 0.008, 'kc': 2600, 'nombre': 'Superaleaciones / Titanio',   'recubrimiento': 'AlTiN Fine-Grain'},
+        'H': {'vc_base': 32.0,  'k_fn': 0.006, 'kc': 3100, 'nombre': 'Materiales Templados',       'recubrimiento': 'AlCrN / nACo (Ultra Dureza)'}
+    }
 
-        res = calcular_fresado_sumitomo(
-            nombre_material=material,
-            serie_fresa=serie,
-            tipo_inserto_dgc=tipo_inserto,
-            diametro_mm=dc,
-            dientes=z,
-            ap_mm=ap,
-            ae_mm=ae,
-            longitud_mm=longitud,
-            fz_manual=fz_manual,
-            tipo_corte=tipo_corte
-        )
-        return jsonify(res if res else {})
-    except Exception as err:
-        print("Error en api_calcular_fresado_ajax:", err)
+    config_iso = TABLA_ISO_BARRENADO.get(iso_detectado, TABLA_ISO_BARRENADO['P'])
+
+    # 3. Factor L/D (Veces Diámetro)
+    veces_diametro = profundidad / diametro
+    if veces_diametro <= 3:
+        factor_ld = 1.0
+        broca_sugerida = "3×D"
+    elif veces_diametro <= 5:
+        factor_ld = 0.92
+        broca_sugerida = "5×D"
+    elif veces_diametro <= 8:
+        factor_ld = 0.80
+        broca_sugerida = "8×D"
+    elif veces_diametro <= 12:
+        factor_ld = 0.70
+        broca_sugerida = "12×D"
+    else:
+        factor_ld = 0.60
+        broca_sugerida = f"{math.ceil(veces_diametro)}×D"
+
+    # 4. Cálculo de Vc y fn Sugeridos
+    vc_sugerido = round(config_iso['vc_base'] * factor_ld, 1)
+    fn_sugerido = round(config_iso['k_fn'] * (diametro ** 0.85), 2)
+
+    try:
+        vc_final = float(vc_raw) if (vc_raw and float(vc_raw) > 0) else vc_sugerido
+    except ValueError:
+        vc_final = vc_sugerido
+
+    try:
+        fn_final = float(fn_raw) if (fn_raw and float(fn_raw) > 0) else fn_sugerido
+    except ValueError:
+        fn_final = fn_sugerido
+
+    # 5. Cálculos CNC Dinámicos (Fórmulas Kienzle)
+    rpm = (vc_final * 1000) / (math.pi * diametro) if diametro > 0 else 0
+    vf = fn_final * rpm
+    mrr = (math.pi * (diametro ** 2) / 4) * vf / 1000
+
+    kc_mat = config_iso['kc']
+    potencia_kw = (mrr * kc_mat) / (60000 * 0.85) if mrr > 0 else 0
+    torque_nm = (potencia_kw * 9550) / rpm if rpm > 0 else 0
+
+    rad_angulo = math.radians(angulo / 2)
+    distancia_punta = (diametro / 2) / math.tan(rad_angulo) if rad_angulo > 0 else 0
+
+    profundidad_efectiva = profundidad + distancia_punta if tipo_agujero == 'pasante' else profundidad
+    tiempo = profundidad_efectiva / vf if vf > 0 else 0
+    vtr = mrr * tiempo
+
+    # 6. Alerta de Refrigeración
+    if veces_diametro <= 3:
+        lubricacion = "Inundación Externa Suficiente (Refrigerante Interno Opcional)"
+        tipo_alerta = "success"
+    elif veces_diametro <= 8:
+        lubricacion = "Refrigerante Interno Recomendado (Mínimo 10 - 15 Bar)"
+        tipo_alerta = "warning"
+    else:
+        lubricacion = "Refrigerante Interno Alta Presión OBLIGATORIO (> 20 Bar / 300 PSI) + Picoteo"
+        tipo_alerta = "danger"
+
+    return jsonify({
+        'iso_detectado': iso_detectado,
+        'nombre_iso': config_iso['nombre'],
+        'recubrimiento_sugerido': config_iso['recubrimiento'],
+        'vc_sugerido': str(vc_sugerido),
+        'fn_sugerido': str(fn_sugerido),
+        'vc_final': str(round(vc_final, 1)),
+        'fn_final': str(round(fn_final, 2)),
+        'rpm': str(round(rpm, 2)),
+        'vf': str(round(vf, 2)),
+        'mrr': str(round(mrr, 2)),
+        'potencia': str(round(potencia_kw, 2)),
+        'torque': str(round(torque_nm, 2)),
+        'tiempo': str(round(tiempo, 3)),
+        'vtr': str(round(vtr, 2)),
+        'distancia_punta': str(round(distancia_punta, 3)),
+        'veces_diametro': str(round(veces_diametro, 2)),
+        'broca_sugerida': broca_sugerida,
+        'lubricacion': lubricacion,
+        'tipo_alerta': tipo_alerta
+    })
+import math
+from flask import request, jsonify
+
+@app.route('/api/calcular_fresado_ajax')
+def calcular_fresado_ajax():
+    material = request.args.get('material', '').strip()
+    serie = request.args.get('serie', 'DGC').strip().upper()
+    tipo_inserto = request.args.get('tipo_inserto', 'SNMT 13T6').strip()
+    
+    try:
+        dc = float(request.args.get('diametro') or 50)
+        z = int(request.args.get('dientes') or 4)
+        ap = float(request.args.get('ap') or 2.0)
+        ae = float(request.args.get('ae') or 25.0)
+        longitud = float(request.args.get('longitud') or 100.0)
+        fz_in = request.args.get('fz', '').strip()
+    except (ValueError, TypeError):
+        return jsonify({'error': 'Parámetros numéricos inválidos'}), 400
+
+    if not material:
         return jsonify({})
+
+    # 1. Identificar Grupo ISO del Material
+    iso_detectado = 'P'
+    mat_lower = material.lower()
+    
+    if any(x in mat_lower for x in ['304', '316', 'inox', 'inoxidable']):
+        iso_detectado = 'M'
+    elif any(x in mat_lower for x in ['gris', 'nodular', 'fundicion', 'fundición', 'cast iron']):
+        iso_detectado = 'K'
+    elif any(x in mat_lower for x in ['aluminio', 'al ', '6061', '7075', 'bronce', 'cobre']):
+        iso_detectado = 'N'
+    elif any(x in mat_lower for x in ['titanio', 'inconel', 'hastelloy', 'waspaloy']):
+        iso_detectado = 'S'
+    elif any(x in mat_lower for x in ['templado', 'hrc', 'd2', 'skd']):
+        iso_detectado = 'H'
+
+    # 2. Asignación de Rompevirutas Oficiales Sumitomo por Serie e ISO
+    # Serie DGC (Dual-G-Cutter)
+    MAPA_ROMPEVIRUTAS_DGC = {
+        'P': {'rvp': 'G (Corte General / Aceros)',        'vc': 180.0, 'fz': 0.15},
+        'M': {'rvp': 'FL (Ligero / Anti-Adherente Inox)', 'vc': 120.0, 'fz': 0.12},
+        'K': {'rvp': 'H (Corte Pesado / Fundición)',       'vc': 160.0, 'fz': 0.18},
+        'N': {'rvp': 'FG (Filo Afilado / Pulido No-Ferrosos)', 'vc': 350.0, 'fz': 0.20},
+        'S': {'rvp': 'S (Alta Tenacidad / Titanio)',     'vc': 45.0,  'fz': 0.10},
+        'H': {'rvp': 'H (Alta Dureza / Reforzado)',       'vc': 60.0,  'fz': 0.08}
+    }
+
+    # Serie WEZ (WaveMill 90°)
+    MAPA_ROMPEVIRUTAS_WEZ = {
+        'P': {'rvp': 'G (Geometría Universal Aceros)',    'vc': 200.0, 'fz': 0.14},
+        'M': {'rvp': 'F (Filo Afilado / Acero Inox)',     'vc': 130.0, 'fz': 0.10},
+        'K': {'rvp': 'H (Filo Reforzado Fundición)',      'vc': 170.0, 'fz': 0.16},
+        'N': {'rvp': 'F (Bajo Esfuerzo / No Ferrosos)',   'vc': 400.0, 'fz': 0.18},
+        'S': {'rvp': 'S (Corte Térmico Superaleaciones)','vc': 50.0,  'fz': 0.09},
+        'H': {'rvp': 'P (Corte Interrumpido Templados)', 'vc': 70.0,  'fz': 0.07}
+    }
+
+    # Seleccionar matriz según serie activa
+    if 'WEZ' in serie:
+        config = MAPA_ROMPEVIRUTAS_WEZ.get(iso_detectado, MAPA_ROMPEVIRUTAS_WEZ['P'])
+    else:
+        config = MAPA_ROMPEVIRUTAS_DGC.get(iso_detectado, MAPA_ROMPEVIRUTAS_DGC['P'])
+
+    rompevirutas_oficial = config['rvp']
+    vc_base = config['vc']
+    fz_base = config['fz']
+
+    # 3. Cálculos CNC Dinámicos
+    fz_final = float(fz_in) if (fz_in and float(fz_in) > 0) else fz_base
+    
+    rpm = (vc_base * 1000) / (math.pi * dc) if dc > 0 else 0
+    vf = fz_final * z * rpm
+    mrr = (ap * ae * vf) / 1000.0
+    tiempo = longitud / vf if vf > 0 else 0
+    vtr = mrr * tiempo
+
+    return jsonify({
+        'iso_detectado': iso_detectado,
+        'rompevirutas': rompevirutas_oficial,
+        'vc': str(round(vc_base, 1)),
+        'fz': str(round(fz_final, 2)),
+        'rpm': str(round(rpm, 1)),
+        'vf': str(round(vf, 1)),
+        'mrr': str(round(mrr, 2)),
+        'tiempo': str(round(tiempo, 3)),
+        'vtr': str(round(vtr, 2))
+    })
+
 
 if __name__ == '__main__':
     app.run(debug=True)
