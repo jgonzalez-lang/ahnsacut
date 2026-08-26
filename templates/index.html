@@ -225,6 +225,23 @@
             color: #64748b;
         }
 
+        /* BADGES DE UNIDADES DE MEDIDA DE ALTO CONTRASTE */
+        .unit-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .unit-rpm { background-color: #f59e0b; color: #0f172a; }
+        .unit-vf  { background-color: #10b981; color: #ffffff; }
+        .unit-vc  { background-color: #3b82f6; color: #ffffff; }
+        .unit-mrr { background-color: #8b5cf6; color: #ffffff; }
+        .unit-time { background-color: #06b6d4; color: #0f172a; }
+        .unit-vol { background-color: #64748b; color: #ffffff; }
+
         .ui-card-rangos {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             border-radius: 10px;
@@ -322,39 +339,12 @@
             font-size: 1.4rem;
         }
 
-        .svg-geometria-box {
-            width: 55px;
-            height: 55px;
-            background-color: #f1f5f9;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 4px;
-        }
-
         .badge-iso-p, .iso-theme-P { background-color: var(--iso-p) !important; color: #ffffff !important; }
         .badge-iso-m, .iso-theme-M { background-color: var(--iso-m) !important; color: #000000 !important; font-weight: 700; }
         .badge-iso-k, .iso-theme-K { background-color: var(--iso-k) !important; color: #ffffff !important; }
         .badge-iso-n, .iso-theme-N { background-color: var(--iso-n) !important; color: #ffffff !important; }
         .badge-iso-s, .iso-theme-S { background-color: var(--iso-s) !important; color: #ffffff !important; }
         .badge-iso-h, .iso-theme-H { background-color: var(--iso-h) !important; color: #ffffff !important; }
-
-        .info-box-iso {
-            border-radius: 6px;
-            padding: 6px 10px;
-            transition: all 0.2s ease;
-        }
-        
-        .info-box-iso .info-box-label { font-weight: 700; }
-
-        .iso-theme-M .info-box-label, .iso-theme-M .info-box-value { color: #000000 !important; }
-        .iso-theme-P .info-box-label, .iso-theme-P .info-box-value,
-        .iso-theme-K .info-box-label, .iso-theme-K .info-box-value,
-        .iso-theme-N .info-box-label, .iso-theme-N .info-box-value,
-        .iso-theme-S .info-box-label, .iso-theme-S .info-box-value,
-        .iso-theme-H .info-box-label, .iso-theme-H .info-box-value { color: #ffffff !important; }
 
         .nav-pills .nav-link {
             font-weight: 700;
@@ -386,14 +376,6 @@
             transform-origin: 0 0;
             backface-visibility: hidden;
             -webkit-font-smoothing: antialiased;
-        }
-
-        .img-thumb-catalog {
-            width: 70px;
-            height: 50px;
-            object-fit: cover;
-            background-color: #cbd5e1;
-            border-radius: 4px;
         }
 
         @media (max-width: 768px) {
@@ -435,7 +417,7 @@
             <li><a id="nav-dashboard" onclick="mostrarPestana('dashboard')" class="active"><i class="bi bi-speedometer me-2"></i>Dashboard</a></li>
             <li><a id="nav-fresado" onclick="mostrarPestana('fresado')"><i class="bi bi-disc me-2"></i>Fresado</a></li>
             <li><a id="nav-torneado" onclick="mostrarPestana('torneado')"><i class="bi bi-gear-wide-connected me-2"></i>Torneado</a></li>
-            <li><a id="nav-barrenado" onclick="mostrarPestana('torneado')"><i class="bi bi-pin-angle me-2"></i>Barrenado</a></li>
+            <li><a id="nav-barrenado" onclick="mostrarPestana('barrenado')"><i class="bi bi-pin-angle me-2"></i>Barrenado</a></li>
             <li><a id="nav-roscado" onclick="mostrarPestana('torneado')"><i class="bi bi-symmetry-horizontal me-2"></i>Roscado</a></li>
         </ul>
     </div>
@@ -607,71 +589,71 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row g-3 mb-4">
-                <div class="col-lg-8">
-                    <div class="ui-card">
-                        <div class="ui-card-title d-flex justify-content-between align-items-center">
-                            <span>Distribución por Grupos de Materiales ISO</span>
-                            <span class="badge bg-dark">6 Grupos ISO</span>
-                        </div>
-                        <div class="row g-2 mt-2">
-                            <div class="col-md-4">
-                                <div class="p-3 border rounded bg-light text-center">
-                                    <span class="badge badge-iso-p fs-6 mb-1">ISO P</span>
-                                    <div class="fw-bold">Aceros Carbono / Aleados</div>
-                                    <small class="text-muted">6 Materiales</small>
-                                </div>
+                <div class="row g-3 mb-4">
+                    <div class="col-lg-8">
+                        <div class="ui-card">
+                            <div class="ui-card-title d-flex justify-content-between align-items-center">
+                                <span>Distribución por Grupos de Materiales ISO</span>
+                                <span class="badge bg-dark">6 Grupos ISO</span>
                             </div>
-                            <div class="col-md-4">
-                                <div class="p-3 border rounded bg-light text-center">
-                                    <span class="badge badge-iso-m fs-6 mb-1">ISO M</span>
-                                    <div class="fw-bold">Aceros Inoxidables</div>
-                                    <small class="text-muted">4 Materiales</small>
+                            <div class="row g-2 mt-2">
+                                <div class="col-md-4">
+                                    <div class="p-3 border rounded bg-light text-center">
+                                        <span class="badge badge-iso-p fs-6 mb-1">ISO P</span>
+                                        <div class="fw-bold">Aceros Carbono / Aleados</div>
+                                        <small class="text-muted">6 Materiales</small>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="p-3 border rounded bg-light text-center">
-                                    <span class="badge badge-iso-k fs-6 mb-1">ISO K</span>
-                                    <div class="fw-bold">Fundiciones Gris/Nodular</div>
-                                    <small class="text-muted">3 Materiales</small>
+                                <div class="col-md-4">
+                                    <div class="p-3 border rounded bg-light text-center">
+                                        <span class="badge badge-iso-m fs-6 mb-1">ISO M</span>
+                                        <div class="fw-bold">Aceros Inoxidables</div>
+                                        <small class="text-muted">4 Materiales</small>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="p-3 border rounded bg-light text-center">
-                                    <span class="badge badge-iso-n fs-6 mb-1">ISO N</span>
-                                    <div class="fw-bold">Aluminio / No Ferrosos</div>
-                                    <small class="text-muted">4 Materiales</small>
+                                <div class="col-md-4">
+                                    <div class="p-3 border rounded bg-light text-center">
+                                        <span class="badge badge-iso-k fs-6 mb-1">ISO K</span>
+                                        <div class="fw-bold">Fundiciones Gris/Nodular</div>
+                                        <small class="text-muted">3 Materiales</small>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="p-3 border rounded bg-light text-center">
-                                    <span class="badge badge-iso-s fs-6 mb-1">ISO S</span>
-                                    <div class="fw-bold">Titanio e Inconel</div>
-                                    <small class="text-muted">3 Materiales</small>
+                                <div class="col-md-4">
+                                    <div class="p-3 border rounded bg-light text-center">
+                                        <span class="badge badge-iso-n fs-6 mb-1">ISO N</span>
+                                        <div class="fw-bold">Aluminio / No Ferrosos</div>
+                                        <small class="text-muted">4 Materiales</small>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="p-3 border rounded bg-light text-center">
-                                    <span class="badge badge-iso-h fs-6 mb-1">ISO H</span>
-                                    <div class="fw-bold">Aceros Templados</div>
-                                    <small class="text-muted">2 Materiales</small>
+                                <div class="col-md-4">
+                                    <div class="p-3 border rounded bg-light text-center">
+                                        <span class="badge badge-iso-s fs-6 mb-1">ISO S</span>
+                                        <div class="fw-bold">Titanio e Inconel</div>
+                                        <small class="text-muted">3 Materiales</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="p-3 border rounded bg-light text-center">
+                                        <span class="badge badge-iso-h fs-6 mb-1">ISO H</span>
+                                        <div class="fw-bold">Aceros Templados</div>
+                                        <small class="text-muted">2 Materiales</small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-lg-4">
-                    <div class="ui-card d-flex flex-column justify-content-between">
-                        <div>
-                            <div class="ui-card-title">Módulo de Torneado AhnsaCut</div>
-                            <p class="small text-muted mb-3">Calcula RPM, Vf, ap, avance, potencia y tiempos de mecanizado según la geometría Sumitomo.</p>
+                    <div class="col-lg-4">
+                        <div class="ui-card d-flex flex-column justify-content-between">
+                            <div>
+                                <div class="ui-card-title">Módulo de Torneado AhnsaCut</div>
+                                <p class="small text-muted mb-3">Calcula RPM, Vf, ap, avance, potencia y tiempos de mecanizado según la geometría Sumitomo.</p>
+                            </div>
+                            <button onclick="mostrarPestana('torneado')" class="btn btn-calc w-100 py-2">
+                                <i class="bi bi-play-circle me-2"></i>Ir al Módulo de Torneado
+                            </button>
                         </div>
-                        <button onclick="mostrarPestana('torneado')" class="btn btn-calc w-100 py-2">
-                            <i class="bi bi-play-circle me-2"></i>Ir al Módulo de Torneado
-                        </button>
                     </div>
                 </div>
             </div>
@@ -690,23 +672,34 @@
                         <div class="ui-card">
                             <div class="ui-card-title"><i class="bi bi-search me-2 text-primary"></i>Búsqueda de Material de Trabajo</div>
                             
-                            <div class="mb-2">
-                                <label class="form-label small text-muted fw-bold mb-1">Buscar Material (Escriba para filtrar)</label>
-                                <input type="text" list="lista-materiales" name="material" id="material" class="form-control form-control-sm fw-semibold text-primary" placeholder="Escriba ej: AISI 4140, 1045, Inoxidable, Aluminio..." value="{% if resultado %}{{ material_sel }}{% endif %}" oninput="cargarInsertos()" autocomplete="off">
-                                <datalist id="lista-materiales">
-                                    {% for m in materiales %}
-                                        <option value="{{ m }}">
-                                    {% endfor %}
-                                </datalist>
+                            <div class="row g-2 align-items-end mb-2">
+                                <div class="col-9">
+                                    <label class="form-label small text-muted fw-bold mb-1">Buscar Material (Escriba para filtrar)</label>
+                                    <input type="text" list="lista-materiales" name="material" id="material" 
+                                           class="form-control form-control-sm fw-semibold text-primary" 
+                                           placeholder="Escriba ej: AISI 4140, 1045, Inoxidable, Aluminio..." 
+                                           value="{% if resultado %}{{ material_sel }}{% endif %}" 
+                                           oninput="alCambiarMaterialTorneado()" 
+                                           onchange="alCambiarMaterialTorneado()" 
+                                           onblur="alCambiarMaterialTorneado()" 
+                                           autocomplete="off">
+                                    <datalist id="lista-materiales">
+                                        {% for m in materiales %}
+                                            <option value="{{ m }}">
+                                        {% endfor %}
+                                    </datalist>
+                                </div>
+
+                                <!-- CELDA GRUPO ISO COMPACTA (Sincronizada con Jinja POST y JS) -->
+                                <div class="col-3">
+                                    <label class="form-label small text-muted fw-bold mb-1">Grupo ISO</label>
+                                    <div id="boxIsoTorneado" class="p-1 rounded text-center fw-bold {% if resultado %}badge-iso-{{ resultado.familia_iso|lower }} iso-theme-{{ resultado.familia_iso }}{% else %}text-white bg-secondary{% endif %}" style="height: 31px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem;">
+                                        <span id="txtIsoTorneado">{% if resultado %}ISO {{ resultado.familia_iso }}{% else %}-{% endif %}</span>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="row g-2 mt-1">
-                                <div class="col-6">
-                                    <div class="info-box info-box-iso {% if resultado %}iso-theme-{{ resultado.familia_iso }}{% endif %}" id="boxIso">
-                                        <span class="info-box-label">ISO</span>
-                                        <span class="info-box-value" id="valIso">{% if resultado %}{{ resultado.familia_iso }}{% else %}-{% endif %}</span>
-                                    </div>
-                                </div>
                                 <div class="col-6">
                                     <div class="info-box">
                                         <span class="info-box-label">Dureza</span>
@@ -719,8 +712,9 @@
                                         <span class="info-box-value" id="valSubiso">{% if resultado %}{{ resultado.subclasificacion_iso }}{% else %}-{% endif %}</span>
                                     </div>
                                 </div>
-                                <div class="col-6">
-                                    <div class="info-box info-box-iso {% if resultado %}iso-theme-{{ resultado.familia_iso }}{% endif %}" id="boxMaterial">
+                                <!-- TARJETA MATERIAL TRABAJO (NEUTRA SIN APLICAR COLORES DINÁMICOS DE FONDO) -->
+                                <div class="col-12">
+                                    <div class="info-box" id="boxMaterial">
                                         <span class="info-box-label">Material trabajo</span>
                                         <span class="info-box-value" id="valMaterial">{% if resultado %}{{ resultado.material }}{% else %}-{% endif %}</span>
                                     </div>
@@ -1111,10 +1105,21 @@
                 </div>
 
                 <div class="row g-2 mb-3 align-items-end">
+                    <!-- 1. BUSCAR MATERIAL -->
                     <div class="col-md-3">
                         <label class="form-label small text-muted fw-bold mb-1">Buscar Material</label>
-                        <input type="text" list="lista-materiales" id="material_fresado" class="form-control form-control-sm fw-semibold text-primary" placeholder="Escriba ej: 4140, 1045, 316..." oninput="actualizarFresadoEnVivo()" onchange="actualizarFresadoEnVivo()">
+                        <input type="text" list="lista-materiales" id="material_fresado" class="form-control form-control-sm fw-semibold text-primary" placeholder="Escriba ej: 4140, Inox, Aluminio..." oninput="alCambiarMaterialFresado()" onchange="alCambiarMaterialFresado()" onblur="alCambiarMaterialFresado()">
                     </div>
+                    
+                    <!-- 2. CELDA GRUPO ISO (IGUAL A BARRENADO) -->
+                    <div class="col-md-1">
+                        <label class="form-label small text-muted fw-bold mb-1">Grupo ISO</label>
+                        <div id="boxIsoFresado" class="p-1 rounded text-center fw-bold text-white bg-secondary" style="height: 31px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem;">
+                            <span id="txtIsoFresado">-</span>
+                        </div>
+                    </div>
+
+                    <!-- 3. TIPO DE INSERTO DGC -->
                     <div class="col-md-2" id="contenedor_tipo_inserto_dgc">
                         <label class="form-label small text-muted fw-bold mb-1">Tipo Inserto DGC</label>
                         <select id="tipo_inserto_dgc" class="form-select form-select-sm" onchange="alCambiarMaterialOFresa()">
@@ -1122,12 +1127,16 @@
                             <option value="ONMT 05T6">ONMT 05T6 (16 Filos - 45°)</option>
                         </select>
                     </div>
+
+                    <!-- 4. ROMPEVIRUTAS RECOMENDADO -->
                     <div class="col-md-2">
                         <label class="form-label small text-muted fw-bold mb-1">Rompevirutas Recomendado</label>
                         <input type="text" id="valRompevirutasFresado" class="form-control form-control-sm bg-light fw-bold text-warning-emphasis" value="-" readonly>
                     </div>
-                    <div class="col-md-2">
-                        <label class="form-label small text-muted fw-bold mb-1">Diámetro Dc (mm)</label>
+
+                    <!-- 5. DIÁMETRO, FILOS Y AVANCE FZ -->
+                    <div class="col-md-1">
+                        <label class="form-label small text-muted fw-bold mb-1">D (mm)</label>
                         <input type="number" id="dc_fresado" class="form-control form-control-sm" value="50" oninput="alCambiarDiametro()" onchange="alCambiarDiametro()">
                     </div>
                     <div class="col-md-1">
@@ -1137,253 +1146,390 @@
                     <div class="col-md-2">
                         <label class="form-label small text-muted fw-bold mb-1">Avance Fz (mm/t)</label>
                         <input type="number" step="0.01" id="fz_fresado" class="form-control form-control-sm fw-bold text-primary" placeholder="Auto por Tabla" oninput="actualizarFresadoEnVivo()">
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label small text-muted fw-bold mb-1">Prof. Axial ap (mm)</label>
-                        <input type="number" step="0.1" id="ap_fresado" class="form-control form-control-sm" value="2.0" oninput="actualizarFresadoEnVivo()">
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label small text-muted fw-bold mb-1">Ancho Radial ae (mm)</label>
-                        <input type="number" step="0.1" id="ae_fresado" class="form-control form-control-sm" value="25.0" oninput="actualizarFresadoEnVivo()">
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label small text-muted fw-bold mb-1">Longitud L (mm)</label>
-                        <input type="number" step="1" id="longitud_fresado" class="form-control form-control-sm" value="100" oninput="actualizarFresadoEnVivo()">
-                    </div>
-                    <div class="col-md-2">
-                        <button type="button" class="btn btn-calc w-100 btn-sm py-1 fw-bold" onclick="actualizarFresadoEnVivo()">
-                            <i class="bi bi-cpu me-1"></i>Calcular
-                        </button>
+                        <small id="badgeFzSugerido" class="d-block mt-1 text-muted" style="font-size: 0.72rem; font-weight: 600;">
+                            💡 Sugerido: <span id="valFzSugerido" class="text-primary">-</span>
+                        </small>
                     </div>
                 </div>
 
-                <!-- TARJETAS DE LOS 6 CÁLCULOS CNC -->
+                <!-- TARJETAS DE LOS 6 CÁLCULOS CNC CON BADGES DE ALTO CONTRASTE -->
                 <div class="row g-2">
                     <div class="col-md-2 col-6">
                         <div class="cnc-card cnc-card-pasadas">
                             <span class="cnc-label text-info">1. RPM</span>
                             <span class="cnc-value text-warning fs-4" id="fresRpm">0</span>
-                            <span class="cnc-unit text-light">rev/min</span>
+                            <div class="mt-1"><span class="unit-badge unit-rpm">rev / min</span></div>
                         </div>
                     </div>
                     <div class="col-md-2 col-6">
                         <div class="cnc-card cnc-card-pasadas">
                             <span class="cnc-label text-info">2. Feed Rate (F)</span>
                             <span class="cnc-value text-warning fs-4" id="fresVf">0</span>
-                            <span class="cnc-unit text-light">mm/min</span>
+                            <div class="mt-1"><span class="unit-badge unit-vf">mm / min</span></div>
                         </div>
                     </div>
                     <div class="col-md-2 col-6">
                         <div class="cnc-card">
                             <span class="cnc-label">3. Vel. Corte (Vc)</span>
                             <span class="cnc-value" id="fresValVc">0 m/min</span>
-                            <span class="cnc-unit">m/min</span>
+                            <div class="mt-1"><span class="unit-badge unit-vc">m / min</span></div>
                         </div>
                     </div>
                     <div class="col-md-2 col-6">
                         <div class="cnc-card">
                             <span class="cnc-label">4. MRR</span>
                             <span class="cnc-value" id="fresMrr">0</span>
-                            <span class="cnc-unit">cm³/min</span>
+                            <div class="mt-1"><span class="unit-badge unit-mrr">cm³ / min</span></div>
                         </div>
                     </div>
                     <div class="col-md-2 col-6">
                         <div class="cnc-card">
                             <span class="cnc-label">5. Tiempo (T)</span>
                             <span class="cnc-value text-info fw-bold" id="fresTiempo">0</span>
-                            <span class="cnc-unit">min</span>
+                            <div class="mt-1"><span class="unit-badge unit-time">minutos</span></div>
                         </div>
                     </div>
                     <div class="col-md-2 col-6">
                         <div class="cnc-card">
                             <span class="cnc-label">6. VTR (Vol. Total)</span>
                             <span class="cnc-value" id="fresVtr">0</span>
-                            <span class="cnc-unit">cm³</span>
+                            <div class="mt-1"><span class="unit-badge unit-vol">cm³</span></div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- TABLAS DE FRESADO DGC Y WEZ -->
-<div class="tab-content" id="pills-tabContent">
-    
-    <!-- PESTAÑA DGC (Dual-G-Cutter 45°) -->
-    <div class="tab-pane fade show active" id="pill-dgc" role="tabpanel">
-        <div class="ui-card mb-3">
-            <div class="ui-card-title"><i class="bi bi-collection me-2 text-primary"></i>Tablas de Referencia Oficial Serie DGC (45°)</div>
-            <div class="list-group list-group-flush">
+            <!-- CATÁLOGO REDISEÑADO EN CUADRÍCULA VISUAL (GRID CARDS) -->
+            <div class="tab-content" id="pills-tabContent">
                 
-                <div class="list-group-item d-flex justify-content-between align-items-center py-3">
-                    <div class="d-flex align-items-center me-3">
-                        <img src="/static/grades_milling.png" class="rounded border me-3 img-thumb-catalog" alt="Grados Parte 1">
-                        <div>
-                            <h6 class="mb-0 fw-bold">Grados Oficiales para Fresado Sumitomo (Parte 1)</h6>
-                            <small class="text-muted">Clasificación de grados P, M, K, N, S, H.</small>
+                <!-- PESTAÑA DGC (45°) -->
+                <div class="tab-pane fade show active" id="pill-dgc" role="tabpanel">
+                    <div class="ui-card mb-3">
+                        <div class="ui-card-title mb-3"><i class="bi bi-grid-3x3-gap-fill me-2 text-primary"></i>Catálogo Técnico Serie DGC (45°)</div>
+                        
+                        <div class="row g-3">
+                            <div class="col-md-3 col-sm-6">
+                                <div class="card h-100 border shadow-sm">
+                                    <img src="/static/grades_milling.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Grados 1">
+                                    <div class="card-body p-2 text-center d-flex flex-column justify-content-between">
+                                        <div>
+                                            <h6 class="card-title fw-bold fs-7 mb-1">Grados Sumitomo (Parte 1)</h6>
+                                            <p class="card-text text-muted" style="font-size: 0.75rem;">Clasificación de grados P, M, K, N, S, H.</p>
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-outline-primary w-100 fw-semibold mt-2" onclick="abrirModalZoom(this)" data-img="/static/grades_milling.png" data-title="Grados Sumitomo (Parte 1)">
+                                            <i class="bi bi-zoom-in me-1"></i>Ver Tabla HD
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 col-sm-6">
+                                <div class="card h-100 border shadow-sm">
+                                    <img src="/static/grades_milling1.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Grados 2">
+                                    <div class="card-body p-2 text-center d-flex flex-column justify-content-between">
+                                        <div>
+                                            <h6 class="card-title fw-bold fs-7 mb-1">Grados Sumitomo (Parte 2)</h6>
+                                            <p class="card-text text-muted" style="font-size: 0.75rem;">Mapa de aplicación y recubrimientos HD.</p>
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-outline-primary w-100 fw-semibold mt-2" onclick="abrirModalZoom(this)" data-img="/static/grades_milling1.png" data-title="Grados Sumitomo (Parte 2 - HD)">
+                                            <i class="bi bi-zoom-in me-1"></i>Ver Tabla HD
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 col-sm-6">
+                                <div class="card h-100 border shadow-sm">
+                                    <img src="/static/dgc_condiciones.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Condiciones DGC">
+                                    <div class="card-body p-2 text-center d-flex flex-column justify-content-between">
+                                        <div>
+                                            <h6 class="card-title fw-bold fs-7 mb-1">Condiciones Corte DGC</h6>
+                                            <p class="card-text text-muted" style="font-size: 0.75rem;">Rangos de Vc, fz, ap max (SNMT / ONMT).</p>
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-outline-primary w-100 fw-semibold mt-2" onclick="abrirModalZoom(this)" data-img="/static/dgc_condiciones.png" data-title="Condiciones Recomendadas Serie DGC">
+                                            <i class="bi bi-zoom-in me-1"></i>Ver Tabla HD
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 col-sm-6">
+                                <div class="card h-100 border shadow-sm">
+                                    <img src="/static/dgc_chipbreaker.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Chipbreaker DGC">
+                                    <div class="card-body p-2 text-center d-flex flex-column justify-content-between">
+                                        <div>
+                                            <h6 class="card-title fw-bold fs-7 mb-1">Chipbreakers DGC</h6>
+                                            <p class="card-text text-muted" style="font-size: 0.75rem;">Rompevirutas FL, L, FG, G, H, S, W.</p>
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-outline-primary w-100 fw-semibold mt-2" onclick="abrirModalZoom(this)" data-img="/static/dgc_chipbreaker.png" data-title="Guía de Chipbreakers Serie DGC">
+                                            <i class="bi bi-zoom-in me-1"></i>Ver Guía HD
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 col-sm-6">
+                                <div class="card h-100 border shadow-sm">
+                                    <img src="/static/dgc_filos.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Filos DGC">
+                                    <div class="card-body p-2 text-center d-flex flex-column justify-content-between">
+                                        <div>
+                                            <h6 class="card-title fw-bold fs-7 mb-1">Matriz Diámetros y Filos</h6>
+                                            <p class="card-text text-muted" style="font-size: 0.75rem;">Relación Ø40 a Ø250 mm y dientes z.</p>
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-outline-primary w-100 fw-semibold mt-2" onclick="abrirModalZoom(this)" data-img="/static/dgc_filos.png" data-title="Matriz de Diámetros y Filos Serie DGC">
+                                            <i class="bi bi-zoom-in me-1"></i>Ver Matriz HD
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
                     </div>
-                    <button type="button" class="btn btn-sm btn-outline-primary fw-semibold" onclick="abrirModalZoom(this)" data-img="/static/grades_milling.png" data-title="Grados Oficiales para Fresado Sumitomo (Parte 1)">
-                        <i class="bi bi-zoom-in me-1"></i>Ver Tabla
-                    </button>
                 </div>
 
-                <div class="list-group-item d-flex justify-content-between align-items-center py-3">
-                    <div class="d-flex align-items-center me-3">
-                        <img src="/static/grades_milling1.png" class="rounded border me-3 img-thumb-catalog" alt="Grados Parte 2">
-                        <div>
-                            <h6 class="mb-0 fw-bold">Grados Oficiales para Fresado Sumitomo (Parte 2 - Complemento HD)</h6>
-                            <small class="text-muted">Detalles adicionales y mapa de aplicación HD.</small>
+                <!-- PESTAÑA WEZ (90°) -->
+                <div class="tab-pane fade" id="pill-wez" role="tabpanel">
+                    <div class="ui-card mb-3">
+                        <div class="ui-card-title mb-3"><i class="bi bi-grid-3x3-gap-fill me-2 text-primary"></i>Catálogo Técnico Serie WEZ (90°)</div>
+                        
+                        <div class="row g-3">
+                            <div class="col-md-3 col-sm-6">
+                                <div class="card h-100 border shadow-sm">
+                                    <img src="/static/grades_milling.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Grados 1">
+                                    <div class="card-body p-2 text-center d-flex flex-column justify-content-between">
+                                        <div>
+                                            <h6 class="card-title fw-bold fs-7 mb-1">Grados Sumitomo (Parte 1)</h6>
+                                            <p class="card-text text-muted" style="font-size: 0.75rem;">Clasificación de grados P, M, K, N, S, H.</p>
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-outline-primary w-100 fw-semibold mt-2" onclick="abrirModalZoom(this)" data-img="/static/grades_milling.png" data-title="Grados Sumitomo (Parte 1)">
+                                            <i class="bi bi-zoom-in me-1"></i>Ver Tabla HD
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 col-sm-6">
+                                <div class="card h-100 border shadow-sm">
+                                    <img src="/static/grades_milling1.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Grados 2">
+                                    <div class="card-body p-2 text-center d-flex flex-column justify-content-between">
+                                        <div>
+                                            <h6 class="card-title fw-bold fs-7 mb-1">Grados Sumitomo (Parte 2)</h6>
+                                            <p class="card-text text-muted" style="font-size: 0.75rem;">Mapa de aplicación y recubrimientos HD.</p>
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-outline-primary w-100 fw-semibold mt-2" onclick="abrirModalZoom(this)" data-img="/static/grades_milling1.png" data-title="Grados Sumitomo (Parte 2 - HD)">
+                                            <i class="bi bi-zoom-in me-1"></i>Ver Tabla HD
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 col-sm-6">
+                                <div class="card h-100 border shadow-sm">
+                                    <img src="/static/wez_condiciones.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Condiciones WEZ 1">
+                                    <div class="card-body p-2 text-center d-flex flex-column justify-content-between">
+                                        <div>
+                                            <h6 class="card-title fw-bold fs-7 mb-1">Condiciones WEZ (Parte 1)</h6>
+                                            <p class="card-text text-muted" style="font-size: 0.75rem;">Parámetros generales AOMT por ISO.</p>
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-outline-primary w-100 fw-semibold mt-2" onclick="abrirModalZoom(this)" data-img="/static/wez_condiciones.png" data-title="Condiciones Serie WEZ (Parte 1)">
+                                            <i class="bi bi-zoom-in me-1"></i>Ver Tabla HD
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 col-sm-6">
+                                <div class="card h-100 border shadow-sm">
+                                    <img src="/static/wez_condiciones1.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Condiciones WEZ 2">
+                                    <div class="card-body p-2 text-center d-flex flex-column justify-content-between">
+                                        <div>
+                                            <h6 class="card-title fw-bold fs-7 mb-1">Condiciones WEZ (Parte 2)</h6>
+                                            <p class="card-text text-muted" style="font-size: 0.75rem;">Rangos Vc, fz, ap max AOMT HD.</p>
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-outline-primary w-100 fw-semibold mt-2" onclick="abrirModalZoom(this)" data-img="/static/wez_condiciones1.png" data-title="Condiciones Serie WEZ (Parte 2 - HD)">
+                                            <i class="bi bi-zoom-in me-1"></i>Ver Tabla HD
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 col-sm-6">
+                                <div class="card h-100 border shadow-sm">
+                                    <img src="/static/wez_chipbreaker.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Chipbreaker WEZ">
+                                    <div class="card-body p-2 text-center d-flex flex-column justify-content-between">
+                                        <div>
+                                            <h6 class="card-title fw-bold fs-7 mb-1">Chipbreakers WEZ</h6>
+                                            <p class="card-text text-muted" style="font-size: 0.75rem;">Rompevirutas L, G, H, F, P, S.</p>
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-outline-primary w-100 fw-semibold mt-2" onclick="abrirModalZoom(this)" data-img="/static/wez_chipbreaker.png" data-title="Guía de Chipbreakers Serie WEZ">
+                                            <i class="bi bi-zoom-in me-1"></i>Ver Guía HD
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 col-sm-6">
+                                <div class="card h-100 border shadow-sm">
+                                    <img src="/static/wez_filos.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Filos WEZ 1">
+                                    <div class="card-body p-2 text-center d-flex flex-column justify-content-between">
+                                        <div>
+                                            <h6 class="card-title fw-bold fs-7 mb-1">Matriz Filos WEZ (Parte 1)</h6>
+                                            <p class="card-text text-muted" style="font-size: 0.75rem;">Relación general de diámetros y dientes.</p>
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-outline-primary w-100 fw-semibold mt-2" onclick="abrirModalZoom(this)" data-img="/static/wez_filos.png" data-title="Matriz Filos WEZ (Parte 1)">
+                                            <i class="bi bi-zoom-in me-1"></i>Ver Matriz HD
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 col-sm-6">
+                                <div class="card h-100 border shadow-sm">
+                                    <img src="/static/wez_filos1.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Filos WEZ 2">
+                                    <div class="card-body p-2 text-center d-flex flex-column justify-content-between">
+                                        <div>
+                                            <h6 class="card-title fw-bold fs-7 mb-1">Matriz Filos WEZ (Parte 2)</h6>
+                                            <p class="card-text text-muted" style="font-size: 0.75rem;">Esquema ampliado Ø14 a Ø160 mm HD.</p>
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-outline-primary w-100 fw-semibold mt-2" onclick="abrirModalZoom(this)" data-img="/static/wez_filos1.png" data-title="Matriz Filos WEZ (Parte 2 - HD)">
+                                            <i class="bi bi-zoom-in me-1"></i>Ver Matriz HD
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
                     </div>
-                    <button type="button" class="btn btn-sm btn-outline-primary fw-semibold" onclick="abrirModalZoom(this)" data-img="/static/grades_milling1.png" data-title="Grados Oficiales para Fresado Sumitomo (Parte 2 - Complemento HD)">
-                        <i class="bi bi-zoom-in me-1"></i>Ver Tabla HD
-                    </button>
                 </div>
 
-                <div class="list-group-item d-flex justify-content-between align-items-center py-3">
-                    <div class="d-flex align-items-center me-3">
-                        <img src="/static/dgc_condiciones.png" class="rounded border me-3 img-thumb-catalog" alt="Condiciones DGC">
-                        <div>
-                            <h6 class="mb-0 fw-bold">Condiciones Recomendadas de Corte DGC (SNMT / ONMT)</h6>
-                            <small class="text-muted">Rangos de Vc, fz, ap max y grados Sumitomo por material ISO.</small>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-sm btn-outline-primary fw-semibold" onclick="abrirModalZoom(this)" data-img="/static/dgc_condiciones.png" data-title="Condiciones Recomendadas Serie DGC">
-                        <i class="bi bi-zoom-in me-1"></i>Ver Tabla HD
-                    </button>
+            </div>
+
+        </div>
+
+        <!-- VISTA: BARRENADO CNC AUTOMÁTICO CON 8 TARJETAS -->
+        <div id="vista-barrenado" style="display: none;">
+            <h1 class="page-title">Barrenado / Taladrado CNC</h1>
+            <p class="page-subtitle">Cálculo dinámico en tiempo real de parámetros de corte y recubrimientos sugeridos.</p>
+
+            <div class="ui-card mb-4">
+                <div class="ui-card-title d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-pin-angle me-2 text-primary"></i>Calculadora de Barrenado CNC</span>
+                    <span class="badge bg-secondary fs-7" id="badgeRelacionLD">Veces Diámetro (L/D): -</span>
                 </div>
 
-                <div class="list-group-item d-flex justify-content-between align-items-center py-3">
-                    <div class="d-flex align-items-center me-3">
-                        <img src="/static/dgc_chipbreaker.png" class="rounded border me-3 img-thumb-catalog" alt="Chipbreaker DGC">
-                        <div>
-                            <h6 class="mb-0 fw-bold">Guía de Selección de Chipbreakers DGC</h6>
-                            <small class="text-muted">Rompevirutas FL, L, FG, G, H, S, W según la aplicación.</small>
-                        </div>
+                <!-- ALERTA DE REFRIGERACIÓN Y LUBRICACIÓN -->
+                <div class="alert alert-info py-2 px-3 mb-3 d-flex align-items-center justify-content-between" id="alertaLubricacionBox">
+                    <div>
+                        <i class="bi bi-droplet-half me-2 fs-5"></i>
+                        <strong class="me-1">Recomendación de Refrigerante:</strong>
+                        <span id="textoLubricacion">Ingrese el Diámetro D y la Profundidad L para calcular las condiciones técnicas.</span>
                     </div>
-                    <button type="button" class="btn btn-sm btn-outline-primary fw-semibold" onclick="abrirModalZoom(this)" data-img="/static/dgc_chipbreaker.png" data-title="Guía de Chipbreakers Serie DGC">
-                        <i class="bi bi-zoom-in me-1"></i>Ver Guía HD
-                    </button>
                 </div>
 
-                <div class="list-group-item d-flex justify-content-between align-items-center py-3">
-                    <div class="d-flex align-items-center me-3">
-                        <img src="/static/dgc_filos.png" class="rounded border me-3 img-thumb-catalog" alt="Filos DGC">
-                        <div>
-                            <h6 class="mb-0 fw-bold">Matriz de Diámetros y Cantidad de Dientes (DGC)</h6>
-                            <small class="text-muted">Relación de diámetros Ø40 a Ø250 mm y número de filos z.</small>
+                <div class="row g-2 mb-3 align-items-end">
+                    <div class="col-md-3">
+                        <label class="form-label small text-muted fw-bold mb-1">Buscar Material</label>
+                        <input type="text" list="lista-materiales" id="material_barrenado" class="form-control form-control-sm fw-semibold text-primary" placeholder="Escriba ej: 4140, Inox, Aluminio..." oninput="alCambiarMaterialBarrenado()" onchange="alCambiarMaterialBarrenado()">
+                    </div>
+                    
+                    <!-- CELDA GRUPO ISO -->
+                    <div class="col-md-1">
+                        <label class="form-label small text-muted fw-bold mb-1">Grupo ISO</label>
+                        <div id="boxIsoBarrenado" class="p-1 rounded text-center fw-bold text-white bg-secondary" style="height: 31px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem;">
+                            <span id="txtIsoBarrenado">-</span>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-sm btn-outline-primary fw-semibold" onclick="abrirModalZoom(this)" data-img="/static/dgc_filos.png" data-title="Matriz de Diámetros y Filos Serie DGC">
-                        <i class="bi bi-zoom-in me-1"></i>Ver Matriz HD
-                    </button>
+
+                    <!-- CELDA RECUBRIMIENTO AUTOMÁTICO DE ALTO CONTRASTE -->
+                    <div class="col-md-3">
+                        <label class="form-label small text-muted fw-bold mb-1">Recubrimiento Recomendado</label>
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text bg-dark text-warning border-0"><i class="bi bi-shield-fill-check"></i></span>
+                            <input type="text" id="recubrimiento_barrenado" class="form-control form-control-sm bg-dark text-white fw-bold border-0" value="-" readonly style="font-size: 0.82rem;" title="Recubrimiento estándar de mercado según el Grupo ISO">
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <label class="form-label small text-muted fw-bold mb-1">D (mm)</label>
+                        <input type="number" step="0.1" id="d_barrenado" class="form-control form-control-sm fw-bold" placeholder="Ej: 18" oninput="actualizarBarrenadoEnVivo()" onchange="actualizarBarrenadoEnVivo()">
+                    </div>
+                    <div class="col-md-1">
+                        <label class="form-label small text-muted fw-bold mb-1">Vc (m/min)</label>
+                        <input type="number" step="1" id="vc_barrenado" class="form-control form-control-sm" placeholder="Ej: 30" oninput="actualizarBarrenadoEnVivo()" onchange="actualizarBarrenadoEnVivo()">
+                    </div>
+                    <div class="col-md-1">
+                        <label class="form-label small text-muted fw-bold mb-1">f (mm/rev)</label>
+                        <input type="number" step="0.01" id="fn_barrenado" class="form-control form-control-sm fw-bold text-primary" placeholder="Ej: 0.12" oninput="actualizarBarrenadoEnVivo()" onchange="actualizarBarrenadoEnVivo()">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small text-muted fw-bold mb-1">Profundidad L (mm)</label>
+                        <input type="number" step="1" id="long_barrenado" class="form-control form-control-sm" placeholder="Ej: 85" oninput="actualizarBarrenadoEnVivo()" onchange="actualizarBarrenadoEnVivo()">
+                    </div>
                 </div>
 
+                <!-- TARJETAS DE MÉTRICAS COMPLETAS (8 TARJETAS DE MÉTICAS CNC) -->
+                <div class="row g-2">
+                    <div class="col-md-3 col-6">
+                        <div class="cnc-card cnc-card-pasadas">
+                            <span class="cnc-label text-info">1. RPM</span>
+                            <span class="cnc-value text-warning fs-4" id="barrRpm">-</span>
+                            <div class="mt-1"><span class="unit-badge unit-rpm">rev / min</span></div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <div class="cnc-card cnc-card-pasadas">
+                            <span class="cnc-label text-info">2. Feed Rate (Vf)</span>
+                            <span class="cnc-value text-warning fs-4" id="barrVf">-</span>
+                            <div class="mt-1"><span class="unit-badge unit-vf">mm / min</span></div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <div class="cnc-card">
+                            <span class="cnc-label">3. Potencia (Pc)</span>
+                            <span class="cnc-value text-primary fw-bold" id="barrPotencia">-</span>
+                            <div class="mt-1"><span class="unit-badge unit-vc">kW</span></div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <div class="cnc-card">
+                            <span class="cnc-label">4. Torque (Mc)</span>
+                            <span class="cnc-value text-warning fw-bold" id="barrTorque">-</span>
+                            <div class="mt-1"><span class="unit-badge unit-rpm">N·m</span></div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <div class="cnc-card">
+                            <span class="cnc-label">5. MRR</span>
+                            <span class="cnc-value" id="barrMrr">-</span>
+                            <div class="mt-1"><span class="unit-badge unit-mrr">cm³ / min</span></div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <div class="cnc-card">
+                            <span class="cnc-label">6. Tiempo (T)</span>
+                            <span class="cnc-value text-info fw-bold" id="barrTiempo">-</span>
+                            <div class="mt-1"><span class="unit-badge unit-time">minutos</span></div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <div class="cnc-card">
+                            <span class="cnc-label">7. VTR (Vol. Total)</span>
+                            <span class="cnc-value" id="barrVtr">-</span>
+                            <div class="mt-1"><span class="unit-badge unit-vol">cm³</span></div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <div class="cnc-card">
+                            <span class="cnc-label">8. Dist. Punta (P)</span>
+                            <span class="cnc-value text-success" id="barrPunta">-</span>
+                            <div class="mt-1"><span class="unit-badge unit-vc">mm</span></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+
     </div>
-
-    <!-- PESTAÑA WEZ (WaveMill 90°) -->
-    <div class="tab-pane fade" id="pill-wez" role="tabpanel">
-        <div class="ui-card mb-3">
-            <div class="ui-card-title"><i class="bi bi-collection me-2 text-primary"></i>Tablas de Referencia Oficial Serie WEZ (90°)</div>
-            <div class="list-group list-group-flush">
-                
-                <div class="list-group-item d-flex justify-content-between align-items-center py-3">
-                    <div class="d-flex align-items-center me-3">
-                        <img src="/static/grades_milling.png" class="rounded border me-3 img-thumb-catalog" alt="Grados Parte 1">
-                        <div>
-                            <h6 class="mb-0 fw-bold">Grados Oficiales para Fresado Sumitomo (Parte 1)</h6>
-                            <small class="text-muted">Clasificación de grados P, M, K, N, S, H.</small>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-sm btn-outline-primary fw-semibold" onclick="abrirModalZoom(this)" data-img="/static/grades_milling.png" data-title="Grados Oficiales para Fresado Sumitomo (Parte 1)">
-                        <i class="bi bi-zoom-in me-1"></i>Ver Tabla
-                    </button>
-                </div>
-
-                <div class="list-group-item d-flex justify-content-between align-items-center py-3">
-                    <div class="d-flex align-items-center me-3">
-                        <img src="/static/grades_milling1.png" class="rounded border me-3 img-thumb-catalog" alt="Grados Parte 2">
-                        <div>
-                            <h6 class="mb-0 fw-bold">Grados Oficiales para Fresado Sumitomo (Parte 2 - Complemento HD)</h6>
-                            <small class="text-muted">Detalles adicionales y mapa de aplicación HD.</small>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-sm btn-outline-primary fw-semibold" onclick="abrirModalZoom(this)" data-img="/static/grades_milling1.png" data-title="Grados Oficiales para Fresado Sumitomo (Parte 2 - Complemento HD)">
-                        <i class="bi bi-zoom-in me-1"></i>Ver Tabla HD
-                    </button>
-                </div>
-
-                <div class="list-group-item d-flex justify-content-between align-items-center py-3">
-                    <div class="d-flex align-items-center me-3">
-                        <img src="/static/wez_condiciones.png" class="rounded border me-3 img-thumb-catalog" alt="Condiciones WEZ">
-                        <div>
-                            <h6 class="mb-0 fw-bold">Condiciones Recomendadas de Corte WEZ (Parte 1)</h6>
-                            <small class="text-muted">Parámetros generales AOMT por grupo ISO.</small>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-sm btn-outline-primary fw-semibold" onclick="abrirModalZoom(this)" data-img="/static/wez_condiciones.png" data-title="Condiciones Recomendadas Serie WEZ (Parte 1)">
-                        <i class="bi bi-zoom-in me-1"></i>Ver Tabla
-                    </button>
-                </div>
-
-                <div class="list-group-item d-flex justify-content-between align-items-center py-3">
-                    <div class="d-flex align-items-center me-3">
-                        <img src="/static/wez_condiciones1.png" class="rounded border me-3 img-thumb-catalog" alt="Condiciones WEZ HD">
-                        <div>
-                            <h6 class="mb-0 fw-bold">Condiciones Recomendadas de Corte WEZ (Parte 2 - Complemento HD)</h6>
-                            <small class="text-muted">Rangos detallados Vc, fz, ap max AOMT (Alta Resolución).</small>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-sm btn-outline-primary fw-semibold" onclick="abrirModalZoom(this)" data-img="/static/wez_condiciones1.png" data-title="Condiciones Recomendadas Serie WEZ (Parte 2 - Complemento HD)">
-                        <i class="bi bi-zoom-in me-1"></i>Ver Tabla HD
-                    </button>
-                </div>
-
-                <div class="list-group-item d-flex justify-content-between align-items-center py-3">
-                    <div class="d-flex align-items-center me-3">
-                        <img src="/static/wez_chipbreaker.png" class="rounded border me-3 img-thumb-catalog" alt="Chipbreaker WEZ">
-                        <div>
-                            <h6 class="mb-0 fw-bold">Guía de Selección de Chipbreakers WEZ</h6>
-                            <small class="text-muted">Rompevirutas L, G, H, F, P, S según la aplicación.</small>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-sm btn-outline-primary fw-semibold" onclick="abrirModalZoom(this)" data-img="/static/wez_chipbreaker.png" data-title="Guía de Chipbreakers Serie WEZ">
-                        <i class="bi bi-zoom-in me-1"></i>Ver Guía HD
-                    </button>
-                </div>
-
-                <div class="list-group-item d-flex justify-content-between align-items-center py-3">
-                    <div class="d-flex align-items-center me-3">
-                        <img src="/static/wez_filos.png" class="rounded border me-3 img-thumb-catalog" alt="Filos WEZ">
-                        <div>
-                            <h6 class="mb-0 fw-bold">Matriz de Diámetros y Cantidad de Dientes WEZ (Parte 1)</h6>
-                            <small class="text-muted">Relación general de diámetros y filos z.</small>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-sm btn-outline-primary fw-semibold" onclick="abrirModalZoom(this)" data-img="/static/wez_filos.png" data-title="Matriz de Diámetros y Filos WEZ (Parte 1)">
-                        <i class="bi bi-zoom-in me-1"></i>Ver Matriz
-                    </button>
-                </div>
-
-                <div class="list-group-item d-flex justify-content-between align-items-center py-3">
-                    <div class="d-flex align-items-center me-3">
-                        <img src="/static/wez_filos1.png" class="rounded border me-3 img-thumb-catalog" alt="Filos WEZ HD">
-                        <div>
-                            <h6 class="mb-0 fw-bold">Matriz de Diámetros y Cantidad de Dientes WEZ (Parte 2 - Complemento HD)</h6>
-                            <small class="text-muted">Esquema ampliado Ø14 a Ø160 mm (Alta Resolución).</small>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-sm btn-outline-primary fw-semibold" onclick="abrirModalZoom(this)" data-img="/static/wez_filos1.png" data-title="Matriz de Diámetros y Filos WEZ (Parte 2 - Complemento HD)">
-                        <i class="bi bi-zoom-in me-1"></i>Ver Matriz HD
-                    </button>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-</div>
 
     <!-- MODAL DE ZOOM -->
     <div class="modal fade" id="modalImageZoom" tabindex="-1" aria-hidden="true">
@@ -1427,13 +1573,55 @@
 
         var serieSeleccionadaActual = "DGC";
 
+        // HELPER ULTRA-SEGURO: Obtiene el valor de un input sin romper la ejecución si el elemento no existe en el DOM
+        function getValSeguro(id) {
+            var el = document.getElementById(id);
+            return (el && el.value !== undefined && el.value !== null) ? el.value.toString().trim() : "";
+        }
+
+        // DETECCIÓN VISUAL DE GRUPO ISO EN TORNEADO (EXCLUSIVA PARA CASILLA COMPACTA)
+        function alCambiarMaterialTorneado() {
+            var mat = getValSeguro("material").toLowerCase();
+            var boxIso = document.getElementById("boxIsoTorneado");
+            var txtIso = document.getElementById("txtIsoTorneado");
+            var valMaterial = document.getElementById("valMaterial");
+
+            if (!mat) {
+                if (boxIso && txtIso) {
+                    boxIso.className = "p-1 rounded text-center fw-bold text-white bg-secondary";
+                    txtIso.textContent = "-";
+                }
+                if (valMaterial) valMaterial.textContent = "-";
+            } else {
+                var iso = 'P';
+                if (mat.includes("304") || mat.includes("316") || mat.includes("inox") || mat.includes("inoxidable") || mat.includes("420") || mat.includes("410") || mat.includes("430")) {
+                    iso = 'M';
+                } else if (mat.includes("gris") || mat.includes("nodular") || mat.includes("fundicion") || mat.includes("fundición") || mat.includes("cast iron")) {
+                    iso = 'K';
+                } else if (mat.includes("aluminio") || mat.includes("6061") || mat.includes("7075") || mat.includes("bronce") || mat.includes("cobre")) {
+                    iso = 'N';
+                } else if (mat.includes("titanio") || mat.includes("inconel") || mat.includes("hastelloy") || mat.includes("waspaloy")) {
+                    iso = 'S';
+                } else if (mat.includes("templado") || mat.includes("hrc") || mat.includes("d2") || mat.includes("skd")) {
+                    iso = 'H';
+                }
+
+                // Aplica el color únicamente a la casilla superior compacta de Grupo ISO
+                if (boxIso && txtIso) {
+                    boxIso.className = "p-1 rounded text-center fw-bold badge-iso-" + iso.toLowerCase() + " iso-theme-" + iso;
+                    txtIso.textContent = "ISO " + iso;
+                }
+
+                if (valMaterial) valMaterial.textContent = getValSeguro("material");
+            }
+
+            cargarInsertos();
+        }
+
         // MOTOR DE ZOOM
         let scale = 1;
         let pX = 0;
         let pY = 0;
-        let isDragging = false;
-        let startX = 0;
-        let startY = 0;
 
         function abrirModalZoom(element) {
             const urlImagen = element.getAttribute("data-img");
@@ -1473,12 +1661,52 @@
             if (badge) badge.textContent = Math.round(scale * 100) + "%";
         }
 
-        function alCambiarMaterialOFresa() {
-            var fzElem = document.getElementById("fz_fresado");
-            if (fzElem) fzElem.value = "";
+        // DETECCIÓN VISUAL INSTANTÁNEA DE GRUPO ISO EN FRESADO (IDÉNTICO A BARRENADO)
+        function alCambiarMaterialFresado() {
+            var mat = getValSeguro("material_fresado").toLowerCase();
+            var boxIso = document.getElementById("boxIsoFresado");
+            var txtIso = document.getElementById("txtIsoFresado");
+
+            if (!mat) {
+                if (boxIso && txtIso) {
+                    boxIso.className = "p-1 rounded text-center fw-bold text-white bg-secondary";
+                    txtIso.textContent = "-";
+                }
+            } else {
+                var iso = 'P';
+                if (mat.includes("304") || mat.includes("316") || mat.includes("inox") || mat.includes("inoxidable")) {
+                    iso = 'M';
+                } else if (mat.includes("gris") || mat.includes("nodular") || mat.includes("fundicion") || mat.includes("fundición") || mat.includes("cast iron")) {
+                    iso = 'K';
+                } else if (mat.includes("aluminio") || mat.includes("6061") || mat.includes("7075") || mat.includes("bronce") || mat.includes("cobre")) {
+                    iso = 'N';
+                } else if (mat.includes("titanio") || mat.includes("inconel") || mat.includes("hastelloy") || mat.includes("waspaloy")) {
+                    iso = 'S';
+                } else if (mat.includes("templado") || mat.includes("hrc") || mat.includes("d2") || mat.includes("skd")) {
+                    iso = 'H';
+                }
+
+                // Asignación de color con las clases CSS globales (badge-iso-p, badge-iso-m, etc.)
+                if (boxIso && txtIso) {
+                    boxIso.className = "p-1 rounded text-center fw-bold badge-iso-" + iso.toLowerCase() + " iso-theme-" + iso;
+                    txtIso.textContent = "ISO " + iso;
+                }
+
+                // Vaciar fz previo solo cuando se edita el material para pedir el recomendado
+                var fzElem = document.getElementById("fz_fresado");
+                if (fzElem && document.activeElement === document.getElementById("material_fresado")) {
+                    fzElem.value = "";
+                }
+            }
+
             actualizarFresadoEnVivo();
         }
 
+        function alCambiarMaterialOFresa() {
+            var fzElem = document.getElementById("fz_fresado");
+            if (fzElem) fzElem.value = "";
+            alCambiarMaterialFresado();
+        }
         function seleccionarSerieDesdeTab(serie) {
             serieSeleccionadaActual = serie.indexOf("WEZ") !== -1 ? "WEZ" : "DGC";
             var contDgc = document.getElementById("contenedor_tipo_inserto_dgc");
@@ -1489,7 +1717,7 @@
 
         function setTexto(id, val) {
             const el = document.getElementById(id);
-            if (el) el.textContent = (val !== undefined && val !== null) ? val : '0';
+            if (el) el.textContent = (val !== undefined && val !== null && val !== "") ? val : '-';
         }
 
         function alCambiarDiametro() {
@@ -1592,37 +1820,39 @@
                 .catch(err => console.error("Error en actualizarValoresEnVivo:", err));
         }
 
+        // CÁLCULO DE FRESADO CORREGIDO Y BLINDADO
         function actualizarFresadoEnVivo() {
-            var matInput = document.getElementById("material_fresado");
-            var mat = (matInput && matInput.value) ? matInput.value.trim() : "";
+            var mat = getValSeguro("material_fresado");
+            var rvpElem = document.getElementById("valRompevirutasFresado");
 
             if (!mat) {
-                setTexto("fresRpm", "0");
-                setTexto("fresVf", "0");
-                setTexto("fresValVc", "0 m/min");
-                setTexto("fresMrr", "0");
-                setTexto("fresTiempo", "0");
-                setTexto("fresVtr", "0");
+                setTexto("fresRpm", "-");
+                setTexto("fresVf", "-");
+                setTexto("fresValVc", "- m/min");
+                setTexto("fresMrr", "-");
+                setTexto("fresTiempo", "-");
+                setTexto("fresVtr", "-");
                 
                 var fzElem = document.getElementById("fz_fresado");
                 if (fzElem) fzElem.value = "";
                 
-                var rvpElem = document.getElementById("valRompevirutasFresado");
                 if (rvpElem) rvpElem.value = "-";
+                setTexto("valFzSugerido", "-");
                 return;
             }
 
-            var tipoInsertoDgc = document.getElementById("tipo_inserto_dgc") ? document.getElementById("tipo_inserto_dgc").value : "SNMT 13T6";
-            var dc = parseFloat(document.getElementById("dc_fresado") ? document.getElementById("dc_fresado").value : 50) || 50;
-            var z = parseInt(document.getElementById("z_fresado") ? document.getElementById("z_fresado").value : 4) || 4;
-            var ap = parseFloat(document.getElementById("ap_fresado") ? document.getElementById("ap_fresado").value : 2) || 2;
-            var ae = parseFloat(document.getElementById("ae_fresado") ? document.getElementById("ae_fresado").value : 25) || 25;
-            var long = parseFloat(document.getElementById("longitud_fresado") ? document.getElementById("longitud_fresado").value : 100) || 100;
+            var tipoInsertoDgc = getValSeguro("tipo_inserto_dgc") || "SNMT 13T6";
+            var dc = parseFloat(getValSeguro("dc_fresado")) || 50;
+            var z = parseInt(getValSeguro("z_fresado")) || 4;
+            var ap = parseFloat(getValSeguro("ap_fresado")) || 2.0;
+            var ae = parseFloat(getValSeguro("ae_fresado")) || 25.0;
+            var long = parseFloat(getValSeguro("longitud_fresado")) || 100.0;
             
             var fzElem = document.getElementById("fz_fresado");
-            var fzVal = (fzElem && fzElem.value && !isNaN(parseFloat(fzElem.value))) ? parseFloat(fzElem.value) : 0;
+            var fzValRaw = getValSeguro("fz_fresado");
+            var fzVal = (fzValRaw !== "" && !isNaN(parseFloat(fzValRaw))) ? parseFloat(fzValRaw) : 0;
 
-            var sKey = serieSeleccionadaActual.includes("WEZ") ? "WEZ" : "DGC";
+            var sKey = (typeof serieSeleccionadaActual !== "undefined" && serieSeleccionadaActual.indexOf("WEZ") !== -1) ? "WEZ" : "DGC";
 
             var url = "/api/calcular_fresado_ajax?material=" + encodeURIComponent(mat) +
                         "&serie=" + encodeURIComponent(sKey) +
@@ -1637,39 +1867,223 @@
             fetch(url)
                 .then(function(response) { return response.json(); })
                 .then(function(data) {
-                    if (data && Object.keys(data).length > 0) {
-                        if (fzVal <= 0 && data.fz !== undefined && fzElem) {
+                    if (data && !data.error) {
+                        // 1. Asignar avance por diente (fz) sugerido si está vacío
+                        if (fzVal <= 0 && data.fz !== undefined && fzElem && document.activeElement !== fzElem) {
                             fzElem.value = data.fz;
                         }
 
-                        setTexto("fresRpm", data.rpm !== undefined ? data.rpm : "0");
-                        setTexto("fresVf", data.vf !== undefined ? data.vf : "0");
-                        setTexto("fresValVc", data.vc !== undefined ? data.vc + " m/min" : "0 m/min");
-                        setTexto("fresMrr", data.mrr !== undefined ? data.mrr : "0");
-                        setTexto("fresTiempo", data.tiempo !== undefined ? data.tiempo : "0");
-                        setTexto("fresVtr", data.vtr !== undefined ? data.vtr : "0");
+                        // 2. Actualizar badge de fz sugerido
+                        var badgeFz = document.getElementById("valFzSugerido");
+                        if (badgeFz && data.fz !== undefined) {
+                            badgeFz.textContent = data.fz + " mm/t";
+                        }
 
-                        var rvpElem = document.getElementById("valRompevirutasFresado");
-                        if (rvpElem && data.rompevirutas) {
-                            rvpElem.value = data.rompevirutas;
+                        // 3. Asignar rompevirutas
+                        if (rvpElem) {
+                            rvpElem.value = data.rompevirutas || data.rompevirutas_sugerido || "-";
+                        }
+
+                        // 4. Pintar métricas CNC
+                        setTexto("fresRpm", data.rpm !== undefined ? data.rpm : "-");
+                        setTexto("fresVf", data.vf !== undefined ? data.vf : "-");
+                        setTexto("fresValVc", data.vc !== undefined ? data.vc + " m/min" : "- m/min");
+                        setTexto("fresMrr", data.mrr !== undefined ? data.mrr : "-");
+                        setTexto("fresTiempo", data.tiempo !== undefined ? data.tiempo : "-");
+                        setTexto("fresVtr", data.vtr !== undefined ? data.vtr : "-");
+                    }
+                })
+                .catch(function(err) {
+                    console.warn("Error en cálculo de fresado:", err);
+                });
+        }
+
+        // 1. Detección síncrona e instantánea de Grupo ISO y Recubrimiento
+        function alCambiarMaterialBarrenado() {
+            var mat = getValSeguro("material_barrenado").toLowerCase();
+            var boxIso = document.getElementById("boxIsoBarrenado");
+            var txtIso = document.getElementById("txtIsoBarrenado");
+            var recElem = document.getElementById("recubrimiento_barrenado");
+
+            var MAPA_RECUBRIMIENTOS = {
+                'P': 'TiAlN / AlTiN (Multicapa)',
+                'M': 'TiAlN Nano-Lube',
+                'K': 'TiCN / TiAlN (Anti-abrasión)',
+                'N': 'Bright Polish / DLC',
+                'S': 'AlTiN Fine-Grain',
+                'H': 'AlCrN / nACo (Ultra Dureza)'
+            };
+
+            if (!mat) {
+                if (boxIso && txtIso) {
+                    boxIso.className = "p-1 rounded text-center fw-bold text-white bg-secondary";
+                    txtIso.textContent = "-";
+                }
+                if (recElem) recElem.value = "-";
+            } else {
+                var iso = 'P';
+                if (mat.includes("304") || mat.includes("316") || mat.includes("inox") || mat.includes("inoxidable")) {
+                    iso = 'M';
+                } else if (mat.includes("gris") || mat.includes("nodular") || mat.includes("fundicion") || mat.includes("fundición") || mat.includes("cast iron")) {
+                    iso = 'K';
+                } else if (mat.includes("aluminio") || mat.includes("6061") || mat.includes("7075") || mat.includes("bronce") || mat.includes("cobre")) {
+                    iso = 'N';
+                } else if (mat.includes("titanio") || mat.includes("inconel") || mat.includes("hastelloy") || mat.includes("waspaloy")) {
+                    iso = 'S';
+                } else if (mat.includes("templado") || mat.includes("hrc") || mat.includes("d2") || mat.includes("skd")) {
+                    iso = 'H';
+                }
+
+                // PINTADO DIRECTO E INMEDIATO EN EL DOM (SIN ESPERAR LLAMADAS FETCH O INPUTS DE L Y D)
+                if (boxIso && txtIso) {
+                    boxIso.className = "p-1 rounded text-center fw-bold badge-iso-" + iso.toLowerCase() + " iso-theme-" + iso;
+                    txtIso.textContent = "ISO " + iso;
+                }
+
+                if (recElem) {
+                    recElem.value = MAPA_RECUBRIMIENTOS[iso];
+                }
+
+                // Vaciar sugeridos previos si se cambia de material
+                var vcElem = document.getElementById("vc_barrenado");
+                var fnElem = document.getElementById("fn_barrenado");
+                if (vcElem) vcElem.value = "";
+                if (fnElem) fnElem.value = "";
+            }
+
+            actualizarBarrenadoEnVivo();
+        }
+
+        // 2. Cálculo dinámico de métricas CNC
+        function actualizarBarrenadoEnVivo() {
+            var mat = getValSeguro("material_barrenado");
+            var dVal = getValSeguro("d_barrenado");
+            var vcVal = getValSeguro("vc_barrenado");
+            var fnVal = getValSeguro("fn_barrenado");
+            var profVal = getValSeguro("long_barrenado");
+            var anguloVal = getValSeguro("angulo_barrenado") || "140";
+            
+            var tipoElem = document.getElementById("tipo_agujero_barrenado");
+            var tipoVal = tipoElem ? tipoElem.value : "pasante";
+
+            var d = parseFloat(dVal);
+            var prof = parseFloat(profVal);
+
+            // Validación numérica exclusiva para las 8 tarjetas de métricas (No afecta al ISO ni al Recubrimiento)
+            if (isNaN(d) || d <= 0 || isNaN(prof) || prof <= 0) {
+                setTexto("barrRpm", "-");
+                setTexto("barrVf", "-");
+                setTexto("barrPotencia", "-");
+                setTexto("barrTorque", "-");
+                setTexto("barrMrr", "-");
+                setTexto("barrTiempo", "-");
+                setTexto("barrVtr", "-");
+                setTexto("barrPunta", "-");
+
+                var badgeLD = document.getElementById("badgeRelacionLD");
+                if (badgeLD) badgeLD.textContent = "Veces Diámetro (L/D): -";
+                
+                var boxAlert = document.getElementById("alertaLubricacionBox");
+                var txtLub = document.getElementById("textoLubricacion");
+                if (boxAlert && txtLub) {
+                    boxAlert.className = "alert alert-warning py-2 px-3 mb-3 d-flex align-items-center justify-content-between";
+                    txtLub.textContent = "Ingrese al menos el Diámetro D y la Profundidad L para realizar el cálculo.";
+                }
+                return;
+            }
+
+            var url = "/api/calcular_barrenado_ajax?material=" + encodeURIComponent(mat) +
+                        "&diametro=" + d +
+                        "&profundidad=" + prof +
+                        "&vc=" + encodeURIComponent(vcVal) +
+                        "&fn=" + encodeURIComponent(fnVal) +
+                        "&angulo=" + encodeURIComponent(anguloVal) +
+                        "&tipo_agujero=" + encodeURIComponent(tipoVal);
+
+            fetch(url)
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (data && !data.error) {
+                        var vcElem = document.getElementById("vc_barrenado");
+                        var fnElem = document.getElementById("fn_barrenado");
+
+                        if (vcElem && vcVal === "" && document.activeElement !== vcElem) {
+                            vcElem.value = data.vc_sugerido;
+                        }
+                        if (fnElem && fnVal === "" && document.activeElement !== fnElem) {
+                            fnElem.value = data.fn_sugerido;
+                        }
+
+                        setTexto("barrRpm", data.rpm);
+                        setTexto("barrVf", data.vf);
+                        setTexto("barrPotencia", data.potencia);
+                        setTexto("barrTorque", data.torque);
+                        setTexto("barrMrr", data.mrr);
+                        setTexto("barrTiempo", data.tiempo);
+                        setTexto("barrVtr", data.vtr);
+                        setTexto("barrPunta", data.distancia_punta);
+
+                        var badgeLD = document.getElementById("badgeRelacionLD");
+                        if (badgeLD) {
+                            badgeLD.textContent = "Profundidad: " + data.veces_diametro + "×D (Sugerida Broca " + data.broca_sugerida + ")";
+                        }
+
+                        var boxAlert = document.getElementById("alertaLubricacionBox");
+                        var txtLub = document.getElementById("textoLubricacion");
+                        if (boxAlert && txtLub) {
+                            boxAlert.className = "alert alert-" + data.tipo_alerta + " py-2 px-3 mb-3 d-flex align-items-center justify-content-between";
+                            txtLub.textContent = data.lubricacion;
                         }
                     }
                 })
                 .catch(function(err) {
-                    console.warn("Error en fresado:", err);
+                    console.error("Error en la petición de barrenado:", err);
                 });
         }
 
+        // 3. LISTENERS PARA ENTER Y NAVEGACIÓN ENTRE CAMPOS
+        document.addEventListener("DOMContentLoaded", function() {
+            var camposBarrenado = [
+                "material_barrenado",
+                "d_barrenado",
+                "vc_barrenado",
+                "fn_barrenado",
+                "long_barrenado",
+                "angulo_barrenado",
+                "tipo_agujero_barrenado"
+            ];
+
+            camposBarrenado.forEach(function(id, index) {
+                var elem = document.getElementById(id);
+                if (elem) {
+                    elem.addEventListener("keydown", function(e) {
+                        if (e.key === "Enter") {
+                            e.preventDefault();
+                            actualizarBarrenadoEnVivo();
+
+                            if (index < camposBarrenado.length - 1) {
+                                var sig = document.getElementById(camposBarrenado[index + 1]);
+                                if (sig) sig.focus();
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        // CONTROLADOR DE NAVEGACIÓN EN PESTAÑAS
         function mostrarPestana(pestana) {
             const vDash = document.getElementById("vista-dashboard");
             const vTorn = document.getElementById("vista-torneado");
             const vFres = document.getElementById("vista-fresado");
+            const vBarr = document.getElementById("vista-barrenado");
             
             document.querySelectorAll(".sidebar-nav a").forEach(el => el.classList.remove("active"));
 
             if (vDash) vDash.style.display = "none";
             if (vTorn) vTorn.style.display = "none";
             if (vFres) vFres.style.display = "none";
+            if (vBarr) vBarr.style.display = "none";
 
             if (pestana === "dashboard") {
                 if (vDash) vDash.style.display = "block";
@@ -1677,7 +2091,9 @@
             } else if (pestana === "fresado") {
                 if (vFres) vFres.style.display = "block";
                 document.getElementById("nav-fresado")?.classList.add("active");
-                actualizarFresadoEnVivo();
+            } else if (pestana === "barrenado") {
+                if (vBarr) vBarr.style.display = "block";
+                document.getElementById("nav-barrenado")?.classList.add("active");
             } else {
                 if (vTorn) vTorn.style.display = "block";
                 document.getElementById("nav-torneado")?.classList.add("active");
