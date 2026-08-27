@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>AhnsaCut CNC</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
@@ -34,12 +34,17 @@
             --sidebar-width: 220px;
         }
 
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
         body {
             background-color: var(--bg-body);
             font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
             margin: 0;
             color: #1e293b;
             overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
 
         /* SIDEBAR LATERAL DINÁMICO */
@@ -53,9 +58,10 @@
             left: 0;
             padding: 16px 10px;
             color: #ffffff;
-            z-index: 100;
+            z-index: 1000;
             overflow-x: hidden;
-            transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s ease;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -107,6 +113,7 @@
             transition: all 0.15s ease;
             cursor: pointer;
             white-space: nowrap;
+            min-height: 44px;
         }
 
         /* CONTENEDOR DE ICONOS/RENDERS EN SIDEBAR */
@@ -141,7 +148,7 @@
             background-color: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--sidebar-border);
             color: #94a3b8;
-            padding: 8px 12px;
+            padding: 10px 12px;
             border-radius: 6px;
             display: flex;
             align-items: center;
@@ -151,6 +158,7 @@
             font-size: 0.82rem;
             transition: all 0.2s ease;
             white-space: nowrap;
+            min-height: 44px;
         }
 
         .sidebar-toggle-btn:hover {
@@ -158,7 +166,7 @@
             color: #ffffff;
         }
 
-        /* ESTADOS COLAPSADOS (MODO COMPACTO - 65px) */
+        /* ESTADOS COLAPSADOS (MODO COMPACTO DESKTOP - 65px) */
         body.sidebar-collapsed {
             --sidebar-width: 65px;
         }
@@ -187,6 +195,7 @@
             margin-left: var(--sidebar-width);
             padding: 24px 28px;
             transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            max-width: 100%;
         }
 
         .page-title {
@@ -225,8 +234,9 @@
             background-color: #ffffff;
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            padding: 8px 12px;
+            padding: 10px 12px;
             transition: all 0.2s ease;
+            min-height: 48px;
         }
 
         .cat-item-card:hover {
@@ -235,9 +245,7 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
 
-        /* ======================================================= */
-        /* HOVER POPUP / GLOBO CORPORATIVO PARA GRUPOS ISO */
-        /* ======================================================= */
+        /* GLOBO CORPORATIVO ADAPTABLE PARA GRUPOS ISO */
         .iso-popup-wrapper {
             position: relative;
             cursor: pointer;
@@ -252,9 +260,11 @@
             border: 1px solid var(--border-color);
             transition: all 0.2s ease;
             height: 100%;
+            min-height: 52px;
         }
 
-        .iso-popup-wrapper:hover .iso-popup-card {
+        .iso-popup-wrapper:hover .iso-popup-card,
+        .iso-popup-wrapper:active .iso-popup-card {
             border-color: var(--brand-blue);
             background-color: #ffffff;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
@@ -264,6 +274,7 @@
             visibility: hidden;
             opacity: 0;
             width: 250px;
+            max-width: 90vw;
             background-color: #0f172a;
             color: #f8fafc;
             text-align: left;
@@ -282,7 +293,6 @@
             border: 2px solid #334155;
         }
 
-        /* Flecha apuntando hacia abajo */
         .iso-tooltip-box::after {
             content: "";
             position: absolute;
@@ -294,13 +304,13 @@
             border-color: #0f172a transparent transparent transparent;
         }
 
-        .iso-popup-wrapper:hover .iso-tooltip-box {
+        .iso-popup-wrapper:hover .iso-tooltip-box,
+        .iso-popup-wrapper:focus .iso-tooltip-box {
             visibility: visible;
             opacity: 1;
             transform: translateX(-50%) translateY(0);
         }
 
-        /* BORDES PERSONALIZADOS POR ISO EN POPUPS */
         .tooltip-iso-p { border-color: var(--iso-p) !important; }
         .tooltip-iso-m { border-color: var(--iso-m) !important; }
         .tooltip-iso-k { border-color: var(--iso-k) !important; }
@@ -379,6 +389,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            min-height: 70px;
         }
 
         .cnc-card-pasadas {
@@ -464,16 +475,17 @@
             color: #38bdf8;
         }
 
-        /* BOTONES CORPORATIVOS */
+        /* BOTONES CORPORATIVOS OPTIMIZADOS PARA TÁCTIL */
         .btn-calc {
             background-color: var(--brand-blue);
             color: #ffffff;
             font-weight: 700;
             font-size: 0.85rem;
             border: none;
-            padding: 8px 16px;
+            padding: 10px 16px;
             border-radius: 6px;
             transition: background-color 0.15s ease;
+            min-height: 44px;
         }
         .btn-calc:hover {
             background-color: var(--brand-blue-hover);
@@ -486,8 +498,9 @@
             font-weight: 700;
             font-size: 0.85rem;
             border: none;
-            padding: 8px 16px;
+            padding: 10px 16px;
             border-radius: 6px;
+            min-height: 44px;
         }
         .btn-clear:hover {
             background-color: #475569;
@@ -496,9 +509,10 @@
 
         .form-select-sm, .form-control-sm {
             font-size: 0.85rem;
-            padding: 5px 10px;
+            padding: 6px 10px;
             border-radius: 6px;
             border-color: var(--border-color);
+            min-height: 38px;
         }
 
         .dash-metric-card {
@@ -561,6 +575,7 @@
             padding: 8px 18px;
             background-color: #ffffff;
             border: 1px solid var(--border-color);
+            min-height: 40px;
         }
 
         .nav-pills .nav-link.active {
@@ -586,37 +601,102 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        @media (max-width: 768px) {
+        /* ======================================================= */
+        /* REGIA MEDIA QUERIES PARA DISPOSITIVOS MÓVILES Y TABLETS */
+        /* ======================================================= */
+        @media (max-width: 991.98px) {
+            :root {
+                --sidebar-width: 0px;
+            }
+
             .sidebar {
                 width: 100%;
                 height: auto;
-                position: relative;
-                padding: 10px;
-                display: flex;
-                flex-direction: column;
+                position: sticky;
+                top: 0;
+                padding: 10px 14px;
+                flex-direction: row;
+                align-items: center;
+                border-right: none;
+                border-bottom: 1px solid var(--sidebar-border);
             }
 
-            .sidebar-brand img { max-height: 40px; }
+            .sidebar-brand {
+                margin-bottom: 0;
+                padding-bottom: 0;
+                border-bottom: none;
+                width: auto;
+            }
+
+            .sidebar-brand img {
+                max-height: 36px;
+            }
 
             .sidebar-nav {
                 display: flex;
                 flex-direction: row;
                 overflow-x: auto;
                 white-space: nowrap;
-                padding-bottom: 5px;
-                gap: 5px;
+                margin-left: 10px;
+                gap: 6px;
+            }
+
+            .sidebar-nav li {
+                margin-bottom: 0;
+            }
+
+            .sidebar-nav a {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+                min-height: 38px;
+            }
+
+            .sidebar-nav a .nav-icon-box {
+                margin-right: 6px;
+            }
+
+            .sidebar-toggle-btn {
+                display: none !important;
             }
 
             .main-content {
                 margin-left: 0;
-                padding: 15px 10px;
+                padding: 16px 14px;
+            }
+
+            .iso-tooltip-box {
+                bottom: auto;
+                top: 110%;
+                left: 50%;
+            }
+
+            .iso-tooltip-box::after {
+                top: auto;
+                bottom: 100%;
+                border-color: transparent transparent #0f172a transparent;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .page-title {
+                font-size: 1.2rem;
+            }
+            .page-subtitle {
+                font-size: 0.78rem;
+                margin-bottom: 14px;
+            }
+            .dash-metric-value {
+                font-size: 1.3rem;
+            }
+            .cnc-value {
+                font-size: 1.05rem;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Sidebar Lateral Dinámico con Renders Vectoriales Integrados -->
+    <!-- Sidebar Lateral Dinámico / Barra Superior Adaptable Móvil -->
     <div class="sidebar" id="sidebar">
         <div>
             <div class="sidebar-brand">
@@ -695,7 +775,7 @@
             </ul>
         </div>
 
-        <!-- Botón de Colapsar / Expandir Menú -->
+        <!-- Botón de Colapsar / Expandir Menú en Escritorio -->
         <div class="sidebar-toggle-btn" id="sidebarToggle" onclick="toggleSidebar()" title="Colapsar / Expandir Menú">
             <i class="bi bi-chevron-left me-2" id="toggleIcon"></i>
             <span class="toggle-text">Colapsar Menú</span>
@@ -712,7 +792,7 @@
 
             <div class="row g-3 mb-4">
                 <!-- KPI 1: MATERIALES REGISTRADOS -->
-                <div class="col-md-3">
+                <div class="col-xl-3 col-sm-6">
                     <div class="dash-metric-card">
                         <div>
                             <span class="info-box-label">Materiales Registrados</span>
@@ -725,7 +805,7 @@
                 </div>
 
                 <!-- KPI 2: INSERTO CNMG RENDERIZADO (Métrica Sincronizada a 11) -->
-                <div class="col-md-3">
+                <div class="col-xl-3 col-sm-6">
                     <div class="dash-metric-card">
                         <div>
                             <span class="info-box-label">Catálogo de Insertos</span>
@@ -742,7 +822,7 @@
                 </div>
 
                 <!-- KPI 3: BARRA HORIZONTAL CONTINUA DE COLORES GRUPOS ISO -->
-                <div class="col-md-3">
+                <div class="col-xl-3 col-sm-6">
                     <div class="dash-metric-card">
                         <div class="w-100 me-2">
                             <div class="d-flex justify-content-between align-items-center mb-1">
@@ -763,7 +843,7 @@
                 </div>
 
                 <!-- KPI 4: EFICIENCIA MÁQUINA (TACÓMETRO / RENDIMIENTO OEE) -->
-                <div class="col-md-3">
+                <div class="col-xl-3 col-sm-6">
                     <div class="dash-metric-card">
                         <div>
                             <span class="info-box-label">Eficiencia Máquina</span>
@@ -785,18 +865,18 @@
             <div class="row g-3 mb-4">
                 <div class="col-12">
                     <div class="ui-card">
-                        <div class="ui-card-title d-flex justify-content-between align-items-center mb-3">
+                        <div class="ui-card-title d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
                             <span><i class="bi bi-box-seam me-2 text-primary"></i>Catálogo de Geometrías de Inserto Disponibles por Grupo ISO</span>
                             
                             <!-- Chips de Filtro por Grupo ISO -->
                             <div class="d-flex gap-1 flex-wrap">
-                                <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 fw-bold active" onclick="filtrarCatalogoIso('TODOS', this)" style="font-size: 0.72rem;">TODOS</button>
-                                <button type="button" class="btn btn-sm btn-outline-primary py-0 px-2 fw-bold" onclick="filtrarCatalogoIso('P', this)" style="font-size: 0.72rem;">ISO P</button>
-                                <button type="button" class="btn btn-sm btn-outline-warning text-dark py-0 px-2 fw-bold" onclick="filtrarCatalogoIso('M', this)" style="font-size: 0.72rem;">ISO M</button>
-                                <button type="button" class="btn btn-sm btn-outline-danger py-0 px-2 fw-bold" onclick="filtrarCatalogoIso('K', this)" style="font-size: 0.72rem;">ISO K</button>
-                                <button type="button" class="btn btn-sm btn-outline-success py-0 px-2 fw-bold" onclick="filtrarCatalogoIso('N', this)" style="font-size: 0.72rem;">ISO N</button>
-                                <button type="button" class="btn btn-sm btn-outline-dark py-0 px-2 fw-bold" onclick="filtrarCatalogoIso('S', this)" style="font-size: 0.72rem;">ISO S</button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 fw-bold" onclick="filtrarCatalogoIso('H', this)" style="font-size: 0.72rem;">ISO H</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 fw-bold active" onclick="filtrarCatalogoIso('TODOS', this)" style="font-size: 0.72rem; min-height: 30px;">TODOS</button>
+                                <button type="button" class="btn btn-sm btn-outline-primary py-0 px-2 fw-bold" onclick="filtrarCatalogoIso('P', this)" style="font-size: 0.72rem; min-height: 30px;">ISO P</button>
+                                <button type="button" class="btn btn-sm btn-outline-warning text-dark py-0 px-2 fw-bold" onclick="filtrarCatalogoIso('M', this)" style="font-size: 0.72rem; min-height: 30px;">ISO M</button>
+                                <button type="button" class="btn btn-sm btn-outline-danger py-0 px-2 fw-bold" onclick="filtrarCatalogoIso('K', this)" style="font-size: 0.72rem; min-height: 30px;">ISO K</button>
+                                <button type="button" class="btn btn-sm btn-outline-success py-0 px-2 fw-bold" onclick="filtrarCatalogoIso('N', this)" style="font-size: 0.72rem; min-height: 30px;">ISO N</button>
+                                <button type="button" class="btn btn-sm btn-outline-dark py-0 px-2 fw-bold" onclick="filtrarCatalogoIso('S', this)" style="font-size: 0.72rem; min-height: 30px;">ISO S</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 fw-bold" onclick="filtrarCatalogoIso('H', this)" style="font-size: 0.72rem; min-height: 30px;">ISO H</button>
                             </div>
                         </div>
                         
@@ -916,7 +996,7 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN INFERIOR: GRUPOS ISO CON POPUP / HOVER FLOTANTE Y FÓRMULAS CNC -->
+            <!-- SECCIÓN INFERIOR REORGANIZADA: MATERIALES ISO CON POPUP / HOVER FLOTANTE Y FÓRMULAS CNC -->
             <div class="row g-3 mb-4 align-items-stretch">
                 <!-- LISTA DE GRUPOS DE MATERIALES ISO CON GLOBO POPUP AL PASAR EL MOUSE (HOVER) -->
                 <div class="col-lg-6">
@@ -929,11 +1009,11 @@
                             <div class="row g-2">
                                 <!-- ISO P -->
                                 <div class="col-md-4 col-6">
-                                    <div class="iso-popup-wrapper">
+                                    <div class="iso-popup-wrapper" tabindex="0">
                                         <div class="iso-popup-card">
                                             <span class="badge badge-iso-p fs-7 mb-1">ISO P</span>
                                             <div class="fw-bold small text-dark">Aceros / Aleados</div>
-                                            <small class="text-primary d-block" style="font-size: 0.7rem;">Pasa el mouse <i class="bi bi-info-circle"></i></small>
+                                            <small class="text-primary d-block" style="font-size: 0.7rem;">Información <i class="bi bi-info-circle"></i></small>
                                         </div>
                                         <div class="iso-tooltip-box tooltip-iso-p">
                                             <strong class="text-primary border-bottom border-secondary pb-1 d-block mb-1">ISO P (Aceros y Aleaciones):</strong>
@@ -947,11 +1027,11 @@
 
                                 <!-- ISO M -->
                                 <div class="col-md-4 col-6">
-                                    <div class="iso-popup-wrapper">
+                                    <div class="iso-popup-wrapper" tabindex="0">
                                         <div class="iso-popup-card">
                                             <span class="badge badge-iso-m fs-7 mb-1">ISO M</span>
                                             <div class="fw-bold small text-dark">Inoxidables</div>
-                                            <small class="text-warning-emphasis d-block" style="font-size: 0.7rem;">Pasa el mouse <i class="bi bi-info-circle"></i></small>
+                                            <small class="text-warning-emphasis d-block" style="font-size: 0.7rem;">Información <i class="bi bi-info-circle"></i></small>
                                         </div>
                                         <div class="iso-tooltip-box tooltip-iso-m">
                                             <strong class="text-warning border-bottom border-secondary pb-1 d-block mb-1">ISO M (Inoxidables):</strong>
@@ -965,11 +1045,11 @@
 
                                 <!-- ISO K -->
                                 <div class="col-md-4 col-6">
-                                    <div class="iso-popup-wrapper">
+                                    <div class="iso-popup-wrapper" tabindex="0">
                                         <div class="iso-popup-card">
                                             <span class="badge badge-iso-k fs-7 mb-1">ISO K</span>
                                             <div class="fw-bold small text-dark">Fundición Hierro</div>
-                                            <small class="text-danger d-block" style="font-size: 0.7rem;">Pasa el mouse <i class="bi bi-info-circle"></i></small>
+                                            <small class="text-danger d-block" style="font-size: 0.7rem;">Información <i class="bi bi-info-circle"></i></small>
                                         </div>
                                         <div class="iso-tooltip-box tooltip-iso-k">
                                             <strong class="text-danger border-bottom border-secondary pb-1 d-block mb-1">ISO K (Fundiciones):</strong>
@@ -982,11 +1062,11 @@
 
                                 <!-- ISO N -->
                                 <div class="col-md-4 col-6">
-                                    <div class="iso-popup-wrapper">
+                                    <div class="iso-popup-wrapper" tabindex="0">
                                         <div class="iso-popup-card">
                                             <span class="badge badge-iso-n fs-7 mb-1">ISO N</span>
                                             <div class="fw-bold small text-dark">Aluminio / No Ferrosos</div>
-                                            <small class="text-success d-block" style="font-size: 0.7rem;">Pasa el mouse <i class="bi bi-info-circle"></i></small>
+                                            <small class="text-success d-block" style="font-size: 0.7rem;">Información <i class="bi bi-info-circle"></i></small>
                                         </div>
                                         <div class="iso-tooltip-box tooltip-iso-n">
                                             <strong class="text-success border-bottom border-secondary pb-1 d-block mb-1">ISO N (No Ferrosos):</strong>
@@ -999,11 +1079,11 @@
 
                                 <!-- ISO S -->
                                 <div class="col-md-4 col-6">
-                                    <div class="iso-popup-wrapper">
+                                    <div class="iso-popup-wrapper" tabindex="0">
                                         <div class="iso-popup-card">
                                             <span class="badge badge-iso-s fs-7 mb-1">ISO S</span>
                                             <div class="fw-bold small text-dark">Titanio / Inconel</div>
-                                            <small class="text-danger-emphasis d-block" style="font-size: 0.7rem;">Pasa el mouse <i class="bi bi-info-circle"></i></small>
+                                            <small class="text-danger-emphasis d-block" style="font-size: 0.7rem;">Información <i class="bi bi-info-circle"></i></small>
                                         </div>
                                         <div class="iso-tooltip-box tooltip-iso-s">
                                             <strong class="text-danger border-bottom border-secondary pb-1 d-block mb-1">ISO S (Superaleaciones):</strong>
@@ -1016,11 +1096,11 @@
 
                                 <!-- ISO H -->
                                 <div class="col-md-4 col-6">
-                                    <div class="iso-popup-wrapper">
+                                    <div class="iso-popup-wrapper" tabindex="0">
                                         <div class="iso-popup-card">
                                             <span class="badge badge-iso-h fs-7 mb-1">ISO H</span>
                                             <div class="fw-bold small text-dark">Aceros Templados</div>
-                                            <small class="text-secondary d-block" style="font-size: 0.7rem;">Pasa el mouse <i class="bi bi-info-circle"></i></small>
+                                            <small class="text-secondary d-block" style="font-size: 0.7rem;">Información <i class="bi bi-info-circle"></i></small>
                                         </div>
                                         <div class="iso-tooltip-box tooltip-iso-h">
                                             <strong class="text-secondary border-bottom border-secondary pb-1 d-block mb-1">ISO H (Templados >45 HRC):</strong>
@@ -1041,38 +1121,38 @@
                             <div class="ui-card-title mb-2"><i class="bi bi-calculator-fill me-2 text-primary"></i>Formulario de Ecuaciones CNC Completas</div>
                             <p class="small text-muted mb-2">Formulario oficial de parámetros de corte para Torneado, Fresado, Barrenado y Roscado.</p>
                             
-                            <div class="bg-dark text-white rounded p-2 small font-monospace">
-                                <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary">
+                            <div class="bg-dark text-white rounded p-2 small font-monospace overflow-x-auto">
+                                <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary gap-2">
                                     <span class="text-info fw-bold">Velocidad Corte (Vc):</span>
-                                    <span class="text-warning">Vc = (π × D × n) / 1000 [m/min]</span>
+                                    <span class="text-warning text-nowrap">Vc = (π × D × n) / 1000 [m/min]</span>
                                 </div>
-                                <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary">
+                                <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary gap-2">
                                     <span class="text-info fw-bold">RPM Husillo (n):</span>
-                                    <span class="text-warning">n = (Vc × 1000) / (π × D) [rev/min]</span>
+                                    <span class="text-warning text-nowrap">n = (Vc × 1000) / (π × D) [rev/min]</span>
                                 </div>
-                                <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary">
+                                <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary gap-2">
                                     <span class="text-info fw-bold">Avance por diente (fz):</span>
-                                    <span class="text-warning">fz = Vf / (z × n) [mm/diente]</span>
+                                    <span class="text-warning text-nowrap">fz = Vf / (z × n) [mm/diente]</span>
                                 </div>
-                                <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary">
+                                <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary gap-2">
                                     <span class="text-info fw-bold">Avance de Máquina (Vf):</span>
-                                    <span class="text-warning">Vf = fz × z × n [mm/min]</span>
+                                    <span class="text-warning text-nowrap">Vf = fz × z × n [mm/min]</span>
                                 </div>
-                                <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary">
+                                <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary gap-2">
                                     <span class="text-info fw-bold">Prof. Axial / Radial (ap / ae):</span>
-                                    <span class="text-warning">ap = Prof. Corte | ae = Ancho Corte [mm]</span>
+                                    <span class="text-warning text-nowrap">ap = Prof. Corte | ae = Ancho Corte [mm]</span>
                                 </div>
-                                <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary">
+                                <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary gap-2">
                                     <span class="text-info fw-bold">Tasa Remoción (MRR):</span>
-                                    <span class="text-warning">MRR = (ap × ae × Vf) / 1000 [cm³/min]</span>
+                                    <span class="text-warning text-nowrap">MRR = (ap × ae × Vf) / 1000 [cm³/min]</span>
                                 </div>
-                                <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary">
+                                <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary gap-2">
                                     <span class="text-info fw-bold">Potencia Corte (Pc):</span>
-                                    <span class="text-warning">Pc = (MRR × kc) / 60000 [kW]</span>
+                                    <span class="text-warning text-nowrap">Pc = (MRR × kc) / 60000 [kW]</span>
                                 </div>
-                                <div class="d-flex justify-content-between">
+                                <div class="d-flex justify-content-between gap-2">
                                     <span class="text-info fw-bold">Tiempo de Corte (Tc):</span>
-                                    <span class="text-warning">Tc = Longitud L / Vf [minutos]</span>
+                                    <span class="text-warning text-nowrap">Tc = Longitud L / Vf [minutos]</span>
                                 </div>
                             </div>
                         </div>
