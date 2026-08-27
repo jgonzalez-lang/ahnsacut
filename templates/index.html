@@ -418,7 +418,7 @@
             <li><a id="nav-fresado" onclick="mostrarPestana('fresado')"><i class="bi bi-disc me-2"></i>Fresado</a></li>
             <li><a id="nav-torneado" onclick="mostrarPestana('torneado')"><i class="bi bi-gear-wide-connected me-2"></i>Torneado</a></li>
             <li><a id="nav-barrenado" onclick="mostrarPestana('barrenado')"><i class="bi bi-pin-angle me-2"></i>Barrenado</a></li>
-            <li><a id="nav-roscado" onclick="mostrarPestana('torneado')"><i class="bi bi-symmetry-horizontal me-2"></i>Roscado</a></li>
+            <li><a id="nav-roscado" onclick="mostrarPestana('roscado')"><i class="bi bi-symmetry-horizontal me-2"></i>Roscado</a></li>
         </ul>
     </div>
 
@@ -1427,9 +1427,9 @@
                 </div>
 
                 <div class="row g-2 mb-3 align-items-end">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label class="form-label small text-muted fw-bold mb-1">Buscar Material</label>
-                        <input type="text" list="lista-materiales" id="material_barrenado" class="form-control form-control-sm fw-semibold text-primary" placeholder="Escriba ej: 4140, Inox, Aluminio..." oninput="alCambiarMaterialBarrenado()" onchange="alCambiarMaterialBarrenado()">
+                        <input type="text" list="lista-materiales" id="material_barrenado" class="form-control form-control-sm fw-semibold text-primary" placeholder="Escriba ej: 4140, Inox..." oninput="alCambiarMaterialBarrenado()" onchange="alCambiarMaterialBarrenado()">
                     </div>
                     
                     <!-- CELDA GRUPO ISO -->
@@ -1440,13 +1440,21 @@
                         </div>
                     </div>
 
-                    <!-- CELDA RECUBRIMIENTO AUTOMÁTICO DE ALTO CONTRASTE -->
-                    <div class="col-md-3">
-                        <label class="form-label small text-muted fw-bold mb-1">Recubrimiento Recomendado</label>
-                        <div class="input-group input-group-sm">
-                            <span class="input-group-text bg-dark text-warning border-0"><i class="bi bi-shield-fill-check"></i></span>
-                            <input type="text" id="recubrimiento_barrenado" class="form-control form-control-sm bg-dark text-white fw-bold border-0" value="-" readonly style="font-size: 0.82rem;" title="Recubrimiento estándar de mercado según el Grupo ISO">
-                        </div>
+                    <!-- CELDA RECUBRIMIENTO AUTOMÁTICO -->
+                    <div class="col-md-2">
+                        <label class="form-label small text-muted fw-bold mb-1">Recubrimiento</label>
+                        <input type="text" id="recubrimiento_barrenado" class="form-control form-control-sm bg-dark text-white fw-bold border-0" value="-" readonly style="font-size: 0.8rem;" title="Recubrimiento sugerido">
+                    </div>
+
+                    <!-- NUEVAS CELDAS: FLAUTAS Y ÁNGULO DE PUNTA SUGERIDOS -->
+                    <div class="col-md-2">
+                        <label class="form-label small text-muted fw-bold mb-1">Flautas Broca</label>
+                        <input type="text" id="flautas_barrenado" class="form-control form-control-sm bg-light fw-bold text-primary" value="-" readonly style="font-size: 0.8rem;">
+                    </div>
+
+                    <div class="col-md-1">
+                        <label class="form-label small text-muted fw-bold mb-1">Ángulo Punta</label>
+                        <input type="text" id="angulo_sugerido_barrenado" class="form-control form-control-sm bg-light fw-bold text-dark text-center" value="140°" readonly style="font-size: 0.8rem;">
                     </div>
 
                     <div class="col-md-1">
@@ -1461,8 +1469,8 @@
                         <label class="form-label small text-muted fw-bold mb-1">f (mm/rev)</label>
                         <input type="number" step="0.01" id="fn_barrenado" class="form-control form-control-sm fw-bold text-primary" placeholder="Ej: 0.12" oninput="actualizarBarrenadoEnVivo()" onchange="actualizarBarrenadoEnVivo()">
                     </div>
-                    <div class="col-md-2">
-                        <label class="form-label small text-muted fw-bold mb-1">Profundidad L (mm)</label>
+                    <div class="col-md-1">
+                        <label class="form-label small text-muted fw-bold mb-1">Prof. L (mm)</label>
                         <input type="number" step="1" id="long_barrenado" class="form-control form-control-sm" placeholder="Ej: 85" oninput="actualizarBarrenadoEnVivo()" onchange="actualizarBarrenadoEnVivo()">
                     </div>
                 </div>
@@ -1529,7 +1537,200 @@
             </div>
         </div>
 
-    </div>
+        <!-- VISTA: ROSCADO CON BASE DE DATOS Y FRESA DE ROSCA -->
+        <div id="vista-roscado" style="display: none;">
+            <h1 class="page-title">Roscado / Machueleado y Thread Milling CNC</h1>
+            <p class="page-subtitle">Selección estándar de roscas (M, MF, UNC, UNF, NPT, BSPP, UNJ) y cálculo de machuelos o fresado helicoidal.</p>
+
+            <div class="ui-card mb-4">
+                <div class="ui-card-title d-flex justify-content-between align-items-center mb-3">
+                    <span><i class="bi bi-symmetry-horizontal me-2 text-primary"></i>Calculadora de Roscado Industrial</span>
+                    <span class="badge bg-secondary fs-7" id="badgeTipoMachueloInfo">Machuelo de Corte (Estándar)</span>
+                </div>
+
+                <!-- FILA 1: MATERIAL, ISO, MÉTODO Y SELECCIÓN ESTÁNDAR DE ROSCA -->
+                <div class="row g-2 mb-2 align-items-end">
+                    <div class="col-md-2">
+                        <label class="form-label small text-muted fw-bold mb-1">Buscar Material</label>
+                        <input type="text" list="lista-materiales" id="material_roscado" class="form-control form-control-sm fw-semibold text-primary" placeholder="Escriba ej: 4140, Inox..." oninput="alCambiarMaterialRoscado()" onchange="alCambiarMaterialRoscado()">
+                    </div>
+
+                    <div class="col-md-1">
+                        <label class="form-label small text-muted fw-bold mb-1">Grupo ISO</label>
+                        <div id="boxIsoRoscado" class="p-1 rounded text-center fw-bold text-white bg-secondary" style="height: 31px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem;">
+                            <span id="txtIsoRoscado">-</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label small text-muted fw-bold mb-1">Método de Roscado</label>
+                        <select id="metodo_roscado" class="form-select form-select-sm fw-bold text-primary" onchange="alCambiarMetodoRoscado()">
+                            <option value="machuelo">Machuelo Tradicional</option>
+                            <option value="fresa">Fresa de Rosca (Thread Mill)</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label small text-muted fw-bold mb-1">Estándar de Rosca Normalizado</label>
+                        <select id="select_estandar_rosca" class="form-select form-select-sm fw-bold text-dark" onchange="seleccionarRoscaEstandar()">
+                            <option value="">-- Personalizado / Manual --</option>
+                            <optgroup label="Métrica Estándar (M)">
+                                <option value="6,1.0">M6 × 1.0</option>
+                                <option value="8,1.25">M8 × 1.25</option>
+                                <option value="10,1.5">M10 × 1.5</option>
+                                <option value="12,1.75">M12 × 1.75</option>
+                                <option value="16,2.0">M16 × 2.0</option>
+                                <option value="20,2.5">M20 × 2.5</option>
+                            </optgroup>
+                            <optgroup label="Métrica Fina (MF)">
+                                <option value="8,1.0">M8 × 1.0</option>
+                                <option value="10,1.25">M10 × 1.25</option>
+                                <option value="12,1.25">M12 × 1.25</option>
+                                <option value="12,1.5">M12 × 1.5</option>
+                                <option value="14,1.5">M14 × 1.5</option>
+                            </optgroup>
+                            <optgroup label="Americana Coarse (UNC)">
+                                <option value="6.35,1.27">1/4" - 20 UNC</option>
+                                <option value="7.938,1.411">5/16" - 18 UNC</option>
+                                <option value="9.525,1.588">3/8" - 16 UNC</option>
+                                <option value="12.7,1.954">1/2" - 13 UNC</option>
+                                <option value="15.875,2.309">5/8" - 11 UNC</option>
+                                <option value="19.05,2.54">3/4" - 10 UNC</option>
+                            </optgroup>
+                            <optgroup label="Americana Fine (UNF)">
+                                <option value="6.35,0.907">1/4" - 28 UNF</option>
+                                <option value="7.938,1.058">5/16" - 24 UNF</option>
+                                <option value="9.525,1.058">3/8" - 24 UNF</option>
+                                <option value="12.7,1.27">1/2" - 20 UNF</option>
+                            </optgroup>
+                            <optgroup label="Tubería Sellada (NPT)">
+                                <option value="10.29,0.941">1/8" - 27 NPT</option>
+                                <option value="13.72,1.411">1/4" - 18 NPT</option>
+                                <option value="17.15,1.411">3/8" - 18 NPT</option>
+                                <option value="21.34,1.814">1/2" - 14 NPT</option>
+                                <option value="26.67,1.814">3/4" - 14 NPT</option>
+                            </optgroup>
+                            <optgroup label="Tubería Paralela (BSPP / G)">
+                                <option value="9.73,0.907">G 1/8"</option>
+                                <option value="13.16,1.337">G 1/4"</option>
+                                <option value="16.66,1.337">G 3/8"</option>
+                                <option value="20.96,1.814">G 1/2"</option>
+                            </optgroup>
+                            <optgroup label="Aeroespacial (UNJ)">
+                                <option value="6.35,0.907">1/4" - 28 UNJ</option>
+                                <option value="9.525,1.058">3/8" - 24 UNJ</option>
+                                <option value="12.7,1.27">1/2" - 20 UNJ</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label small text-muted fw-bold mb-1">Mat. Herramienta</label>
+                        <input type="text" id="sustrato_machuelo_roscado" class="form-control form-control-sm bg-dark text-white fw-bold border-0" value="-" readonly style="font-size: 0.78rem;">
+                    </div>
+                </div>
+
+                <!-- FILA 2: PARÁMETROS GEOMÉTRICOS Y CONTROLES DINÁMICOS -->
+                <div class="row g-2 mb-3 align-items-end">
+                    <div class="col-md-2" id="col_tipo_machuelo">
+                        <label class="form-label small text-muted fw-bold mb-1">Tipo de Machuelo</label>
+                        <select id="tipo_machuelo_roscado" class="form-select form-select-sm fw-bold text-dark" onchange="actualizarRoscadoEnVivo()">
+                            <option value="corte">Corte (Con Viruta)</option>
+                            <option value="laminacion">Laminación (Sin Viruta)</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label small text-muted fw-bold mb-1">D. Rosca Nominal (mm)</label>
+                        <input type="number" step="0.001" id="d_roscado" class="form-control form-control-sm fw-bold" placeholder="Ej: 12.7" oninput="actualizarRoscadoEnVivo()" onchange="actualizarRoscadoEnVivo()">
+                    </div>
+
+                    <div class="col-md-1">
+                        <label class="form-label small text-muted fw-bold mb-1">Paso (mm)</label>
+                        <input type="number" step="0.001" id="paso_roscado" class="form-control form-control-sm fw-bold text-primary" placeholder="Ej: 1.954" oninput="actualizarRoscadoEnVivo()" onchange="actualizarRoscadoEnVivo()">
+                    </div>
+
+                    <!-- CAMPOS DINÁMICOS EXCLUSIVOS PARA FRESA DE ROSCA -->
+                    <div class="col-md-1" id="box_d_fresa" style="display: none;">
+                        <label class="form-label small text-muted fw-bold mb-1 text-danger">Ø Fresa (mm)</label>
+                        <input type="number" step="0.1" id="d_fresa_input" class="form-control form-control-sm fw-bold border-danger" placeholder="Ej: 10" oninput="actualizarRoscadoEnVivo()">
+                    </div>
+
+                    <div class="col-md-1" id="box_z_fresa" style="display: none;">
+                        <label class="form-label small text-muted fw-bold mb-1 text-danger">Filos z</label>
+                        <input type="number" step="1" id="z_fresa_input" class="form-control form-control-sm fw-bold border-danger" value="4" oninput="actualizarRoscadoEnVivo()">
+                    </div>
+
+                    <div class="col-md-1" id="box_fz_fresa" style="display: none;">
+                        <label class="form-label small text-muted fw-bold mb-1 text-danger">fz (mm/t)</label>
+                        <input type="number" step="0.01" id="fz_fresa_input" class="form-control form-control-sm fw-bold border-danger" value="0.05" oninput="actualizarRoscadoEnVivo()">
+                    </div>
+
+                    <div class="col-md-1" id="col_pct_altura">
+                        <label class="form-label small text-muted fw-bold mb-1">% Altura</label>
+                        <input type="number" step="1" id="pct_rosca_input" class="form-control form-control-sm text-center" value="75" oninput="actualizarRoscadoEnVivo()" onchange="actualizarRoscadoEnVivo()">
+                    </div>
+
+                    <div class="col-md-1">
+                        <label class="form-label small text-muted fw-bold mb-1">Vc (m/min)</label>
+                        <input type="number" step="0.1" id="vc_roscado" class="form-control form-control-sm" placeholder="Auto" oninput="actualizarRoscadoEnVivo()" onchange="actualizarRoscadoEnVivo()">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label small text-muted fw-bold mb-1">Prof. L (mm)</label>
+                        <input type="number" step="1" id="long_roscado" class="form-control form-control-sm" placeholder="Ej: 85" oninput="actualizarRoscadoEnVivo()" onchange="actualizarRoscadoEnVivo()">
+                    </div>
+
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-calc w-100 py-1" onclick="actualizarRoscadoEnVivo()"><i class="bi bi-play-fill"></i></button>
+                    </div>
+                </div>
+
+                <!-- TARJETAS DE MÉTRICAS -->
+                <div class="row g-2">
+                    <div class="col-md-3 col-6">
+                        <div class="cnc-card cnc-card-pasadas">
+                            <span class="cnc-label text-info">1. Broca Estándar</span>
+                            <span class="cnc-value text-warning fs-4" id="roscBrocaStd">-</span>
+                            <div class="mt-1"><span class="unit-badge unit-vc">mm</span></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-6">
+                        <div class="cnc-card cnc-card-pasadas">
+                            <span class="cnc-label text-info">2. Broca (% Enganche)</span>
+                            <span class="cnc-value text-warning fs-4" id="roscBrocaPct">-</span>
+                            <div class="mt-1"><span class="unit-badge unit-vf">mm</span></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-6">
+                        <div class="cnc-card">
+                            <span class="cnc-label">3. RPM Husillo</span>
+                            <span class="cnc-value" id="roscRpm">-</span>
+                            <div class="mt-1"><span class="unit-badge unit-rpm">rev / min</span></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-6">
+                        <div class="cnc-card">
+                            <span class="cnc-label" id="lblVfRoscado">4. Feed Rate (Vf)</span>
+                            <span class="cnc-value text-success fw-bold" id="roscVf">-</span>
+                            <div class="mt-1"><span class="unit-badge unit-vf">mm / min</span></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-6">
+                        <div class="cnc-card">
+                            <span class="cnc-label">5. Tiempo Ciclo</span>
+                            <span class="cnc-value text-info fw-bold" id="roscTiempo">-</span>
+                            <div class="mt-1"><span class="unit-badge unit-time" id="roscTiempoSeg">- seg</span></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
 
     <!-- MODAL DE ZOOM -->
     <div class="modal fade" id="modalImageZoom" tabindex="-1" aria-hidden="true">
@@ -1898,12 +2099,14 @@
                 });
         }
 
-        // 1. Detección síncrona e instantánea de Grupo ISO y Recubrimiento
+        // 1. DETECCIÓN INSTANTÁNEA ISO, RECUBRIMIENTO Y FLAUTAS
         function alCambiarMaterialBarrenado() {
             var mat = getValSeguro("material_barrenado").toLowerCase();
             var boxIso = document.getElementById("boxIsoBarrenado");
             var txtIso = document.getElementById("txtIsoBarrenado");
             var recElem = document.getElementById("recubrimiento_barrenado");
+            var flautasElem = document.getElementById("flautas_barrenado");
+            var anguloElem = document.getElementById("angulo_sugerido_barrenado");
 
             var MAPA_RECUBRIMIENTOS = {
                 'P': 'TiAlN / AlTiN (Multicapa)',
@@ -1920,6 +2123,8 @@
                     txtIso.textContent = "-";
                 }
                 if (recElem) recElem.value = "-";
+                if (flautasElem) flautasElem.value = "-";
+                if (anguloElem) anguloElem.value = "140°";
             } else {
                 var iso = 'P';
                 if (mat.includes("304") || mat.includes("316") || mat.includes("inox") || mat.includes("inoxidable")) {
@@ -1934,17 +2139,20 @@
                     iso = 'H';
                 }
 
-                // PINTADO DIRECTO E INMEDIATO EN EL DOM (SIN ESPERAR LLAMADAS FETCH O INPUTS DE L Y D)
                 if (boxIso && txtIso) {
                     boxIso.className = "p-1 rounded text-center fw-bold badge-iso-" + iso.toLowerCase() + " iso-theme-" + iso;
                     txtIso.textContent = "ISO " + iso;
                 }
 
-                if (recElem) {
-                    recElem.value = MAPA_RECUBRIMIENTOS[iso];
+                if (recElem) recElem.value = MAPA_RECUBRIMIENTOS[iso];
+
+                if (flautasElem) {
+                    flautasElem.value = (iso === 'K' || iso === 'N') ? "3 Flautas (Alta Productividad)" : "2 Flautas (Evacuación Segura)";
+                }
+                if (anguloElem) {
+                    anguloElem.value = (iso === 'H' || iso === 'S') ? "140° - 150°" : (iso === 'N' ? "130° - 135°" : "140°");
                 }
 
-                // Vaciar sugeridos previos si se cambia de material
                 var vcElem = document.getElementById("vc_barrenado");
                 var fnElem = document.getElementById("fn_barrenado");
                 if (vcElem) vcElem.value = "";
@@ -1954,7 +2162,145 @@
             actualizarBarrenadoEnVivo();
         }
 
-        // 2. Cálculo dinámico de métricas CNC
+        // DETECCIÓN DE GRUPO ISO Y SUSTRATO SUGERIDO
+        function alCambiarMaterialRoscado() {
+            var mat = getValSeguro("material_roscado").toLowerCase();
+            var boxIso = document.getElementById("boxIsoRoscado");
+            var txtIso = document.getElementById("txtIsoRoscado");
+            var sustratoElem = document.getElementById("sustrato_machuelo_roscado");
+
+            var MAPA_SUSTRATOS = {
+                'P': 'HSS-E (Cobalto) / HSS-PM',
+                'M': 'HSS-E-PM (Sinterizado)',
+                'K': 'Carburo Sólido (Solid Carbide)',
+                'N': 'HSS-E / Carburo Sólido',
+                'S': 'HSS-E-PM / Carburo Micrograno',
+                'H': 'Carburo Sólido (Ultra Dureza)'
+            };
+
+            if (!mat) {
+                if (boxIso && txtIso) {
+                    boxIso.className = "p-1 rounded text-center fw-bold text-white bg-secondary";
+                    txtIso.textContent = "-";
+                }
+                if (sustratoElem) sustratoElem.value = "-";
+            } else {
+                var iso = 'P';
+                if (mat.includes("304") || mat.includes("316") || mat.includes("inox") || mat.includes("inoxidable") || mat.includes("420") || mat.includes("410") || mat.includes("430")) {
+                    iso = 'M';
+                } else if (mat.includes("gris") || mat.includes("nodular") || mat.includes("fundicion") || mat.includes("fundición") || mat.includes("cast iron")) {
+                    iso = 'K';
+                } else if (mat.includes("aluminio") || mat.includes("6061") || mat.includes("7075") || mat.includes("bronce") || mat.includes("cobre")) {
+                    iso = 'N';
+                } else if (mat.includes("titanio") || mat.includes("inconel") || mat.includes("hastelloy") || mat.includes("waspaloy")) {
+                    iso = 'S';
+                } else if (mat.includes("templado") || mat.includes("hrc") || mat.includes("d2") || mat.includes("skd")) {
+                    iso = 'H';
+                }
+
+                if (boxIso && txtIso) {
+                    boxIso.className = "p-1 rounded text-center fw-bold badge-iso-" + iso.toLowerCase() + " iso-theme-" + iso;
+                    txtIso.textContent = "ISO " + iso;
+                }
+
+                if (sustratoElem) sustratoElem.value = MAPA_SUSTRATOS[iso];
+
+                var vcElem = document.getElementById("vc_roscado");
+                if (vcElem && document.activeElement === document.getElementById("material_roscado")) {
+                    vcElem.value = "";
+                }
+            }
+
+            actualizarRoscadoEnVivo();
+        }
+
+        // MOTOR DE CÁLCULO DIRECTO EN TIEMPO REAL (ROSCADO CNC)
+        function actualizarRoscadoEnVivo() {
+            var tipoMachuelo = getValSeguro("tipo_machuelo_roscado") || "corte";
+            var dVal = parseFloat(getValSeguro("d_roscado"));
+            var pasoVal = parseFloat(getValSeguro("paso_roscado"));
+            var pctVal = parseFloat(getValSeguro("pct_rosca_input")) || 75;
+            var vcVal = parseFloat(getValSeguro("vc_roscado")) || 15;
+            var profVal = parseFloat(getValSeguro("long_roscado"));
+
+            var badgeInfo = document.getElementById("badgeTipoMachueloInfo");
+            if (badgeInfo) {
+                badgeInfo.textContent = (tipoMachuelo === 'laminacion') ? "Machuelo de Deformación / Laminación" : "Machuelo de Corte (Estándar)";
+            }
+
+            // 1. Cálculo de Brocas Previas
+            if (!isNaN(dVal) && dVal > 0 && !isNaN(pasoVal) && pasoVal > 0) {
+                var bStd = 0, bPct = 0;
+                if (tipoMachuelo === 'laminacion') {
+                    bStd = dVal - (0.5 * pasoVal);
+                    bPct = dVal - (0.53 * (pctVal / 100.0) * pasoVal);
+                } else {
+                    bStd = dVal - pasoVal;
+                    bPct = dVal - (1.08253 * (pctVal / 100.0) * pasoVal);
+                }
+                setTexto("roscBrocaStd", bStd.toFixed(2) + " mm");
+                setTexto("roscBrocaPct", bPct.toFixed(2) + " mm");
+            } else {
+                setTexto("roscBrocaStd", "-");
+                setTexto("roscBrocaPct", "-");
+            }
+
+            // 2. Cálculo de RPM y Feed Rate (Vf)
+            if (!isNaN(dVal) && dVal > 0) {
+                var rpm = (vcVal * 1000.0) / (Math.PI * dVal);
+                var vf = (!isNaN(pasoVal) && pasoVal > 0) ? (rpm * pasoVal) : 0;
+
+                setTexto("roscRpm", rpm.toFixed(2));
+                setTexto("roscVf", vf > 0 ? vf.toFixed(2) : "-");
+
+                // 3. Tiempo de Ciclo G84
+                if (!isNaN(profVal) && profVal > 0 && vf > 0) {
+                    var tMin = (2.0 * (profVal + 5.0)) / vf;
+                    setTexto("roscTiempo", tMin.toFixed(3));
+                    setTexto("roscTiempoSeg", (tMin * 60.0).toFixed(1) + " seg");
+                } else {
+                    setTexto("roscTiempo", "-");
+                    setTexto("roscTiempoSeg", "- seg");
+                }
+            } else {
+                setTexto("roscRpm", "-");
+                setTexto("roscVf", "-");
+                setTexto("roscTiempo", "-");
+                setTexto("roscTiempoSeg", "- seg");
+            }
+        }
+
+        // LISTENERS DE TECLADO ENTER
+        document.addEventListener("DOMContentLoaded", function() {
+            var camposRoscado = [
+                "material_roscado",
+                "tipo_machuelo_roscado",
+                "d_roscado",
+                "paso_roscado",
+                "pct_rosca_input",
+                "vc_roscado",
+                "long_roscado"
+            ];
+
+            camposRoscado.forEach(function(id, index) {
+                var elem = document.getElementById(id);
+                if (elem) {
+                    elem.addEventListener("keydown", function(e) {
+                        if (e.key === "Enter") {
+                            e.preventDefault();
+                            actualizarRoscadoEnVivo();
+
+                            if (index < camposRoscado.length - 1) {
+                                var sig = document.getElementById(camposRoscado[index + 1]);
+                                if (sig) sig.focus();
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        // CÁLCULO DINÁMICO EN VIVO DE BARRENADO
         function actualizarBarrenadoEnVivo() {
             var mat = getValSeguro("material_barrenado");
             var dVal = getValSeguro("d_barrenado");
@@ -1969,7 +2315,6 @@
             var d = parseFloat(dVal);
             var prof = parseFloat(profVal);
 
-            // Validación numérica exclusiva para las 8 tarjetas de métricas (No afecta al ISO ni al Recubrimiento)
             if (isNaN(d) || d <= 0 || isNaN(prof) || prof <= 0) {
                 setTexto("barrRpm", "-");
                 setTexto("barrVf", "-");
@@ -2006,6 +2351,15 @@
                     if (data && !data.error) {
                         var vcElem = document.getElementById("vc_barrenado");
                         var fnElem = document.getElementById("fn_barrenado");
+                        var flautasElem = document.getElementById("flautas_barrenado");
+                        var anguloElem = document.getElementById("angulo_sugerido_barrenado");
+
+                        if (flautasElem && data.flautas_sugeridas) {
+                            flautasElem.value = data.flautas_sugeridas;
+                        }
+                        if (anguloElem && data.angulo_sugerido) {
+                            anguloElem.value = data.angulo_sugerido;
+                        }
 
                         if (vcElem && vcVal === "" && document.activeElement !== vcElem) {
                             vcElem.value = data.vc_sugerido;
@@ -2041,28 +2395,34 @@
                 });
         }
 
-        // 3. LISTENERS PARA ENTER Y NAVEGACIÓN ENTRE CAMPOS
+        // LISTENERS PARA NAVEGACIÓN Y CÁLCULO AL PRESIONAR ENTER EN ROSCADO
         document.addEventListener("DOMContentLoaded", function() {
-            var camposBarrenado = [
-                "material_barrenado",
-                "d_barrenado",
-                "vc_barrenado",
-                "fn_barrenado",
-                "long_barrenado",
-                "angulo_barrenado",
-                "tipo_agujero_barrenado"
+            var camposRoscado = [
+                "material_roscado",
+                "tipo_machuelo_roscado",
+                "d_roscado",
+                "paso_roscado",
+                "pct_rosca_input",
+                "vc_roscado",
+                "long_roscado"
             ];
 
-            camposBarrenado.forEach(function(id, index) {
+            camposRoscado.forEach(function(id, index) {
                 var elem = document.getElementById(id);
                 if (elem) {
                     elem.addEventListener("keydown", function(e) {
                         if (e.key === "Enter") {
                             e.preventDefault();
-                            actualizarBarrenadoEnVivo();
-
-                            if (index < camposBarrenado.length - 1) {
-                                var sig = document.getElementById(camposBarrenado[index + 1]);
+                            actualizarRoscadoEnVivo();
+if (data && !data.error) {
+                    var sustratoElem = document.getElementById("sustrato_machuelo_roscado");
+                    if (sustratoElem && data.sustrato_sugerido) {
+                        sustratoElem.value = data.sustrato_sugerido;
+                    }
+                    // ... resto del código igual ...
+                }
+                            if (index < camposRoscado.length - 1) {
+                                var sig = document.getElementById(camposRoscado[index + 1]);
                                 if (sig) sig.focus();
                             }
                         }
@@ -2077,13 +2437,15 @@
             const vTorn = document.getElementById("vista-torneado");
             const vFres = document.getElementById("vista-fresado");
             const vBarr = document.getElementById("vista-barrenado");
-            
+            const vRosc = document.getElementById("vista-roscado");
+
             document.querySelectorAll(".sidebar-nav a").forEach(el => el.classList.remove("active"));
 
             if (vDash) vDash.style.display = "none";
             if (vTorn) vTorn.style.display = "none";
             if (vFres) vFres.style.display = "none";
             if (vBarr) vBarr.style.display = "none";
+            if (vRosc) vRosc.style.display = "none";
 
             if (pestana === "dashboard") {
                 if (vDash) vDash.style.display = "block";
@@ -2094,6 +2456,9 @@
             } else if (pestana === "barrenado") {
                 if (vBarr) vBarr.style.display = "block";
                 document.getElementById("nav-barrenado")?.classList.add("active");
+            } else if (pestana === "roscado") {
+                if (vRosc) vRosc.style.display = "block";
+                document.getElementById("nav-roscado")?.classList.add("active");
             } else {
                 if (vTorn) vTorn.style.display = "block";
                 document.getElementById("nav-torneado")?.classList.add("active");
