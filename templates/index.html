@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>AhnsaCut CNC</title>
+    
+    <!-- PWA CONFIGURACIÓN E INSTALACIÓN EN MÓVILES -->
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="AhnsaCut">
+    <link rel="apple-touch-icon" href="/static/logo.png">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
@@ -78,6 +87,7 @@
             width: 100%;
             box-sizing: border-box;
             transition: padding 0.25s ease;
+            flex-shrink: 0;
         }
 
         .sidebar-brand img {
@@ -2282,7 +2292,20 @@
 
         var serieSeleccionadaActual = "DGC";
 
-        /* FUNCIONALIDAD DE COLAPSAR Y EXPANDIR MENÚ LATERAL */
+        /* REGISTRO AUTOMÁTICO DE SERVICE WORKER PARA MODO OFFLINE EN MÓVILES (PWA) */
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/static/sw.js')
+                    .then(function(reg) {
+                        console.log('AhnsaCut PWA ServiceWorker registrado con éxito en scope:', reg.scope);
+                    })
+                    .catch(function(err) {
+                        console.warn('Error al registrar ServiceWorker de AhnsaCut:', err);
+                    });
+            });
+        }
+
+        /* FUNCIONALIDAD DE COLAPSAR Y EXPANDIR MENÚ LATERAL EN ESCRITORIO */
         function toggleSidebar() {
             document.body.classList.toggle("sidebar-collapsed");
             const icon = document.getElementById("toggleIcon");
