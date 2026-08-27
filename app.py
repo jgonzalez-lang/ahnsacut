@@ -1,7 +1,8 @@
 # app.py
 
 import os
-from flask import Flask, render_template, request, jsonify
+import math
+from flask import Flask, render_template, request, jsonify, current_app
 from calc_service import (
     obtener_materiales, 
     obtener_insertos_compatibles, 
@@ -114,13 +115,8 @@ def api_calcular_ajax():
     )
     return jsonify(res if res else {})
 
-import math
-from flask import request, jsonify, current_app
-from sqlalchemy import text
-
 @app.route('/api/calcular_barrenado_ajax')
 def calcular_barrenado_ajax():
-    global db
     material = request.args.get('material', '').strip()
     
     try:
@@ -134,32 +130,20 @@ def calcular_barrenado_ajax():
     fn_raw = request.args.get('fn', '').strip()
     tipo_agujero = request.args.get('tipo_agujero', 'pasante')
 
-    # 1. Identificar Grupo ISO
     iso_detectado = 'P'
     if material:
         mat_lower = material.lower()
-        try:
-            if 'db' in globals():
-                query = text("SELECT familia_iso FROM material WHERE LOWER(material) LIKE :m LIMIT 1")
-                res = db.session.execute(query, {"m": f"%{mat_lower}%"}).fetchone()
-                if res and res[0]:
-                    iso_detectado = res[0].strip().upper()
-        except Exception:
-            pass
+        if any(x in mat_lower for x in ['304', '316', 'inox', 'inoxidable', '420', '410', '430']):
+            iso_detectado = 'M'
+        elif any(x in mat_lower for x in ['gris', 'nodular', 'fundicion', 'fundición', 'cast iron']):
+            iso_detectado = 'K'
+        elif any(x in mat_lower for x in ['aluminio', 'al ', '6061', '7075', 'bronce', 'cobre']):
+            iso_detectado = 'N'
+        elif any(x in mat_lower for x in ['titanio', 'inconel', 'hastelloy', 'waspaloy']):
+            iso_detectado = 'S'
+        elif any(x in mat_lower for x in ['templado', 'hrc', 'd2', 'skd']):
+            iso_detectado = 'H'
 
-        if iso_detectado not in ['P', 'M', 'K', 'N', 'S', 'H']:
-            if any(x in mat_lower for x in ['304', '316', 'inox', 'inoxidable', '420', '410', '430']):
-                iso_detectado = 'M'
-            elif any(x in mat_lower for x in ['gris', 'nodular', 'fundicion', 'fundición', 'cast iron']):
-                iso_detectado = 'K'
-            elif any(x in mat_lower for x in ['aluminio', 'al ', '6061', '7075', 'bronce', 'cobre']):
-                iso_detectado = 'N'
-            elif any(x in mat_lower for x in ['titanio', 'inconel', 'hastelloy', 'waspaloy']):
-                iso_detectado = 'S'
-            elif any(x in mat_lower for x in ['templado', 'hrc', 'd2', 'skd']):
-                iso_detectado = 'H'
-
-    # 2. Matriz Base por ISO + Recubrimientos
     TABLA_ISO_BARRENADO = {
         'P': {'vc_base': 85.0,  'k_fn': 0.012, 'kc': 1900, 'nombre': 'Aceros al Carbono / Aleados', 'recubrimiento': 'TiAlN / AlTiN (Multicapa)'},
         'M': {'vc_base': 45.0,  'k_fn': 0.010, 'kc': 2100, 'nombre': 'Aceros Inoxidables',         'recubrimiento': 'TiAlN Nano-Lube'},
@@ -171,7 +155,6 @@ def calcular_barrenado_ajax():
 
     config_iso = TABLA_ISO_BARRENADO.get(iso_detectado, TABLA_ISO_BARRENADO['P'])
 
-    # 3. Factor L/D y Broca Sugerida
     veces_diametro = (profundidad / diametro) if diametro > 0 else 0
     if veces_diametro <= 3:
         factor_ld = 1.0
@@ -189,7 +172,6 @@ def calcular_barrenado_ajax():
         factor_ld = 0.60
         broca_sugerida = f"{math.ceil(veces_diametro)}×D"
 
-    # 4. Lógica Técnica: Recomendación de Flautas (2 vs 3) y Ángulo de Punta
     if iso_detectado in ['K', 'N'] and veces_diametro <= 5:
         flautas_sugeridas = "3 Flautas (Alta Productividad)"
     elif iso_detectado == 'P' and veces_diametro <= 3:
@@ -204,7 +186,6 @@ def calcular_barrenado_ajax():
     else:
         angulo_sugerido = "140° (Estándar)"
 
-    # 5. Cálculo de Vc y fn Sugeridos
     vc_sugerido = round(config_iso['vc_base'] * factor_ld, 1)
     fn_sugerido = round(config_iso['k_fn'] * (diametro ** 0.85), 2) if diametro > 0 else 0
 
@@ -218,7 +199,6 @@ def calcular_barrenado_ajax():
     except ValueError:
         fn_final = fn_sugerido
 
-    # 6. Cálculos CNC Dinámicos
     rpm = (vc_final * 1000) / (math.pi * diametro) if diametro > 0 else 0
     vf = fn_final * rpm
     mrr = (math.pi * (diametro ** 2) / 4) * vf / 1000 if diametro > 0 else 0
@@ -234,7 +214,6 @@ def calcular_barrenado_ajax():
     tiempo = profundidad_efectiva / vf if vf > 0 else 0
     vtr = mrr * tiempo
 
-    # 7. Alerta de Refrigeración
     if veces_diametro <= 3:
         lubricacion = "Inundación Externa Suficiente (Refrigerante Interno Opcional)"
         tipo_alerta = "success"
@@ -268,8 +247,6 @@ def calcular_barrenado_ajax():
         'lubricacion': lubricacion,
         'tipo_alerta': tipo_alerta
     })
-import math
-from flask import request, jsonify
 
 @app.route('/api/calcular_fresado_ajax')
 def calcular_fresado_ajax():
@@ -290,7 +267,6 @@ def calcular_fresado_ajax():
     if not material:
         return jsonify({})
 
-    # 1. Identificar Grupo ISO del Material
     iso_detectado = 'P'
     mat_lower = material.lower()
     
@@ -305,8 +281,6 @@ def calcular_fresado_ajax():
     elif any(x in mat_lower for x in ['templado', 'hrc', 'd2', 'skd']):
         iso_detectado = 'H'
 
-    # 2. Asignación de Rompevirutas Oficiales Sumitomo por Serie e ISO
-    # Serie DGC (Dual-G-Cutter)
     MAPA_ROMPEVIRUTAS_DGC = {
         'P': {'rvp': 'G (Corte General / Aceros)',        'vc': 180.0, 'fz': 0.15},
         'M': {'rvp': 'FL (Ligero / Anti-Adherente Inox)', 'vc': 120.0, 'fz': 0.12},
@@ -316,7 +290,6 @@ def calcular_fresado_ajax():
         'H': {'rvp': 'H (Alta Dureza / Reforzado)',       'vc': 60.0,  'fz': 0.08}
     }
 
-    # Serie WEZ (WaveMill 90°)
     MAPA_ROMPEVIRUTAS_WEZ = {
         'P': {'rvp': 'G (Geometría Universal Aceros)',    'vc': 200.0, 'fz': 0.14},
         'M': {'rvp': 'F (Filo Afilado / Acero Inox)',     'vc': 130.0, 'fz': 0.10},
@@ -326,7 +299,6 @@ def calcular_fresado_ajax():
         'H': {'rvp': 'P (Corte Interrumpido Templados)', 'vc': 70.0,  'fz': 0.07}
     }
 
-    # Seleccionar matriz según serie activa
     if 'WEZ' in serie:
         config = MAPA_ROMPEVIRUTAS_WEZ.get(iso_detectado, MAPA_ROMPEVIRUTAS_WEZ['P'])
     else:
@@ -336,7 +308,6 @@ def calcular_fresado_ajax():
     vc_base = config['vc']
     fz_base = config['fz']
 
-    # 3. Cálculos CNC Dinámicos
     fz_final = float(fz_in) if (fz_in and float(fz_in) > 0) else fz_base
     
     rpm = (vc_base * 1000) / (math.pi * dc) if dc > 0 else 0
@@ -358,11 +329,12 @@ def calcular_fresado_ajax():
     })
 
 # ==========================================
-# API DE CÁLCULO DE ROSCADO / MACHUELEADO CNC
+# API DE ROSCADO CNC (UNIFICADA Y GARANTIZADA)
 # ==========================================
 @app.route('/api/calcular_roscado_ajax')
 def calcular_roscado_ajax():
     material = request.args.get('material', '').strip()
+    metodo = request.args.get('metodo', 'machuelo').strip().lower()
     tipo_machuelo = request.args.get('tipo_machuelo', 'corte').strip().lower()
     
     try:
@@ -370,12 +342,17 @@ def calcular_roscado_ajax():
         paso = float(request.args.get('paso') or 0)
         pct_rosca = float(request.args.get('pct_rosca') or 75.0)
         profundidad = float(request.args.get('profundidad') or 0)
+
+        d_fresa = float(request.args.get('d_fresa') or 0)
+        z_fresa = int(float(request.args.get('z_fresa') or 1))
+        fz_fresa = float(request.args.get('fz_fresa') or 0.05)
     except (ValueError, TypeError):
-        d_machuelo, paso, pct_rosca, profundidad = 0, 0, 75.0, 0
+        d_machuelo, paso, pct_rosca, profundidad = 0.0, 0.0, 75.0, 0.0
+        d_fresa, z_fresa, fz_fresa = 0.0, 1, 0.05
 
     vc_raw = request.args.get('vc', '').strip()
 
-    # 1. Identificación de Grupo ISO y Recomendación de Material de Machuelo
+    # 1. Identificación de Grupo ISO
     iso_detectado = 'P'
     if material:
         mat_lower = material.lower()
@@ -390,19 +367,18 @@ def calcular_roscado_ajax():
         elif any(x in mat_lower for x in ['templado', 'hrc', 'd2', 'skd']):
             iso_detectado = 'H'
 
-    # Matriz Técnica: Velocidad de corte Vc y Sustrato del Machuelo
     TABLA_ROSCADO = {
-        'P': {'vc': 15.0, 'sustrato': 'HSS-E (Cobalto) / HSS-PM'},
-        'M': {'vc': 8.0,  'sustrato': 'HSS-E-PM (Sinterizado)'},
-        'K': {'vc': 18.0, 'sustrato': 'Carburo Sólido (Solid Carbide)'},
-        'N': {'vc': 30.0, 'sustrato': 'HSS-E / Carburo Sólido'},
-        'S': {'vc': 4.5,  'sustrato': 'HSS-E-PM / Carburo Micrograno'},
-        'H': {'vc': 5.0,  'sustrato': 'Carburo Sólido (Ultra Dureza)'}
+        'P': {'vc_machuelo': 15.0, 'vc_fresa': 120.0, 'sustrato': 'HSS-E (Cobalto) / HSS-PM'},
+        'M': {'vc_machuelo': 8.0,  'vc_fresa': 80.0,  'sustrato': 'HSS-E-PM (Sinterizado)'},
+        'K': {'vc_machuelo': 18.0, 'vc_fresa': 140.0, 'sustrato': 'Carburo Sólido (Solid Carbide)'},
+        'N': {'vc_machuelo': 30.0, 'vc_fresa': 250.0, 'sustrato': 'HSS-E / Carburo Sólido'},
+        'S': {'vc_machuelo': 4.5,  'vc_fresa': 40.0,  'sustrato': 'HSS-E-PM / Carburo Micrograno'},
+        'H': {'vc_machuelo': 5.0,  'vc_fresa': 50.0,  'sustrato': 'Carburo Sólido (Ultra Dureza)'}
     }
 
     config = TABLA_ROSCADO.get(iso_detectado, TABLA_ROSCADO['P'])
-    vc_sugerido = config['vc']
-    sustrato_sugerido = config['sustrato']
+    vc_sugerido = config['vc_fresa'] if metodo == 'fresa' else config['vc_machuelo']
+    sustrato_sugerido = 'Carburo Sólido (Thread Mill)' if metodo == 'fresa' else config['sustrato']
 
     try:
         vc_final = float(vc_raw) if (vc_raw and float(vc_raw) > 0) else vc_sugerido
@@ -411,7 +387,7 @@ def calcular_roscado_ajax():
 
     # 2. Brocas Previas
     if d_machuelo > 0 and paso > 0:
-        if tipo_machuelo == 'laminacion':
+        if tipo_machuelo == 'laminacion' and metodo == 'machuelo':
             b_std = d_machuelo - (0.5 * paso)
             b_pct = d_machuelo - (0.53 * (pct_rosca / 100.0) * paso)
         else:
@@ -422,27 +398,39 @@ def calcular_roscado_ajax():
     else:
         txt_std, txt_pct = "-", "-"
 
-    # 3. RPM y Feed Rate (Vf)
-    if d_machuelo > 0:
-        rpm = (vc_final * 1000.0) / (math.pi * d_machuelo)
-        vf = rpm * paso
-        txt_rpm = str(round(rpm, 2))
-        txt_vf = str(round(vf, 2))
-    else:
-        txt_rpm, txt_vf = "-", "-"
-
-    # 4. Tiempo Ciclo G84
-    if profundidad > 0 and d_machuelo > 0 and paso > 0:
-        rpm_val = (vc_final * 1000.0) / (math.pi * d_machuelo)
-        vf_val = rpm_val * paso
-        if vf_val > 0:
-            tiempo_total_min = (2.0 * (profundidad + 5.0)) / vf_val
-            txt_tiempo = str(round(tiempo_total_min, 3))
-            txt_tiempo_seg = str(round(tiempo_total_min * 60.0, 1)) + " seg"
+    # 3. Métricas de Operación (RPM, Vf y Tiempo)
+    if metodo == 'fresa' and d_fresa > 0 and d_machuelo > 0 and paso > 0:
+        rpm = (vc_final * 1000.0) / (math.pi * d_fresa)
+        vf_periferia = rpm * z_fresa * fz_fresa
+        factor_correccion = (d_machuelo - d_fresa) / d_machuelo if d_machuelo > d_fresa else 1.0
+        vf_centro = vf_periferia * factor_correccion
+        
+        txt_rpm = f"{round(rpm, 2)}"
+        txt_vf = f"{round(vf_centro, 2)}"
+        
+        if profundidad > 0 and vf_centro > 0:
+            pasadas_helice = profundidad / paso
+            tiempo_total_min = (pasadas_helice * math.pi * (d_machuelo - d_fresa)) / vf_centro
+            txt_tiempo = f"{round(tiempo_total_min, 3)}"
+            txt_tiempo_seg = f"{round(tiempo_total_min * 60.0, 1)} seg"
         else:
             txt_tiempo, txt_tiempo_seg = "-", "- seg"
     else:
-        txt_tiempo, txt_tiempo_seg = "-", "- seg"
+        if d_machuelo > 0:
+            rpm = (vc_final * 1000.0) / (math.pi * d_machuelo)
+            vf = rpm * paso if paso > 0 else 0
+            txt_rpm = f"{round(rpm, 2)}"
+            txt_vf = f"{round(vf, 2)}" if vf > 0 else "-"
+        else:
+            txt_rpm, txt_vf = "-", "-"
+
+        if profundidad > 0 and d_machuelo > 0 and paso > 0 and rpm > 0 and paso > 0:
+            vf_val = rpm * paso
+            tiempo_total_min = (2.0 * (profundidad + 5.0)) / vf_val
+            txt_tiempo = f"{round(tiempo_total_min, 3)}"
+            txt_tiempo_seg = f"{round(tiempo_total_min * 60.0, 1)} seg"
+        else:
+            txt_tiempo, txt_tiempo_seg = "-", "- seg"
 
     return jsonify({
         'iso_detectado': iso_detectado,
@@ -455,5 +443,6 @@ def calcular_roscado_ajax():
         'tiempo': txt_tiempo,
         'tiempo_segundos': txt_tiempo_seg
     })
+
 if __name__ == '__main__':
     app.run(debug=True)
