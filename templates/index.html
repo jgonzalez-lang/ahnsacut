@@ -109,12 +109,20 @@
             white-space: nowrap;
         }
 
-        .sidebar-nav a i {
-            font-size: 1.1rem;
+        /* CONTENEDOR DE ICONOS/RENDERS EN SIDEBAR */
+        .sidebar-nav a .nav-icon-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             min-width: 24px;
-            text-align: center;
+            height: 24px;
             margin-right: 12px;
             transition: margin 0.25s ease;
+            flex-shrink: 0;
+        }
+
+        .sidebar-nav a i {
+            font-size: 1.15rem;
         }
 
         .sidebar-nav a:hover {
@@ -165,7 +173,7 @@
             display: none;
         }
 
-        body.sidebar-collapsed .sidebar-nav a i {
+        body.sidebar-collapsed .sidebar-nav a .nav-icon-box {
             margin-right: 0;
         }
 
@@ -436,13 +444,31 @@
         }
 
         .dash-metric-icon {
-            width: 42px;
-            height: 42px;
+            width: 44px;
+            height: 44px;
             border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        /* BARRA HORIZONTAL CONTINUA DE GRUPOS ISO */
+        .iso-bar-container {
+            display: flex;
+            width: 100%;
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+        }
+        .iso-bar-segment {
+            flex: 1;
+            height: 100%;
+            transition: opacity 0.2s ease;
+        }
+        .iso-bar-segment:hover {
+            opacity: 0.85;
         }
 
         /* NORMATIVA GRUPOS ISO */
@@ -515,18 +541,82 @@
 </head>
 <body>
 
-    <!-- Sidebar Lateral Dinámico -->
+    <!-- Sidebar Lateral Dinámico con Renders Vectoriales Integrados -->
     <div class="sidebar" id="sidebar">
         <div>
             <div class="sidebar-brand">
                 <img src="/static/logo.png" alt="AHNSA TOOLS AhnsaCut">
             </div>
             <ul class="sidebar-nav">
-                <li><a id="nav-dashboard" onclick="mostrarPestana('dashboard')" class="active" title="Dashboard"><i class="bi bi-speedometer"></i><span class="nav-text">Dashboard</span></a></li>
-                <li><a id="nav-fresado" onclick="mostrarPestana('fresado')" title="Fresado"><i class="bi bi-disc"></i><span class="nav-text">Fresado</span></a></li>
-                <li><a id="nav-torneado" onclick="mostrarPestana('torneado')" title="Torneado"><i class="bi bi-gear-wide-connected"></i><span class="nav-text">Torneado</span></a></li>
-                <li><a id="nav-barrenado" onclick="mostrarPestana('barrenado')" title="Barrenado"><i class="bi bi-pin-angle"></i><span class="nav-text">Barrenado</span></a></li>
-                <li><a id="nav-roscado" onclick="mostrarPestana('roscado')" title="Roscado"><i class="bi bi-symmetry-horizontal"></i><span class="nav-text">Roscado</span></a></li>
+                <!-- 1. DASHBOARD -->
+                <li>
+                    <a id="nav-dashboard" onclick="mostrarPestana('dashboard')" class="active" title="Dashboard">
+                        <div class="nav-icon-box">
+                            <i class="bi bi-grid-1x2-fill"></i>
+                        </div>
+                        <span class="nav-text">Dashboard</span>
+                    </a>
+                </li>
+
+                <!-- 2. FRESADO (Render Shell Mill) -->
+                <li>
+                    <a id="nav-fresado" onclick="mostrarPestana('fresado')" title="Fresado">
+                        <div class="nav-icon-box">
+                            <svg width="22" height="22" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="8"/>
+                                <circle cx="50" cy="50" r="16" fill="currentColor"/>
+                                <rect x="42" y="10" width="16" height="12" rx="2" fill="#f59e0b"/>
+                                <rect x="42" y="78" width="16" height="12" rx="2" fill="#f59e0b"/>
+                                <rect x="10" y="42" width="12" height="16" rx="2" fill="#f59e0b"/>
+                                <rect x="78" y="42" width="12" height="16" rx="2" fill="#f59e0b"/>
+                            </svg>
+                        </div>
+                        <span class="nav-text">Fresado</span>
+                    </a>
+                </li>
+
+                <!-- 3. TORNEADO (Render CNMG Inserto) -->
+                <li>
+                    <a id="nav-torneado" onclick="mostrarPestana('torneado')" title="Torneado">
+                        <div class="nav-icon-box">
+                            <svg width="22" height="22" viewBox="0 0 100 100">
+                                <polygon points="50,12 88,50 50,88 12,50" fill="#f59e0b" stroke="currentColor" stroke-width="5"/>
+                                <circle cx="50" cy="50" r="12" fill="#0f172a"/>
+                            </svg>
+                        </div>
+                        <span class="nav-text">Torneado</span>
+                    </a>
+                </li>
+
+                <!-- 4. BARRENADO (Render Broca Carburo) -->
+                <li>
+                    <a id="nav-barrenado" onclick="mostrarPestana('barrenado')" title="Barrenado">
+                        <div class="nav-icon-box">
+                            <svg width="22" height="22" viewBox="0 0 100 100">
+                                <path d="M 38,90 L 38,40 L 50,10 L 62,40 L 62,90 Z" fill="currentColor"/>
+                                <path d="M 38,60 C 48,50 52,40 62,30" stroke="#10b981" stroke-width="6" fill="none"/>
+                                <polygon points="50,10 38,40 62,40" fill="#10b981"/>
+                            </svg>
+                        </div>
+                        <span class="nav-text">Barrenado</span>
+                    </a>
+                </li>
+
+                <!-- 5. ROSCADO (Render Machuelo / Thread Mill) -->
+                <li>
+                    <a id="nav-roscado" onclick="mostrarPestana('roscado')" title="Roscado">
+                        <div class="nav-icon-box">
+                            <svg width="22" height="22" viewBox="0 0 100 100">
+                                <rect x="44" y="68" width="12" height="25" fill="currentColor"/>
+                                <path d="M 40,68 L 40,15 C 40,10 60,10 60,15 L 60,68 Z" fill="#3b82f6" stroke="currentColor" stroke-width="3"/>
+                                <line x1="36" y1="22" x2="64" y2="26" stroke="#ffffff" stroke-width="4"/>
+                                <line x1="36" y1="36" x2="64" y2="40" stroke="#ffffff" stroke-width="4"/>
+                                <line x1="36" y1="50" x2="64" y2="54" stroke="#ffffff" stroke-width="4"/>
+                            </svg>
+                        </div>
+                        <span class="nav-text">Roscado</span>
+                    </a>
+                </li>
             </ul>
         </div>
 
@@ -546,6 +636,7 @@
             <p class="page-subtitle">Resumen ejecutivo, base de datos de herramientas e métricas del sistema AhnsaCut.</p>
 
             <div class="row g-3 mb-4">
+                <!-- KPI 1: MATERIALES REGISTRADOS -->
                 <div class="col-md-3">
                     <div class="dash-metric-card">
                         <div>
@@ -553,40 +644,63 @@
                             <span class="dash-metric-value">{{ stats.total_materiales if stats else 22 }}</span>
                         </div>
                         <div class="dash-metric-icon bg-primary bg-opacity-10 text-primary">
-                            <i class="bi bi-layers-half"></i>
+                            <i class="bi bi-layers-half fs-4"></i>
                         </div>
                     </div>
                 </div>
+
+                <!-- KPI 2: INSERTO CNMG RENDERIZADO -->
                 <div class="col-md-3">
                     <div class="dash-metric-card">
                         <div>
                             <span class="info-box-label">Catálogo de Insertos</span>
                             <span class="dash-metric-value">{{ stats.total_insertos if stats else 21 }}</span>
                         </div>
-                        <div class="dash-metric-icon bg-success bg-opacity-10 text-success">
-                            <i class="bi bi-gear-fill"></i>
+                        <div class="dash-metric-icon bg-warning bg-opacity-10" title="Inserto Romboico (CNMG)">
+                            <svg width="32" height="32" viewBox="0 0 100 100">
+                                <polygon points="50,12 88,50 50,88 12,50" fill="#d97706" stroke="#78350f" stroke-width="4"/>
+                                <polygon points="50,22 80,50 50,78 20,50" fill="#f59e0b" stroke="#b45309" stroke-width="2"/>
+                                <circle cx="50" cy="50" r="12" fill="#0f172a" stroke="#d97706" stroke-width="3"/>
+                            </svg>
                         </div>
                     </div>
                 </div>
+
+                <!-- KPI 3: BARRA HORIZONTAL CONTINUA DE COLORES GRUPOS ISO -->
                 <div class="col-md-3">
                     <div class="dash-metric-card">
-                        <div>
-                            <span class="info-box-label">Grupos ISO</span>
-                            <span class="dash-metric-value">{{ stats.familias_iso if stats else 6 }}</span>
-                        </div>
-                        <div class="dash-metric-icon bg-warning bg-opacity-10 text-warning">
-                            <i class="bi bi-diagram-3-fill"></i>
+                        <div class="w-100 me-2">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="info-box-label">Grupos ISO</span>
+                                <span class="fw-extrabold fs-6" style="color: #0f172a; font-weight: 800;">6 Familias</span>
+                            </div>
+                            <!-- BARRA HORIZONTAL CON COLORES NORMATIVOS ISO -->
+                            <div class="iso-bar-container" title="Grupos ISO: P (Azul), M (Amarillo), K (Rojo), N (Verde), S (Guinda), H (Gris)">
+                                <div class="iso-bar-segment" style="background-color: var(--iso-p);" title="ISO P - Aceros"></div>
+                                <div class="iso-bar-segment" style="background-color: var(--iso-m);" title="ISO M - Inoxidable"></div>
+                                <div class="iso-bar-segment" style="background-color: var(--iso-k);" title="ISO K - Fundición"></div>
+                                <div class="iso-bar-segment" style="background-color: var(--iso-n);" title="ISO N - No Ferrosos"></div>
+                                <div class="iso-bar-segment" style="background-color: var(--iso-s);" title="ISO S - Superaleaciones"></div>
+                                <div class="iso-bar-segment" style="background-color: var(--iso-h);" title="ISO H - Templados"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- KPI 4: EFICIENCIA MÁQUINA (TACÓMETRO / RENDIMIENTO OEE) -->
                 <div class="col-md-3">
                     <div class="dash-metric-card">
                         <div>
                             <span class="info-box-label">Eficiencia Máquina</span>
-                            <span class="dash-metric-value text-primary">{{ stats.eficiencia_sistema if stats else "99.8%" }}</span>
+                            <span class="dash-metric-value text-success">{{ stats.eficiencia_sistema if stats else "99.8%" }}</span>
                         </div>
-                        <div class="dash-metric-icon bg-info bg-opacity-10 text-info">
-                            <i class="bi bi-activity"></i>
+                        <div class="dash-metric-icon bg-success bg-opacity-10" title="Rendimiento y Eficiencia OEE">
+                            <svg width="34" height="34" viewBox="0 0 100 100">
+                                <path d="M 20,70 A 35,35 0 1,1 80,70" fill="none" stroke="#cbd5e1" stroke-width="8" stroke-linecap="round"/>
+                                <path d="M 20,70 A 35,35 0 1,1 76,55" fill="none" stroke="#10b981" stroke-width="8" stroke-linecap="round"/>
+                                <circle cx="50" cy="50" r="6" fill="#0f172a"/>
+                                <line x1="50" y1="50" x2="72" y2="30" stroke="#10b981" stroke-width="4" stroke-linecap="round"/>
+                            </svg>
                         </div>
                     </div>
                 </div>
@@ -774,7 +888,7 @@
             </div>
         </div>
 
-        <!-- VISTA 2: TORNEADO -->
+        <!-- VISTA 2: TORNEADO CON RENDERIZADO DE INSERTO CNMG -->
         <div id="vista-torneado" style="display: none;">
             <h1 class="page-title">Torneado CNC</h1>
             <p class="page-subtitle">Selección de inserto, grado Sumitomo, cálculo de pasadas y parámetros de corte.</p>
@@ -783,7 +897,14 @@
                 <div class="row g-3 mb-3">
                     <div class="col-lg-6">
                         <div class="ui-card">
-                            <div class="ui-card-title"><i class="bi bi-search me-2 text-primary"></i>Búsqueda de Material de Trabajo</div>
+                            <div class="ui-card-title d-flex align-items-center justify-content-between">
+                                <span><i class="bi bi-search me-2 text-primary"></i>Búsqueda de Material de Trabajo</span>
+                                <!-- RENDER SVG DE INSERTO CNMG -->
+                                <svg width="30" height="30" viewBox="0 0 100 100" title="Inserto Romboico de Torneado (CNMG)">
+                                    <polygon points="50,10 90,50 50,90 10,50" fill="#d97706" stroke="#78350f" stroke-width="4"/>
+                                    <circle cx="50" cy="50" r="14" fill="#0f172a" stroke="#d97706" stroke-width="3"/>
+                                </svg>
+                            </div>
                             
                             <div class="row g-2 align-items-end mb-2">
                                 <div class="col-9">
@@ -1187,7 +1308,7 @@
             </form>
         </div>
 
-        <!-- VISTA 3: FRESADO CNC SUMITOMO -->
+        <!-- VISTA 3: FRESADO CNC SUMITOMO CON RENDERIZADO FRESA DE PLANEAR -->
         <div id="vista-fresado" style="display: none;">
             <h1 class="page-title">Fresado CNC Sumitomo</h1>
             <p class="page-subtitle">Calculadora de los 6 parámetros clave de fresado y catálogo oficial interactivo.</p>
@@ -1206,8 +1327,17 @@
             </ul>
 
             <div class="ui-card mb-4">
-                <div class="ui-card-title">
-                    <i class="bi bi-calculator me-2 text-primary"></i>Calculadora de Parámetros de Fresado (6 Métricas CNC)
+                <div class="ui-card-title d-flex align-items-center justify-content-between">
+                    <span><i class="bi bi-calculator me-2 text-primary"></i>Calculadora de Parámetros de Fresado (6 Métricas CNC)</span>
+                    <!-- RENDER SVG DE FRESA PLANADORA -->
+                    <svg width="30" height="30" viewBox="0 0 100 100" title="Fresa de Planear CNC">
+                        <circle cx="50" cy="50" r="40" fill="#1e293b" stroke="#0f172a" stroke-width="4"/>
+                        <circle cx="50" cy="50" r="16" fill="#0f172a" stroke="#2563eb" stroke-width="3"/>
+                        <rect x="42" y="10" width="16" height="12" rx="2" fill="#f59e0b"/>
+                        <rect x="42" y="78" width="16" height="12" rx="2" fill="#f59e0b"/>
+                        <rect x="10" y="42" width="12" height="16" rx="2" fill="#f59e0b"/>
+                        <rect x="78" y="42" width="12" height="16" rx="2" fill="#f59e0b"/>
+                    </svg>
                 </div>
 
                 <div class="row g-2 mb-3 align-items-end">
@@ -1486,7 +1616,7 @@
             </div>
         </div>
 
-        <!-- VISTA 4: BARRENADO CNC AUTOMÁTICO -->
+        <!-- VISTA 4: BARRENADO CNC CON RENDERIZADO DE BROCA CARBURO SÓLIDO -->
         <div id="vista-barrenado" style="display: none;">
             <h1 class="page-title">Barrenado / Taladrado CNC</h1>
             <p class="page-subtitle">Cálculo dinámico en tiempo real de parámetros de corte y recubrimientos sugeridos.</p>
@@ -1494,7 +1624,13 @@
             <div class="ui-card mb-4">
                 <div class="ui-card-title d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-pin-angle me-2 text-primary"></i>Calculadora de Barrenado CNC</span>
-                    <span class="badge bg-secondary fs-7" id="badgeRelacionLD">Veces Diámetro (L/D): -</span>
+                    <!-- RENDER SVG BROCA DE CARBURO SÓLIDO -->
+                    <svg width="30" height="30" viewBox="0 0 100 100" title="Broca de Carburo Sólido">
+                        <path d="M 38,90 L 38,40 L 50,10 L 62,40 L 62,90 Z" fill="#334155" stroke="#0f172a" stroke-width="3"/>
+                        <path d="M 38,60 C 48,50 52,40 62,30" stroke="#10b981" stroke-width="4" fill="none"/>
+                        <path d="M 38,80 C 48,70 52,60 62,50" stroke="#10b981" stroke-width="4" fill="none"/>
+                        <polygon points="50,10 38,40 62,40" fill="#059669"/>
+                    </svg>
                 </div>
 
                 <div class="alert alert-info py-2 px-3 mb-3 d-flex align-items-center justify-content-between" id="alertaLubricacionBox">
@@ -1612,15 +1748,26 @@
             </div>
         </div>
 
-        <!-- VISTA 5: ROSCADO / MACHUELEADO Y THREAD MILLING CNC -->
+        <!-- VISTA 5: ROSCADO / MACHUELEADO Y THREAD MILLING CNC CON RENDERIZADO MACHUELO -->
         <div id="vista-roscado" style="display: none;">
             <h1 class="page-title">Roscado / Machueleado y Thread Milling CNC</h1>
             <p class="page-subtitle">Selección estándar de roscas (M, MF, UNC, UNF, NPT, BSPP, UNJ) y cálculo dinámico de machuelos o fresado helicoidal.</p>
 
             <div class="ui-card mb-4">
                 <div class="ui-card-title d-flex justify-content-between align-items-center mb-3">
-                    <span><i class="bi bi-symmetry-horizontal me-2 text-primary"></i>Calculadora de Roscado Industrial</span>
-                    <span class="badge bg-secondary fs-7" id="badgeTipoMachueloInfo">Machuelo de Corte (Estándar)</span>
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-symmetry-horizontal me-2 text-primary"></i>
+                        <span>Calculadora de Roscado Industrial</span>
+                    </div>
+                    <!-- RENDER SVG MACHUELO HELICOIDAL / FRESA DE ROSCA -->
+                    <svg width="30" height="30" viewBox="0 0 100 100" title="Machuelo Helicoidal / Thread Mill">
+                        <rect x="44" y="70" width="12" height="25" fill="#475569"/>
+                        <path d="M 40,70 L 40,15 C 40,10 60,10 60,15 L 60,70 Z" fill="#3b82f6" stroke="#1d4ed8" stroke-width="2"/>
+                        <line x1="36" y1="20" x2="64" y2="24" stroke="#ffffff" stroke-width="3"/>
+                        <line x1="36" y1="32" x2="64" y2="36" stroke="#ffffff" stroke-width="3"/>
+                        <line x1="36" y1="44" x2="64" y2="48" stroke="#ffffff" stroke-width="3"/>
+                        <line x1="36" y1="56" x2="64" y2="60" stroke="#ffffff" stroke-width="3"/>
+                    </svg>
                 </div>
 
                 <div class="row g-2 mb-2 align-items-end">
@@ -1853,7 +2000,6 @@
                 icon.className = isCollapsed ? "bi bi-chevron-right" : "bi bi-chevron-left me-2";
             }
 
-            // Guardar preferencia del usuario en LocalStorage
             localStorage.setItem("ahnsacut_sidebar_collapsed", isCollapsed ? "true" : "false");
         }
 
@@ -2520,9 +2666,8 @@
             }
         }
 
-        // CARGA INICIAL DE CONFIGURACIONES
+        // LISTENERS DE TECLADO Y CARGA
         document.addEventListener("DOMContentLoaded", function() {
-            // Recuperar preferencia de Sidebar colapsado
             const sidebarGuardado = localStorage.getItem("ahnsacut_sidebar_collapsed");
             if (sidebarGuardado === "true") {
                 document.body.classList.add("sidebar-collapsed");
