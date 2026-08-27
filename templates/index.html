@@ -8,14 +8,21 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
         :root {
-            --bg-body: #f1f5f9;
-            --sidebar-bg: #111827;
-            --sidebar-active: #2563eb;
+            /* PALETA CORPORATIVA INDUSTRIAL B2B */
+            --bg-body: #f8fafc;
+            --sidebar-bg: #0f172a;
+            --sidebar-border: #1e293b;
+            --brand-blue: #0d47a1;
+            --brand-blue-hover: #1565c0;
+            
             --card-bg: #ffffff;
             --dark-card-bg: #0f172a;
+            
             --text-title: #0f172a;
             --text-sub: #64748b;
+            --border-color: #e2e8f0;
 
+            /* COLORES NORMATIVA ISO (ESTÁNDAR METALMECÁNICO INVIOLABLE) */
             --iso-p: #2563eb;
             --iso-m: #eab308;
             --iso-k: #dc2626;
@@ -26,19 +33,22 @@
 
         body {
             background-color: var(--bg-body);
-            font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
             margin: 0;
+            color: #1e293b;
             overflow-x: hidden;
         }
 
+        /* SIDEBAR LATERAL INTEGRADO */
         .sidebar {
             width: 220px;
             height: 100vh;
             background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--sidebar-border);
             position: fixed;
             top: 0;
             left: 0;
-            padding: 20px 14px;
+            padding: 16px 14px;
             color: #ffffff;
             z-index: 100;
             overflow-x: hidden;
@@ -48,22 +58,21 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #0d47a1;
-            padding: 8px 10px;
-            border-radius: 8px;
-            margin-bottom: 24px;
+            background: transparent;
+            padding-bottom: 16px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--sidebar-border);
             width: 100%;
             box-sizing: border-box;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
         }
 
         .sidebar-brand img {
             width: 100%;
             height: auto;
-            max-height: 55px;
+            max-height: 48px;
             object-fit: contain;
             background-color: #ffffff;
-            border-radius: 4px;
+            border-radius: 6px;
             padding: 4px;
             display: block;
         }
@@ -74,105 +83,125 @@
             margin: 0;
         }
 
-        .sidebar-nav li { margin-bottom: 6px; }
+        .sidebar-nav li { margin-bottom: 4px; }
 
         .sidebar-nav a {
             display: block;
-            padding: 9px 14px;
+            padding: 9px 12px;
             color: #94a3b8;
             text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
+            font-weight: 600;
+            font-size: 0.88rem;
             border-radius: 6px;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
             cursor: pointer;
         }
 
         .sidebar-nav a:hover {
             color: #ffffff;
-            background-color: rgba(255,255,255,0.05);
+            background-color: rgba(255, 255, 255, 0.05);
         }
 
         .sidebar-nav a.active {
-            background-color: var(--sidebar-active);
+            background-color: #1e40af;
             color: #ffffff;
-            font-weight: 600;
+            font-weight: 700;
         }
 
+        /* ÁREA PRINCIPAL DE TRABAJO */
         .main-content {
             margin-left: 220px;
             padding: 24px 28px;
         }
 
         .page-title {
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 1.4rem;
+            font-weight: 800;
             color: var(--text-title);
             margin-bottom: 2px;
+            letter-spacing: -0.3px;
         }
 
         .page-subtitle {
             color: var(--text-sub);
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             margin-bottom: 20px;
         }
 
+        /* TARJETAS DE CONTENEDOR UI */
         .ui-card {
             background-color: var(--card-bg);
-            border-radius: 10px;
-            padding: 18px 20px;
+            border-radius: 8px;
+            padding: 16px 18px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.03);
-            border: 1px solid #e2e8f0;
+            border: 1px solid var(--border-color);
             height: 100%;
         }
 
         .ui-card-title {
-            font-size: 1.05rem;
+            font-size: 0.95rem;
             font-weight: 700;
             color: var(--text-title);
             margin-bottom: 12px;
         }
 
+        /* TARJETAS DE CATÁLOGO INTEGRADAS */
+        .cat-item-card {
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px 12px;
+            transition: border-color 0.15s ease;
+        }
+
+        .cat-item-card:hover {
+            border-color: var(--brand-blue);
+        }
+
+        /* CELDAS DE INFORMACIÓN GENERAL */
         .info-box {
             background-color: #f8fafc;
-            border: 1px solid #e2e8f0;
+            border: 1px solid var(--border-color);
             border-radius: 6px;
             padding: 6px 10px;
-            transition: all 0.2s ease;
         }
 
         .info-box-label {
-            font-size: 0.7rem;
-            font-weight: 600;
+            font-size: 0.68rem;
+            font-weight: 700;
             color: #64748b;
             margin-bottom: 1px;
             display: block;
             text-transform: uppercase;
+            letter-spacing: 0.4px;
         }
 
         .info-box-value {
             font-size: 0.88rem;
-            font-weight: 600;
+            font-weight: 700;
             color: #0f172a;
         }
 
+        /* RECOMENDACIONES DESTACADAS */
         .highlight-blue {
-            background-color: #eff6ff;
-            border-left: 4px solid #2563eb;
+            background-color: #f0f5ff;
+            border-left: 4px solid var(--brand-blue);
             border-radius: 6px;
             padding: 10px 14px;
             margin-bottom: 12px;
         }
 
         .highlight-blue-title {
-            color: #1e40af;
-            font-size: 0.82rem;
-            font-weight: 700;
+            color: var(--brand-blue);
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             margin-bottom: 2px;
         }
 
         .highlight-gold {
-            background-color: #fffbeb;
+            background-color: #fffbf0;
             border-left: 4px solid #d97706;
             border-radius: 6px;
             padding: 10px 14px;
@@ -180,18 +209,20 @@
         }
 
         .highlight-gold-title {
-            color: #92400e;
-            font-size: 0.75rem;
-            font-weight: 700;
+            color: #b45309;
+            font-size: 0.72rem;
+            font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-bottom: 2px;
         }
 
+        /* TARJETAS TÉCNICAS OSCURAS DE PARÁMETROS CNC */
         .cnc-card {
             background-color: var(--dark-card-bg);
+            border: 1px solid #1e293b;
             border-radius: 6px;
-            padding: 12px 8px;
+            padding: 10px 8px;
             text-align: center;
             color: #ffffff;
             height: 100%;
@@ -201,62 +232,64 @@
         }
 
         .cnc-card-pasadas {
-            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             border: 1px solid #3b82f6;
         }
 
         .cnc-label {
-            font-size: 0.75rem;
-            font-weight: 600;
+            font-size: 0.7rem;
+            font-weight: 700;
             color: #94a3b8;
             margin-bottom: 4px;
             text-transform: uppercase;
+            letter-spacing: 0.4px;
         }
 
         .cnc-value {
-            font-size: 1.15rem;
-            font-weight: 700;
+            font-size: 1.2rem;
+            font-weight: 800;
             color: #ffffff;
             margin-bottom: 2px;
+            letter-spacing: -0.2px;
         }
 
         .cnc-unit {
-            font-size: 0.7rem;
-            color: #64748b;
+            font-size: 0.68rem;
+            color: #94a3b8;
         }
 
-        /* BADGES DE UNIDADES DE MEDIDA DE ALTO CONTRASTE */
+        /* UNIDADES CON BADGES DE ALTO CONTRASTE */
         .unit-badge {
             display: inline-block;
             padding: 2px 6px;
             border-radius: 4px;
-            font-size: 0.72rem;
+            font-size: 0.68rem;
             font-weight: 800;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
             text-transform: uppercase;
         }
         .unit-rpm { background-color: #f59e0b; color: #0f172a; }
         .unit-vf  { background-color: #10b981; color: #ffffff; }
-        .unit-vc  { background-color: #3b82f6; color: #ffffff; }
-        .unit-mrr { background-color: #8b5cf6; color: #ffffff; }
+        .unit-vc  { background-color: #2563eb; color: #ffffff; }
+        .unit-mrr { background-color: #6366f1; color: #ffffff; }
         .unit-time { background-color: #06b6d4; color: #0f172a; }
-        .unit-vol { background-color: #64748b; color: #ffffff; }
+        .unit-vol { background-color: #475569; color: #ffffff; }
 
+        /* TARJETAS RANGOS */
         .ui-card-rangos {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border-radius: 10px;
-            padding: 18px 20px;
-            border-left: 5px solid #f59e0b;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-radius: 8px;
+            padding: 16px 18px;
+            border-left: 4px solid #f59e0b;
             color: #ffffff;
         }
 
         .ui-card-rangos .ui-card-title {
             color: #f8fafc;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 8px;
-            margin-bottom: 14px;
-            font-size: 1.05rem;
+            padding-bottom: 6px;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
         }
 
         .rango-box {
@@ -264,12 +297,11 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 6px;
             padding: 8px 12px;
-            transition: all 0.2s ease;
         }
 
         .rango-box-label {
-            font-size: 0.7rem;
-            font-weight: 600;
+            font-size: 0.68rem;
+            font-weight: 700;
             color: #94a3b8;
             text-transform: uppercase;
             margin-bottom: 2px;
@@ -277,70 +309,78 @@
         }
 
         .rango-box-value {
-            font-size: 0.95rem;
-            font-weight: 700;
+            font-size: 0.9rem;
+            font-weight: 800;
             color: #38bdf8;
         }
 
+        /* BOTONES CORPORATIVOS */
         .btn-calc {
-            background-color: #2563eb;
+            background-color: var(--brand-blue);
             color: #ffffff;
-            font-weight: 600;
-            font-size: 0.88rem;
+            font-weight: 700;
+            font-size: 0.85rem;
             border: none;
             padding: 8px 16px;
             border-radius: 6px;
+            transition: background-color 0.15s ease;
         }
         .btn-calc:hover {
-            background-color: #1d4ed8;
+            background-color: var(--brand-blue-hover);
             color: #ffffff;
         }
 
         .btn-clear {
             background-color: #64748b;
             color: #ffffff;
-            font-weight: 600;
-            font-size: 0.88rem;
+            font-weight: 700;
+            font-size: 0.85rem;
             border: none;
             padding: 8px 16px;
             border-radius: 6px;
+        }
+        .btn-clear:hover {
+            background-color: #475569;
+            color: #ffffff;
         }
 
         .form-select-sm, .form-control-sm {
             font-size: 0.85rem;
             padding: 5px 10px;
             border-radius: 6px;
+            border-color: var(--border-color);
         }
 
         .dash-metric-card {
             background-color: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 16px 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px 18px;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
         .dash-metric-value {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 800;
             color: #0f172a;
             line-height: 1;
         }
 
         .dash-metric-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 8px;
+            width: 42px;
+            height: 42px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem;
+            font-size: 1.25rem;
         }
 
+        /* NORMATIVA GRUPOS ISO */
         .badge-iso-p, .iso-theme-P { background-color: var(--iso-p) !important; color: #ffffff !important; }
-        .badge-iso-m, .iso-theme-M { background-color: var(--iso-m) !important; color: #000000 !important; font-weight: 700; }
+        .badge-iso-m, .iso-theme-M { background-color: var(--iso-m) !important; color: #000000 !important; font-weight: 800; }
         .badge-iso-k, .iso-theme-K { background-color: var(--iso-k) !important; color: #ffffff !important; }
         .badge-iso-n, .iso-theme-N { background-color: var(--iso-n) !important; color: #ffffff !important; }
         .badge-iso-s, .iso-theme-S { background-color: var(--iso-s) !important; color: #ffffff !important; }
@@ -349,16 +389,16 @@
         .nav-pills .nav-link {
             font-weight: 700;
             color: #475569;
-            border-radius: 8px;
-            padding: 12px 24px;
+            border-radius: 6px;
+            padding: 8px 18px;
             background-color: #ffffff;
-            border: 1px solid #cbd5e1;
+            border: 1px solid var(--border-color);
         }
 
         .nav-pills .nav-link.active {
-            background-color: #2563eb;
+            background-color: var(--brand-blue);
             color: #ffffff;
-            border-color: #2563eb;
+            border-color: var(--brand-blue);
         }
 
         #modalZoomBody {
@@ -388,7 +428,7 @@
                 flex-direction: column;
             }
 
-            .sidebar-brand img { max-height: 45px; }
+            .sidebar-brand img { max-height: 40px; }
 
             .sidebar-nav {
                 display: flex;
@@ -477,7 +517,7 @@
                 </div>
             </div>
 
-            <!-- TARJETA DEL CATÁLOGO COMPLETO -->
+            <!-- CATÁLOGO COMPLETO -->
             <div class="row g-3 mb-4">
                 <div class="col-12">
                     <div class="ui-card">
@@ -488,7 +528,7 @@
                         
                         <div class="row g-2">
                             <div class="col-xl-3 col-lg-4 col-sm-6">
-                                <div class="p-2 border rounded d-flex align-items-center justify-content-between bg-light h-100">
+                                <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
                                         <div class="fw-bold text-dark small text-truncate">CNMG 120408</div>
                                         <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Desbaste / Exterior</small>
@@ -497,7 +537,7 @@
                                 </div>
                             </div>
                             <div class="col-xl-3 col-lg-4 col-sm-6">
-                                <div class="p-2 border rounded d-flex align-items-center justify-content-between bg-light h-100">
+                                <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
                                         <div class="fw-bold text-dark small text-truncate">DNMG 150408</div>
                                         <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Exterior</small>
@@ -506,7 +546,7 @@
                                 </div>
                             </div>
                             <div class="col-xl-3 col-lg-4 col-sm-6">
-                                <div class="p-2 border rounded d-flex align-items-center justify-content-between bg-light h-100">
+                                <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
                                         <div class="fw-bold text-dark small text-truncate">WNMG 080408</div>
                                         <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Exterior</small>
@@ -515,7 +555,7 @@
                                 </div>
                             </div>
                             <div class="col-xl-3 col-lg-4 col-sm-6">
-                                <div class="p-2 border rounded d-flex align-items-center justify-content-between bg-light h-100">
+                                <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
                                         <div class="fw-bold text-dark small text-truncate">TNMG 160408</div>
                                         <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Desbaste</small>
@@ -524,7 +564,7 @@
                                 </div>
                             </div>
                             <div class="col-xl-3 col-lg-4 col-sm-6">
-                                <div class="p-2 border rounded d-flex align-items-center justify-content-between bg-light h-100">
+                                <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
                                         <div class="fw-bold text-dark small text-truncate">DCMT 070204</div>
                                         <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Acabado</small>
@@ -533,7 +573,7 @@
                                 </div>
                             </div>
                             <div class="col-xl-3 col-lg-4 col-sm-6">
-                                <div class="p-2 border rounded d-flex align-items-center justify-content-between bg-light h-100">
+                                <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
                                         <div class="fw-bold text-dark small text-truncate">TCMT 110204</div>
                                         <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Acabado</small>
@@ -542,7 +582,7 @@
                                 </div>
                             </div>
                             <div class="col-xl-3 col-lg-4 col-sm-6">
-                                <div class="p-2 border rounded d-flex align-items-center justify-content-between bg-light h-100">
+                                <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
                                         <div class="fw-bold text-dark small text-truncate">RCMT 1003MO</div>
                                         <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Acabado / Perfilado Redondo</small>
@@ -551,7 +591,7 @@
                                 </div>
                             </div>
                             <div class="col-xl-3 col-lg-4 col-sm-6">
-                                <div class="p-2 border rounded d-flex align-items-center justify-content-between bg-light h-100">
+                                <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
                                         <div class="fw-bold text-dark small text-truncate">SNMG 120408</div>
                                         <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Desbaste Pesado</small>
@@ -560,7 +600,7 @@
                                 </div>
                             </div>
                             <div class="col-xl-3 col-lg-4 col-sm-6">
-                                <div class="p-2 border rounded d-flex align-items-center justify-content-between bg-light h-100">
+                                <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
                                         <div class="fw-bold text-dark small text-truncate">CCMT 060204</div>
                                         <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Acabado</small>
@@ -569,7 +609,7 @@
                                 </div>
                             </div>
                             <div class="col-xl-3 col-lg-4 col-sm-6">
-                                <div class="p-2 border rounded d-flex align-items-center justify-content-between bg-light h-100">
+                                <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
                                         <div class="fw-bold text-dark small text-truncate">RNMG 120400</div>
                                         <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Desbaste Pesado / Perfilado</small>
@@ -578,7 +618,7 @@
                                 </div>
                             </div>
                             <div class="col-xl-3 col-lg-4 col-sm-6">
-                                <div class="p-2 border rounded d-flex align-items-center justify-content-between bg-light h-100">
+                                <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
                                         <div class="fw-bold text-dark small text-truncate">VNMG 160404</div>
                                         <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Acabado</small>
@@ -665,9 +705,7 @@
             <p class="page-subtitle">Selección de inserto, grado Sumitomo, cálculo de pasadas y parámetros de corte.</p>
 
             <form action="/" method="POST">
-                
                 <div class="row g-3 mb-3">
-                    
                     <div class="col-lg-6">
                         <div class="ui-card">
                             <div class="ui-card-title"><i class="bi bi-search me-2 text-primary"></i>Búsqueda de Material de Trabajo</div>
@@ -690,7 +728,6 @@
                                     </datalist>
                                 </div>
 
-                                <!-- CELDA GRUPO ISO COMPACTA (Sincronizada con Jinja POST y JS) -->
                                 <div class="col-3">
                                     <label class="form-label small text-muted fw-bold mb-1">Grupo ISO</label>
                                     <div id="boxIsoTorneado" class="p-1 rounded text-center fw-bold {% if resultado %}badge-iso-{{ resultado.familia_iso|lower }} iso-theme-{{ resultado.familia_iso }}{% else %}text-white bg-secondary{% endif %}" style="height: 31px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem;">
@@ -712,7 +749,6 @@
                                         <span class="info-box-value" id="valSubiso">{% if resultado %}{{ resultado.subclasificacion_iso }}{% else %}-{% endif %}</span>
                                     </div>
                                 </div>
-                                <!-- TARJETA MATERIAL TRABAJO (NEUTRA SIN APLICAR COLORES DINÁMICOS DE FONDO) -->
                                 <div class="col-12">
                                     <div class="info-box" id="boxMaterial">
                                         <span class="info-box-label">Material trabajo</span>
@@ -769,11 +805,9 @@
 
                         </div>
                     </div>
-
                 </div>
 
                 <div class="row g-3 mb-3">
-                    
                     <div class="col-lg-6">
                         <div class="ui-card">
                             <div class="ui-card-title">Recomendación Sumitomo</div>
@@ -904,7 +938,6 @@
 
                         </div>
                     </div>
-
                 </div>
 
                 <div class="ui-card mb-3">
@@ -931,23 +964,23 @@
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="cnc-card">
-                                <span class="cnc-label">RPM (Promedio)</span>
-                                <span class="cnc-value" id="cncRpm">{% if resultado %}{{ resultado.rpm }}{% else %}-{% endif %}</span>
-                                <span class="cnc-unit">rev/min</span>
+                            <div class="cnc-card cnc-card-pasadas">
+                                <span class="cnc-label text-info">RPM Husillo</span>
+                                <span class="cnc-value text-warning fs-3" id="cncRpm">{% if resultado %}{{ resultado.rpm }}{% else %}-{% endif %}</span>
+                                <div class="mt-1"><span class="unit-badge unit-rpm">rev / min</span></div>
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="cnc-card">
-                                <span class="cnc-label">Avance Máquina</span>
-                                <span class="cnc-value" id="cncVf">{% if resultado %}{{ resultado.vf }}{% else %}-{% endif %}</span>
-                                <span class="cnc-unit">mm/min</span>
+                            <div class="cnc-card cnc-card-pasadas">
+                                <span class="cnc-label text-info">Avance Máquina (Vf)</span>
+                                <span class="cnc-value text-success fs-3" id="cncVf">{% if resultado %}{{ resultado.vf }}{% else %}-{% endif %}</span>
+                                <div class="mt-1"><span class="unit-badge unit-vf">mm / min</span></div>
                             </div>
                         </div>
 
                         <div class="col-md-3">
                             <div class="cnc-card">
-                                <span class="cnc-label">Avance por Rev</span>
+                                <span class="cnc-label">Avance por Rev (fn)</span>
                                 <span class="cnc-value" id="cncFn">{% if resultado %}{{ resultado.fn }}{% else %}-{% endif %}</span>
                                 <span class="cnc-unit">mm/rev</span>
                             </div>
@@ -961,16 +994,16 @@
                         </div>
                         <div class="col-md-3">
                             <div class="cnc-card">
-                                <span class="cnc-label">Velocidad de corte</span>
+                                <span class="cnc-label">Velocidad de corte (Vc)</span>
                                 <span class="cnc-value" id="cncVc">{% if resultado %}{{ resultado.vc }}{% else %}-{% endif %}</span>
-                                <span class="cnc-unit">m/min</span>
+                                <div class="mt-1"><span class="unit-badge unit-vc">m / min</span></div>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="cnc-card">
-                                <span class="cnc-label">MRR</span>
+                                <span class="cnc-label">Tasa Remoción (MRR)</span>
                                 <span class="cnc-value" id="cncMrr">{% if resultado %}{{ resultado.mrr }}{% else %}-{% endif %}</span>
-                                <span class="cnc-unit">cm³/min</span>
+                                <div class="mt-1"><span class="unit-badge unit-mrr">cm³ / min</span></div>
                             </div>
                         </div>
 
@@ -990,9 +1023,9 @@
                         </div>
                         <div class="col-md-4">
                             <div class="cnc-card">
-                                <span class="cnc-label">Tiempo Total de Mecanizado</span>
+                                <span class="cnc-label">Tiempo Total Mecanizado</span>
                                 <span class="cnc-value text-info fw-bold" id="cncTiempo">{% if resultado %}{{ resultado.tiempo }}{% else %}-{% endif %}</span>
-                                <span class="cnc-unit">min ({% if resultado %}{{ resultado.num_pasadas }}{% else %}-{% endif %} pasadas)</span>
+                                <div class="mt-1"><span class="unit-badge unit-time">minutos</span></div>
                             </div>
                         </div>
                     </div>
@@ -1042,7 +1075,6 @@
                     </div>
                 </div>
 
-                <!-- TARJETAS CON LISTA NUMERADA DE OPCIONES -->
                 <div class="ui-card mb-3">
                     <div class="ui-card-title d-flex justify-content-between align-items-center mb-2">
                         <span><i class="bi bi-list-ol me-2 text-primary"></i>Lista de Opciones de Inserto y Grado Sumitomo Recomendados</span>
@@ -1084,7 +1116,6 @@
             <h1 class="page-title">Fresado CNC Sumitomo</h1>
             <p class="page-subtitle">Calculadora de los 6 parámetros clave de fresado y catálogo oficial interactivo.</p>
 
-            <!-- PESTAÑAS DE NAVEGACIÓN DGC / WEZ -->
             <ul class="nav nav-pills mb-4" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="pill-dgc-tab" data-bs-toggle="pill" data-bs-target="#pill-dgc" type="button" role="tab" onclick="seleccionarSerieDesdeTab('DGC (Dual-G-Cutter 45°)')">
@@ -1098,20 +1129,17 @@
                 </li>
             </ul>
 
-            <!-- CALCULADORA INTERACTIVA DE PARÁMETROS DE FRESADO -->
             <div class="ui-card mb-4">
                 <div class="ui-card-title">
                     <i class="bi bi-calculator me-2 text-primary"></i>Calculadora de Parámetros de Fresado (6 Métricas CNC)
                 </div>
 
                 <div class="row g-2 mb-3 align-items-end">
-                    <!-- 1. BUSCAR MATERIAL -->
                     <div class="col-md-3">
                         <label class="form-label small text-muted fw-bold mb-1">Buscar Material</label>
                         <input type="text" list="lista-materiales" id="material_fresado" class="form-control form-control-sm fw-semibold text-primary" placeholder="Escriba ej: 4140, Inox, Aluminio..." oninput="alCambiarMaterialFresado()" onchange="alCambiarMaterialFresado()" onblur="alCambiarMaterialFresado()">
                     </div>
                     
-                    <!-- 2. CELDA GRUPO ISO (IGUAL A BARRENADO) -->
                     <div class="col-md-1">
                         <label class="form-label small text-muted fw-bold mb-1">Grupo ISO</label>
                         <div id="boxIsoFresado" class="p-1 rounded text-center fw-bold text-white bg-secondary" style="height: 31px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem;">
@@ -1119,7 +1147,6 @@
                         </div>
                     </div>
 
-                    <!-- 3. TIPO DE INSERTO DGC -->
                     <div class="col-md-2" id="contenedor_tipo_inserto_dgc">
                         <label class="form-label small text-muted fw-bold mb-1">Tipo Inserto DGC</label>
                         <select id="tipo_inserto_dgc" class="form-select form-select-sm" onchange="alCambiarMaterialOFresa()">
@@ -1128,13 +1155,11 @@
                         </select>
                     </div>
 
-                    <!-- 4. ROMPEVIRUTAS RECOMENDADO -->
                     <div class="col-md-2">
                         <label class="form-label small text-muted fw-bold mb-1">Rompevirutas Recomendado</label>
                         <input type="text" id="valRompevirutasFresado" class="form-control form-control-sm bg-light fw-bold text-warning-emphasis" value="-" readonly>
                     </div>
 
-                    <!-- 5. DIÁMETRO, FILOS Y AVANCE FZ -->
                     <div class="col-md-1">
                         <label class="form-label small text-muted fw-bold mb-1">D (mm)</label>
                         <input type="number" id="dc_fresado" class="form-control form-control-sm" value="50" oninput="alCambiarDiametro()" onchange="alCambiarDiametro()">
@@ -1152,19 +1177,18 @@
                     </div>
                 </div>
 
-                <!-- TARJETAS DE LOS 6 CÁLCULOS CNC CON BADGES DE ALTO CONTRASTE -->
                 <div class="row g-2">
                     <div class="col-md-2 col-6">
                         <div class="cnc-card cnc-card-pasadas">
-                            <span class="cnc-label text-info">1. RPM</span>
-                            <span class="cnc-value text-warning fs-4" id="fresRpm">0</span>
+                            <span class="cnc-label text-info">1. RPM Husillo</span>
+                            <span class="cnc-value text-warning fs-3" id="fresRpm">0</span>
                             <div class="mt-1"><span class="unit-badge unit-rpm">rev / min</span></div>
                         </div>
                     </div>
                     <div class="col-md-2 col-6">
                         <div class="cnc-card cnc-card-pasadas">
-                            <span class="cnc-label text-info">2. Feed Rate (F)</span>
-                            <span class="cnc-value text-warning fs-4" id="fresVf">0</span>
+                            <span class="cnc-label text-info">2. Avance Máquina (F)</span>
+                            <span class="cnc-value text-warning fs-3" id="fresVf">0</span>
                             <div class="mt-1"><span class="unit-badge unit-vf">mm / min</span></div>
                         </div>
                     </div>
@@ -1177,21 +1201,21 @@
                     </div>
                     <div class="col-md-2 col-6">
                         <div class="cnc-card">
-                            <span class="cnc-label">4. MRR</span>
+                            <span class="cnc-label">4. Tasa Remoción (MRR)</span>
                             <span class="cnc-value" id="fresMrr">0</span>
                             <div class="mt-1"><span class="unit-badge unit-mrr">cm³ / min</span></div>
                         </div>
                     </div>
                     <div class="col-md-2 col-6">
                         <div class="cnc-card">
-                            <span class="cnc-label">5. Tiempo (T)</span>
+                            <span class="cnc-label">5. Tiempo Ciclo (T)</span>
                             <span class="cnc-value text-info fw-bold" id="fresTiempo">0</span>
                             <div class="mt-1"><span class="unit-badge unit-time">minutos</span></div>
                         </div>
                     </div>
                     <div class="col-md-2 col-6">
                         <div class="cnc-card">
-                            <span class="cnc-label">6. VTR (Vol. Total)</span>
+                            <span class="cnc-label">6. Vol. Total (VTR)</span>
                             <span class="cnc-value" id="fresVtr">0</span>
                             <div class="mt-1"><span class="unit-badge unit-vol">cm³</span></div>
                         </div>
@@ -1199,14 +1223,10 @@
                 </div>
             </div>
 
-            <!-- CATÁLOGO REDISEÑADO EN CUADRÍCULA VISUAL (GRID CARDS) -->
             <div class="tab-content" id="pills-tabContent">
-                
-                <!-- PESTAÑA DGC (45°) -->
                 <div class="tab-pane fade show active" id="pill-dgc" role="tabpanel">
                     <div class="ui-card mb-3">
                         <div class="ui-card-title mb-3"><i class="bi bi-grid-3x3-gap-fill me-2 text-primary"></i>Catálogo Técnico Serie DGC (45°)</div>
-                        
                         <div class="row g-3">
                             <div class="col-md-3 col-sm-6">
                                 <div class="card h-100 border shadow-sm">
@@ -1222,7 +1242,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="col-md-3 col-sm-6">
                                 <div class="card h-100 border shadow-sm">
                                     <img src="/static/grades_milling1.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Grados 2">
@@ -1237,7 +1256,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="col-md-3 col-sm-6">
                                 <div class="card h-100 border shadow-sm">
                                     <img src="/static/dgc_condiciones.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Condiciones DGC">
@@ -1252,7 +1270,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="col-md-3 col-sm-6">
                                 <div class="card h-100 border shadow-sm">
                                     <img src="/static/dgc_chipbreaker.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Chipbreaker DGC">
@@ -1267,7 +1284,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="col-md-3 col-sm-6">
                                 <div class="card h-100 border shadow-sm">
                                     <img src="/static/dgc_filos.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Filos DGC">
@@ -1283,15 +1299,12 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
 
-                <!-- PESTAÑA WEZ (90°) -->
                 <div class="tab-pane fade" id="pill-wez" role="tabpanel">
                     <div class="ui-card mb-3">
                         <div class="ui-card-title mb-3"><i class="bi bi-grid-3x3-gap-fill me-2 text-primary"></i>Catálogo Técnico Serie WEZ (90°)</div>
-                        
                         <div class="row g-3">
                             <div class="col-md-3 col-sm-6">
                                 <div class="card h-100 border shadow-sm">
@@ -1307,7 +1320,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="col-md-3 col-sm-6">
                                 <div class="card h-100 border shadow-sm">
                                     <img src="/static/grades_milling1.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Grados 2">
@@ -1322,7 +1334,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="col-md-3 col-sm-6">
                                 <div class="card h-100 border shadow-sm">
                                     <img src="/static/wez_condiciones.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Condiciones WEZ 1">
@@ -1337,7 +1348,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="col-md-3 col-sm-6">
                                 <div class="card h-100 border shadow-sm">
                                     <img src="/static/wez_condiciones1.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Condiciones WEZ 2">
@@ -1352,7 +1362,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="col-md-3 col-sm-6">
                                 <div class="card h-100 border shadow-sm">
                                     <img src="/static/wez_chipbreaker.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Chipbreaker WEZ">
@@ -1367,7 +1376,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="col-md-3 col-sm-6">
                                 <div class="card h-100 border shadow-sm">
                                     <img src="/static/wez_filos.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Filos WEZ 1">
@@ -1382,7 +1390,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="col-md-3 col-sm-6">
                                 <div class="card h-100 border shadow-sm">
                                     <img src="/static/wez_filos1.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Filos WEZ 2">
@@ -1398,15 +1405,12 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
-
             </div>
-
         </div>
 
-        <!-- VISTA: BARRENADO CNC AUTOMÁTICO CON 8 TARJETAS -->
+        <!-- VISTA 4: BARRENADO CNC AUTOMÁTICO -->
         <div id="vista-barrenado" style="display: none;">
             <h1 class="page-title">Barrenado / Taladrado CNC</h1>
             <p class="page-subtitle">Cálculo dinámico en tiempo real de parámetros de corte y recubrimientos sugeridos.</p>
@@ -1417,7 +1421,6 @@
                     <span class="badge bg-secondary fs-7" id="badgeRelacionLD">Veces Diámetro (L/D): -</span>
                 </div>
 
-                <!-- ALERTA DE REFRIGERACIÓN Y LUBRICACIÓN -->
                 <div class="alert alert-info py-2 px-3 mb-3 d-flex align-items-center justify-content-between" id="alertaLubricacionBox">
                     <div>
                         <i class="bi bi-droplet-half me-2 fs-5"></i>
@@ -1432,7 +1435,6 @@
                         <input type="text" list="lista-materiales" id="material_barrenado" class="form-control form-control-sm fw-semibold text-primary" placeholder="Escriba ej: 4140, Inox..." oninput="alCambiarMaterialBarrenado()" onchange="alCambiarMaterialBarrenado()">
                     </div>
                     
-                    <!-- CELDA GRUPO ISO -->
                     <div class="col-md-1">
                         <label class="form-label small text-muted fw-bold mb-1">Grupo ISO</label>
                         <div id="boxIsoBarrenado" class="p-1 rounded text-center fw-bold text-white bg-secondary" style="height: 31px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem;">
@@ -1440,13 +1442,11 @@
                         </div>
                     </div>
 
-                    <!-- CELDA RECUBRIMIENTO AUTOMÁTICO -->
                     <div class="col-md-2">
                         <label class="form-label small text-muted fw-bold mb-1">Recubrimiento</label>
                         <input type="text" id="recubrimiento_barrenado" class="form-control form-control-sm bg-dark text-white fw-bold border-0" value="-" readonly style="font-size: 0.8rem;" title="Recubrimiento sugerido">
                     </div>
 
-                    <!-- NUEVAS CELDAS: FLAUTAS Y ÁNGULO DE PUNTA SUGERIDOS -->
                     <div class="col-md-2">
                         <label class="form-label small text-muted fw-bold mb-1">Flautas Broca</label>
                         <input type="text" id="flautas_barrenado" class="form-control form-control-sm bg-light fw-bold text-primary" value="-" readonly style="font-size: 0.8rem;">
@@ -1475,19 +1475,18 @@
                     </div>
                 </div>
 
-                <!-- TARJETAS DE MÉTRICAS COMPLETAS (8 TARJETAS DE MÉTICAS CNC) -->
                 <div class="row g-2">
                     <div class="col-md-3 col-6">
                         <div class="cnc-card cnc-card-pasadas">
-                            <span class="cnc-label text-info">1. RPM</span>
-                            <span class="cnc-value text-warning fs-4" id="barrRpm">-</span>
+                            <span class="cnc-label text-info">1. RPM Husillo</span>
+                            <span class="cnc-value text-warning fs-3" id="barrRpm">-</span>
                             <div class="mt-1"><span class="unit-badge unit-rpm">rev / min</span></div>
                         </div>
                     </div>
                     <div class="col-md-3 col-6">
                         <div class="cnc-card cnc-card-pasadas">
-                            <span class="cnc-label text-info">2. Feed Rate (Vf)</span>
-                            <span class="cnc-value text-warning fs-4" id="barrVf">-</span>
+                            <span class="cnc-label text-info">2. Avance Máquina (Vf)</span>
+                            <span class="cnc-value text-success fs-3" id="barrVf">-</span>
                             <div class="mt-1"><span class="unit-badge unit-vf">mm / min</span></div>
                         </div>
                     </div>
@@ -1507,28 +1506,28 @@
                     </div>
                     <div class="col-md-3 col-6">
                         <div class="cnc-card">
-                            <span class="cnc-label">5. MRR</span>
+                            <span class="cnc-label">5. Tasa Remoción (MRR)</span>
                             <span class="cnc-value" id="barrMrr">-</span>
                             <div class="mt-1"><span class="unit-badge unit-mrr">cm³ / min</span></div>
                         </div>
                     </div>
                     <div class="col-md-3 col-6">
                         <div class="cnc-card">
-                            <span class="cnc-label">6. Tiempo (T)</span>
+                            <span class="cnc-label">6. Tiempo de Barrenado</span>
                             <span class="cnc-value text-info fw-bold" id="barrTiempo">-</span>
                             <div class="mt-1"><span class="unit-badge unit-time">minutos</span></div>
                         </div>
                     </div>
                     <div class="col-md-3 col-6">
                         <div class="cnc-card">
-                            <span class="cnc-label">7. VTR (Vol. Total)</span>
+                            <span class="cnc-label">7. Vol. Total Viruta (VTR)</span>
                             <span class="cnc-value" id="barrVtr">-</span>
                             <div class="mt-1"><span class="unit-badge unit-vol">cm³</span></div>
                         </div>
                     </div>
                     <div class="col-md-3 col-6">
                         <div class="cnc-card">
-                            <span class="cnc-label">8. Dist. Punta (P)</span>
+                            <span class="cnc-label">8. Dist. Punta Broca (P)</span>
                             <span class="cnc-value text-success" id="barrPunta">-</span>
                             <div class="mt-1"><span class="unit-badge unit-vc">mm</span></div>
                         </div>
@@ -1537,19 +1536,18 @@
             </div>
         </div>
 
-        <!-- VISTA: ROSCADO / MACHUELEADO CNC (HORIZONTALMENTE ALINEADO) -->
+        <!-- VISTA 5: ROSCADO / MACHUELEADO Y THREAD MILLING CNC -->
         <div id="vista-roscado" style="display: none;">
-            <h1 class="page-title">Roscado / Machueleado CNC</h1>
-            <p class="page-subtitle">Cálculo dinámico en tiempo real de broca previa por % de enganche, RPM, Avance Vf y tiempos de ciclo G84.</p>
+            <h1 class="page-title">Roscado / Machueleado y Thread Milling CNC</h1>
+            <p class="page-subtitle">Selección estándar de roscas (M, MF, UNC, UNF, NPT, BSPP, UNJ) y cálculo dinámico de machuelos o fresado helicoidal.</p>
 
             <div class="ui-card mb-4">
                 <div class="ui-card-title d-flex justify-content-between align-items-center mb-3">
-                    <span><i class="bi bi-symmetry-horizontal me-2 text-primary"></i>Calculadora de Roscado CNC</span>
+                    <span><i class="bi bi-symmetry-horizontal me-2 text-primary"></i>Calculadora de Roscado Industrial</span>
                     <span class="badge bg-secondary fs-7" id="badgeTipoMachueloInfo">Machuelo de Corte (Estándar)</span>
                 </div>
 
-                <!-- FILA ÚNICA HORIZONTAL CON TODOS LOS CONTROLES PERFECTAMENTE ALINEADOS -->
-                <div class="row g-2 mb-3 align-items-end">
+                <div class="row g-2 mb-2 align-items-end">
                     <div class="col-md-2">
                         <label class="form-label small text-muted fw-bold mb-1">Buscar Material</label>
                         <input type="text" list="lista-materiales" id="material_roscado" class="form-control form-control-sm fw-semibold text-primary" placeholder="Escriba ej: 4140, Inox..." oninput="alCambiarMaterialRoscado()" onchange="alCambiarMaterialRoscado()">
@@ -1563,11 +1561,75 @@
                     </div>
 
                     <div class="col-md-2">
-                        <label class="form-label small text-muted fw-bold mb-1">Mat. Machuelo</label>
-                        <input type="text" id="sustrato_machuelo_roscado" class="form-control form-control-sm bg-dark text-white fw-bold border-0" value="-" readonly style="font-size: 0.78rem;" title="Sustrato recomendado según Grupo ISO">
+                        <label class="form-label small text-muted fw-bold mb-1">Método Roscado</label>
+                        <select id="metodo_roscado" class="form-select form-select-sm fw-bold text-primary" onchange="alCambiarMetodoRoscado()">
+                            <option value="machuelo">Machuelo Tradicional</option>
+                            <option value="fresa">Fresa de Rosca (Thread Mill)</option>
+                        </select>
                     </div>
 
-                    <div class="col-md-2">
+                    <div class="col-md-4">
+                        <label class="form-label small text-muted fw-bold mb-1">Estándar de Rosca Normalizado</label>
+                        <select id="select_estandar_rosca" class="form-select form-select-sm fw-bold text-dark" onchange="seleccionarRoscaEstandar()">
+                            <option value="">-- Personalizado / Manual --</option>
+                            <optgroup label="Métrica Estándar (M)">
+                                <option value="6,1.0">M6 × 1.0</option>
+                                <option value="8,1.25">M8 × 1.25</option>
+                                <option value="10,1.5">M10 × 1.5</option>
+                                <option value="12,1.75">M12 × 1.75</option>
+                                <option value="16,2.0">M16 × 2.0</option>
+                                <option value="20,2.5">M20 × 2.5</option>
+                            </optgroup>
+                            <optgroup label="Métrica Fina (MF)">
+                                <option value="8,1.0">M8 × 1.0</option>
+                                <option value="10,1.25">M10 × 1.25</option>
+                                <option value="12,1.25">M12 × 1.25</option>
+                                <option value="12,1.5">M12 × 1.5</option>
+                                <option value="14,1.5">M14 × 1.5</option>
+                            </optgroup>
+                            <optgroup label="Americana Coarse (UNC)">
+                                <option value="6.35,1.27">1/4" - 20 UNC</option>
+                                <option value="7.938,1.411">5/16" - 18 UNC</option>
+                                <option value="9.525,1.588">3/8" - 16 UNC</option>
+                                <option value="12.7,1.954">1/2" - 13 UNC</option>
+                                <option value="15.875,2.309">5/8" - 11 UNC</option>
+                                <option value="19.05,2.54">3/4" - 10 UNC</option>
+                            </optgroup>
+                            <optgroup label="Americana Fine (UNF)">
+                                <option value="6.35,0.907">1/4" - 28 UNF</option>
+                                <option value="7.938,1.058">5/16" - 24 UNF</option>
+                                <option value="9.525,1.058">3/8" - 24 UNF</option>
+                                <option value="12.7,1.27">1/2" - 20 UNF</option>
+                            </optgroup>
+                            <optgroup label="Tubería Sellada (NPT)">
+                                <option value="10.29,0.941">1/8" - 27 NPT</option>
+                                <option value="13.72,1.411">1/4" - 18 NPT</option>
+                                <option value="17.15,1.411">3/8" - 18 NPT</option>
+                                <option value="21.34,1.814">1/2" - 14 NPT</option>
+                                <option value="26.67,1.814">3/4" - 14 NPT</option>
+                            </optgroup>
+                            <optgroup label="Tubería Paralela (BSPP / G)">
+                                <option value="9.73,0.907">G 1/8"</option>
+                                <option value="13.16,1.337">G 1/4"</option>
+                                <option value="16.66,1.337">G 3/8"</option>
+                                <option value="20.96,1.814">G 1/2"</option>
+                            </optgroup>
+                            <optgroup label="Aeroespacial (UNJ)">
+                                <option value="6.35,0.907">1/4" - 28 UNJ</option>
+                                <option value="9.525,1.058">3/8" - 24 UNJ</option>
+                                <option value="12.7,1.27">1/2" - 20 UNJ</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label small text-muted fw-bold mb-1">Mat. Herramienta</label>
+                        <input type="text" id="sustrato_machuelo_roscado" class="form-control form-control-sm bg-dark text-white fw-bold border-0" value="-" readonly style="font-size: 0.78rem;" title="Sustrato recomendado según Grupo ISO">
+                    </div>
+                </div>
+
+                <div class="row g-2 mb-3 align-items-end">
+                    <div class="col-md-2" id="col_tipo_machuelo">
                         <label class="form-label small text-muted fw-bold mb-1">Tipo de Machuelo</label>
                         <select id="tipo_machuelo_roscado" class="form-select form-select-sm fw-bold text-dark" onchange="actualizarRoscadoEnVivo()">
                             <option value="corte">Corte (Con Viruta)</option>
@@ -1575,38 +1637,52 @@
                         </select>
                     </div>
 
-                    <div class="col-md-1">
+                    <div class="col-md-2">
                         <label class="form-label small text-muted fw-bold mb-1">D (mm)</label>
-                        <input type="number" step="0.1" id="d_roscado" class="form-control form-control-sm fw-bold" placeholder="Ej: 20" oninput="actualizarRoscadoEnVivo()" onchange="actualizarRoscadoEnVivo()">
+                        <input type="number" step="0.001" id="d_roscado" class="form-control form-control-sm fw-bold" placeholder="Ej: 20" oninput="actualizarRoscadoEnVivo()" onchange="actualizarRoscadoEnVivo()">
                     </div>
 
-                    <div class="col-md-1">
+                    <div class="col-md-2">
                         <label class="form-label small text-muted fw-bold mb-1">Paso (mm)</label>
-                        <input type="number" step="0.05" id="paso_roscado" class="form-control form-control-sm fw-bold text-primary" placeholder="Ej: 2.5" oninput="actualizarRoscadoEnVivo()" onchange="actualizarRoscadoEnVivo()">
+                        <input type="number" step="0.001" id="paso_roscado" class="form-control form-control-sm fw-bold text-primary" placeholder="Ej: 2.5" oninput="actualizarRoscadoEnVivo()" onchange="actualizarRoscadoEnVivo()">
                     </div>
 
-                    <div class="col-md-1">
+                    <div class="col-md-1" id="box_d_fresa" style="display: none;">
+                        <label class="form-label small text-muted fw-bold mb-1 text-danger">Ø Fresa (mm)</label>
+                        <input type="number" step="0.1" id="d_fresa_input" class="form-control form-control-sm fw-bold border-danger" placeholder="Ej: 10" oninput="actualizarRoscadoEnVivo()">
+                    </div>
+
+                    <div class="col-md-1" id="box_z_fresa" style="display: none;">
+                        <label class="form-label small text-muted fw-bold mb-1 text-danger">Filos z</label>
+                        <input type="number" step="1" id="z_fresa_input" class="form-control form-control-sm fw-bold border-danger" value="4" oninput="actualizarRoscadoEnVivo()">
+                    </div>
+
+                    <div class="col-md-1" id="box_fz_fresa" style="display: none;">
+                        <label class="form-label small text-muted fw-bold mb-1 text-danger">fz (mm/t)</label>
+                        <input type="number" step="0.01" id="fz_fresa_input" class="form-control form-control-sm fw-bold border-danger" value="0.05" oninput="actualizarRoscadoEnVivo()">
+                    </div>
+
+                    <div class="col-md-2" id="col_pct_altura">
                         <label class="form-label small text-muted fw-bold mb-1">% Altura</label>
                         <input type="number" step="1" id="pct_rosca_input" class="form-control form-control-sm text-center" value="75" oninput="actualizarRoscadoEnVivo()" onchange="actualizarRoscadoEnVivo()">
                     </div>
 
-                    <div class="col-md-1">
+                    <div class="col-md-2">
                         <label class="form-label small text-muted fw-bold mb-1">Vc (m/min)</label>
                         <input type="number" step="0.1" id="vc_roscado" class="form-control form-control-sm" placeholder="Auto" oninput="actualizarRoscadoEnVivo()" onchange="actualizarRoscadoEnVivo()">
                     </div>
 
-                    <div class="col-md-1">
+                    <div class="col-md-2">
                         <label class="form-label small text-muted fw-bold mb-1">Prof. L (mm)</label>
                         <input type="number" step="1" id="long_roscado" class="form-control form-control-sm" placeholder="Ej: 85" oninput="actualizarRoscadoEnVivo()" onchange="actualizarRoscadoEnVivo()">
                     </div>
                 </div>
 
-                <!-- TARJETAS DE MÉTRICAS ROSCADO CNC -->
                 <div class="row g-2">
                     <div class="col-md-3 col-6">
                         <div class="cnc-card cnc-card-pasadas">
                             <span class="cnc-label text-info">1. Broca Estándar</span>
-                            <span class="cnc-value text-warning fs-4" id="roscBrocaStd">-</span>
+                            <span class="cnc-value text-warning fs-3" id="roscBrocaStd">-</span>
                             <div class="mt-1"><span class="unit-badge unit-vc">mm</span></div>
                         </div>
                     </div>
@@ -1614,30 +1690,30 @@
                     <div class="col-md-3 col-6">
                         <div class="cnc-card cnc-card-pasadas">
                             <span class="cnc-label text-info">2. Broca (% Enganche)</span>
-                            <span class="cnc-value text-warning fs-4" id="roscBrocaPct">-</span>
+                            <span class="cnc-value text-warning fs-3" id="roscBrocaPct">-</span>
                             <div class="mt-1"><span class="unit-badge unit-vf">mm</span></div>
                         </div>
                     </div>
 
                     <div class="col-md-3 col-6">
-                        <div class="cnc-card">
-                            <span class="cnc-label">3. RPM Husillo</span>
-                            <span class="cnc-value" id="roscRpm">-</span>
+                        <div class="cnc-card cnc-card-pasadas">
+                            <span class="cnc-label text-info">3. RPM Husillo</span>
+                            <span class="cnc-value text-warning fs-3" id="roscRpm">-</span>
                             <div class="mt-1"><span class="unit-badge unit-rpm">rev / min</span></div>
                         </div>
                     </div>
 
                     <div class="col-md-3 col-6">
-                        <div class="cnc-card">
-                            <span class="cnc-label">4. Feed Rate (Vf)</span>
-                            <span class="cnc-value text-success fw-bold" id="roscVf">-</span>
+                        <div class="cnc-card cnc-card-pasadas">
+                            <span class="cnc-label text-info" id="lblVfRoscado">4. Feed Rate (Vf)</span>
+                            <span class="cnc-value text-success fs-3" id="roscVf">-</span>
                             <div class="mt-1"><span class="unit-badge unit-vf">mm / min</span></div>
                         </div>
                     </div>
 
                     <div class="col-md-3 col-6">
                         <div class="cnc-card">
-                            <span class="cnc-label">5. Tiempo Ciclo G84</span>
+                            <span class="cnc-label">5. Tiempo Ciclo</span>
                             <span class="cnc-value text-info fw-bold" id="roscTiempo">-</span>
                             <div class="mt-1"><span class="unit-badge unit-time" id="roscTiempoSeg">- seg</span></div>
                         </div>
@@ -1646,6 +1722,8 @@
 
             </div>
         </div>
+
+    </div>
 
     <!-- MODAL DE ZOOM -->
     <div class="modal fade" id="modalImageZoom" tabindex="-1" aria-hidden="true">
@@ -1689,13 +1767,16 @@
 
         var serieSeleccionadaActual = "DGC";
 
-        // HELPER ULTRA-SEGURO: Obtiene el valor de un input sin romper la ejecución si el elemento no existe en el DOM
         function getValSeguro(id) {
             var el = document.getElementById(id);
             return (el && el.value !== undefined && el.value !== null) ? el.value.toString().trim() : "";
         }
 
-        // DETECCIÓN VISUAL DE GRUPO ISO EN TORNEADO (EXCLUSIVA PARA CASILLA COMPACTA)
+        function setTexto(id, val) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = (val !== undefined && val !== null && val !== "") ? val : '-';
+        }
+
         function alCambiarMaterialTorneado() {
             var mat = getValSeguro("material").toLowerCase();
             var boxIso = document.getElementById("boxIsoTorneado");
@@ -1722,7 +1803,6 @@
                     iso = 'H';
                 }
 
-                // Aplica el color únicamente a la casilla superior compacta de Grupo ISO
                 if (boxIso && txtIso) {
                     boxIso.className = "p-1 rounded text-center fw-bold badge-iso-" + iso.toLowerCase() + " iso-theme-" + iso;
                     txtIso.textContent = "ISO " + iso;
@@ -1734,7 +1814,6 @@
             cargarInsertos();
         }
 
-        // MOTOR DE ZOOM
         let scale = 1;
         let pX = 0;
         let pY = 0;
@@ -1777,7 +1856,6 @@
             if (badge) badge.textContent = Math.round(scale * 100) + "%";
         }
 
-        // DETECCIÓN VISUAL INSTANTÁNEA DE GRUPO ISO EN FRESADO (IDÉNTICO A BARRENADO)
         function alCambiarMaterialFresado() {
             var mat = getValSeguro("material_fresado").toLowerCase();
             var boxIso = document.getElementById("boxIsoFresado");
@@ -1802,13 +1880,11 @@
                     iso = 'H';
                 }
 
-                // Asignación de color con las clases CSS globales (badge-iso-p, badge-iso-m, etc.)
                 if (boxIso && txtIso) {
                     boxIso.className = "p-1 rounded text-center fw-bold badge-iso-" + iso.toLowerCase() + " iso-theme-" + iso;
                     txtIso.textContent = "ISO " + iso;
                 }
 
-                // Vaciar fz previo solo cuando se edita el material para pedir el recomendado
                 var fzElem = document.getElementById("fz_fresado");
                 if (fzElem && document.activeElement === document.getElementById("material_fresado")) {
                     fzElem.value = "";
@@ -1823,17 +1899,13 @@
             if (fzElem) fzElem.value = "";
             alCambiarMaterialFresado();
         }
+
         function seleccionarSerieDesdeTab(serie) {
             serieSeleccionadaActual = serie.indexOf("WEZ") !== -1 ? "WEZ" : "DGC";
             var contDgc = document.getElementById("contenedor_tipo_inserto_dgc");
             if (contDgc) contDgc.style.display = serieSeleccionadaActual === "DGC" ? "block" : "none";
             alCambiarDiametro();
             alCambiarMaterialOFresa();
-        }
-
-        function setTexto(id, val) {
-            const el = document.getElementById(id);
-            if (el) el.textContent = (val !== undefined && val !== null && val !== "") ? val : '-';
         }
 
         function alCambiarDiametro() {
@@ -1936,7 +2008,6 @@
                 .catch(err => console.error("Error en actualizarValoresEnVivo:", err));
         }
 
-        // CÁLCULO DE FRESADO CORREGIDO Y BLINDADO
         function actualizarFresadoEnVivo() {
             var mat = getValSeguro("material_fresado");
             var rvpElem = document.getElementById("valRompevirutasFresado");
@@ -1984,23 +2055,19 @@
                 .then(function(response) { return response.json(); })
                 .then(function(data) {
                     if (data && !data.error) {
-                        // 1. Asignar avance por diente (fz) sugerido si está vacío
                         if (fzVal <= 0 && data.fz !== undefined && fzElem && document.activeElement !== fzElem) {
                             fzElem.value = data.fz;
                         }
 
-                        // 2. Actualizar badge de fz sugerido
                         var badgeFz = document.getElementById("valFzSugerido");
                         if (badgeFz && data.fz !== undefined) {
                             badgeFz.textContent = data.fz + " mm/t";
                         }
 
-                        // 3. Asignar rompevirutas
                         if (rvpElem) {
                             rvpElem.value = data.rompevirutas || data.rompevirutas_sugerido || "-";
                         }
 
-                        // 4. Pintar métricas CNC
                         setTexto("fresRpm", data.rpm !== undefined ? data.rpm : "-");
                         setTexto("fresVf", data.vf !== undefined ? data.vf : "-");
                         setTexto("fresValVc", data.vc !== undefined ? data.vc + " m/min" : "- m/min");
@@ -2014,7 +2081,6 @@
                 });
         }
 
-        // 1. DETECCIÓN INSTANTÁNEA ISO, RECUBRIMIENTO Y FLAUTAS
         function alCambiarMaterialBarrenado() {
             var mat = getValSeguro("material_barrenado").toLowerCase();
             var boxIso = document.getElementById("boxIsoBarrenado");
@@ -2077,145 +2143,6 @@
             actualizarBarrenadoEnVivo();
         }
 
-        // DETECCIÓN DE GRUPO ISO Y SUSTRATO SUGERIDO
-        function alCambiarMaterialRoscado() {
-            var mat = getValSeguro("material_roscado").toLowerCase();
-            var boxIso = document.getElementById("boxIsoRoscado");
-            var txtIso = document.getElementById("txtIsoRoscado");
-            var sustratoElem = document.getElementById("sustrato_machuelo_roscado");
-
-            var MAPA_SUSTRATOS = {
-                'P': 'HSS-E (Cobalto) / HSS-PM',
-                'M': 'HSS-E-PM (Sinterizado)',
-                'K': 'Carburo Sólido (Solid Carbide)',
-                'N': 'HSS-E / Carburo Sólido',
-                'S': 'HSS-E-PM / Carburo Micrograno',
-                'H': 'Carburo Sólido (Ultra Dureza)'
-            };
-
-            if (!mat) {
-                if (boxIso && txtIso) {
-                    boxIso.className = "p-1 rounded text-center fw-bold text-white bg-secondary";
-                    txtIso.textContent = "-";
-                }
-                if (sustratoElem) sustratoElem.value = "-";
-            } else {
-                var iso = 'P';
-                if (mat.includes("304") || mat.includes("316") || mat.includes("inox") || mat.includes("inoxidable") || mat.includes("420") || mat.includes("410") || mat.includes("430")) {
-                    iso = 'M';
-                } else if (mat.includes("gris") || mat.includes("nodular") || mat.includes("fundicion") || mat.includes("fundición") || mat.includes("cast iron")) {
-                    iso = 'K';
-                } else if (mat.includes("aluminio") || mat.includes("6061") || mat.includes("7075") || mat.includes("bronce") || mat.includes("cobre")) {
-                    iso = 'N';
-                } else if (mat.includes("titanio") || mat.includes("inconel") || mat.includes("hastelloy") || mat.includes("waspaloy")) {
-                    iso = 'S';
-                } else if (mat.includes("templado") || mat.includes("hrc") || mat.includes("d2") || mat.includes("skd")) {
-                    iso = 'H';
-                }
-
-                if (boxIso && txtIso) {
-                    boxIso.className = "p-1 rounded text-center fw-bold badge-iso-" + iso.toLowerCase() + " iso-theme-" + iso;
-                    txtIso.textContent = "ISO " + iso;
-                }
-
-                if (sustratoElem) sustratoElem.value = MAPA_SUSTRATOS[iso];
-
-                var vcElem = document.getElementById("vc_roscado");
-                if (vcElem && document.activeElement === document.getElementById("material_roscado")) {
-                    vcElem.value = "";
-                }
-            }
-
-            actualizarRoscadoEnVivo();
-        }
-
-        // MOTOR DE CÁLCULO DIRECTO EN TIEMPO REAL (ROSCADO CNC)
-        function actualizarRoscadoEnVivo() {
-            var tipoMachuelo = getValSeguro("tipo_machuelo_roscado") || "corte";
-            var dVal = parseFloat(getValSeguro("d_roscado"));
-            var pasoVal = parseFloat(getValSeguro("paso_roscado"));
-            var pctVal = parseFloat(getValSeguro("pct_rosca_input")) || 75;
-            var vcVal = parseFloat(getValSeguro("vc_roscado")) || 15;
-            var profVal = parseFloat(getValSeguro("long_roscado"));
-
-            var badgeInfo = document.getElementById("badgeTipoMachueloInfo");
-            if (badgeInfo) {
-                badgeInfo.textContent = (tipoMachuelo === 'laminacion') ? "Machuelo de Deformación / Laminación" : "Machuelo de Corte (Estándar)";
-            }
-
-            // 1. Cálculo de Brocas Previas
-            if (!isNaN(dVal) && dVal > 0 && !isNaN(pasoVal) && pasoVal > 0) {
-                var bStd = 0, bPct = 0;
-                if (tipoMachuelo === 'laminacion') {
-                    bStd = dVal - (0.5 * pasoVal);
-                    bPct = dVal - (0.53 * (pctVal / 100.0) * pasoVal);
-                } else {
-                    bStd = dVal - pasoVal;
-                    bPct = dVal - (1.08253 * (pctVal / 100.0) * pasoVal);
-                }
-                setTexto("roscBrocaStd", bStd.toFixed(2) + " mm");
-                setTexto("roscBrocaPct", bPct.toFixed(2) + " mm");
-            } else {
-                setTexto("roscBrocaStd", "-");
-                setTexto("roscBrocaPct", "-");
-            }
-
-            // 2. Cálculo de RPM y Feed Rate (Vf)
-            if (!isNaN(dVal) && dVal > 0) {
-                var rpm = (vcVal * 1000.0) / (Math.PI * dVal);
-                var vf = (!isNaN(pasoVal) && pasoVal > 0) ? (rpm * pasoVal) : 0;
-
-                setTexto("roscRpm", rpm.toFixed(2));
-                setTexto("roscVf", vf > 0 ? vf.toFixed(2) : "-");
-
-                // 3. Tiempo de Ciclo G84
-                if (!isNaN(profVal) && profVal > 0 && vf > 0) {
-                    var tMin = (2.0 * (profVal + 5.0)) / vf;
-                    setTexto("roscTiempo", tMin.toFixed(3));
-                    setTexto("roscTiempoSeg", (tMin * 60.0).toFixed(1) + " seg");
-                } else {
-                    setTexto("roscTiempo", "-");
-                    setTexto("roscTiempoSeg", "- seg");
-                }
-            } else {
-                setTexto("roscRpm", "-");
-                setTexto("roscVf", "-");
-                setTexto("roscTiempo", "-");
-                setTexto("roscTiempoSeg", "- seg");
-            }
-        }
-
-        // LISTENERS DE TECLADO ENTER
-        document.addEventListener("DOMContentLoaded", function() {
-            var camposRoscado = [
-                "material_roscado",
-                "tipo_machuelo_roscado",
-                "d_roscado",
-                "paso_roscado",
-                "pct_rosca_input",
-                "vc_roscado",
-                "long_roscado"
-            ];
-
-            camposRoscado.forEach(function(id, index) {
-                var elem = document.getElementById(id);
-                if (elem) {
-                    elem.addEventListener("keydown", function(e) {
-                        if (e.key === "Enter") {
-                            e.preventDefault();
-                            actualizarRoscadoEnVivo();
-
-                            if (index < camposRoscado.length - 1) {
-                                var sig = document.getElementById(camposRoscado[index + 1]);
-                                if (sig) sig.focus();
-                            }
-                        }
-                    });
-                }
-            });
-        });
-
-        // CÁLCULO DINÁMICO EN VIVO DE BARRENADO
         function actualizarBarrenadoEnVivo() {
             var mat = getValSeguro("material_barrenado");
             var dVal = getValSeguro("d_barrenado");
@@ -2310,10 +2237,231 @@
                 });
         }
 
-        // LISTENERS PARA NAVEGACIÓN Y CÁLCULO AL PRESIONAR ENTER EN ROSCADO
+        function seleccionarRoscaEstandar() {
+            var selectRosca = document.getElementById("select_estandar_rosca");
+            if (!selectRosca || !selectRosca.value) return;
+
+            var partes = selectRosca.value.split(",");
+            var dNominal = parseFloat(partes[0]);
+            var pasoNominal = parseFloat(partes[1]);
+
+            var inputD = document.getElementById("d_roscado");
+            var inputPaso = document.getElementById("paso_roscado");
+
+            if (inputD) inputD.value = dNominal;
+            if (inputPaso) inputPaso.value = pasoNominal;
+
+            actualizarRoscadoEnVivo();
+        }
+
+        function alCambiarMetodoRoscado() {
+            var metodo = getValSeguro("metodo_roscado") || "machuelo";
+            
+            var colTipo = document.getElementById("col_tipo_machuelo");
+            var boxDFresa = document.getElementById("box_d_fresa");
+            var boxZFresa = document.getElementById("box_z_fresa");
+            var boxFzFresa = document.getElementById("box_fz_fresa");
+            var lblVf = document.getElementById("lblVfRoscado");
+
+            if (metodo === "fresa") {
+                if (colTipo) colTipo.style.display = "none";
+                if (boxDFresa) boxDFresa.style.display = "block";
+                if (boxZFresa) boxZFresa.style.display = "block";
+                if (boxFzFresa) boxFzFresa.style.display = "block";
+                if (lblVf) lblVf.textContent = "4. Vf Centro Herramienta";
+            } else {
+                if (colTipo) colTipo.style.display = "block";
+                if (boxDFresa) boxDFresa.style.display = "none";
+                if (boxZFresa) boxZFresa.style.display = "none";
+                if (boxFzFresa) boxFzFresa.style.display = "none";
+                if (lblVf) lblVf.textContent = "4. Feed Rate (Vf)";
+            }
+
+            var vcElem = document.getElementById("vc_roscado");
+            if (vcElem) vcElem.value = "";
+
+            alCambiarMaterialRoscado();
+        }
+
+        function alCambiarMaterialRoscado() {
+            var mat = getValSeguro("material_roscado").toLowerCase();
+            var metodo = getValSeguro("metodo_roscado") || "machuelo";
+            var boxIso = document.getElementById("boxIsoRoscado");
+            var txtIso = document.getElementById("txtIsoRoscado");
+            var sustratoElem = document.getElementById("sustrato_machuelo_roscado");
+
+            var MAPA_SUSTRATOS = {
+                'P': 'HSS-E (Cobalto) / HSS-PM',
+                'M': 'HSS-E-PM (Sinterizado)',
+                'K': 'Carburo Sólido (Solid Carbide)',
+                'N': 'HSS-E / Carburo Sólido',
+                'S': 'HSS-E-PM / Carburo Micrograno',
+                'H': 'Carburo Sólido (Ultra Dureza)'
+            };
+
+            if (!mat) {
+                if (boxIso && txtIso) {
+                    boxIso.className = "p-1 rounded text-center fw-bold text-white bg-secondary";
+                    txtIso.textContent = "-";
+                }
+                if (sustratoElem) sustratoElem.value = "-";
+            } else {
+                var iso = 'P';
+                if (mat.includes("304") || mat.includes("316") || mat.includes("inox") || mat.includes("inoxidable") || mat.includes("420") || mat.includes("410") || mat.includes("430")) {
+                    iso = 'M';
+                } else if (mat.includes("gris") || mat.includes("nodular") || mat.includes("fundicion") || mat.includes("fundición") || mat.includes("cast iron")) {
+                    iso = 'K';
+                } else if (mat.includes("aluminio") || mat.includes("6061") || mat.includes("7075") || mat.includes("bronce") || mat.includes("cobre")) {
+                    iso = 'N';
+                } else if (mat.includes("titanio") || mat.includes("inconel") || mat.includes("hastelloy") || mat.includes("waspaloy")) {
+                    iso = 'S';
+                } else if (mat.includes("templado") || mat.includes("hrc") || mat.includes("d2") || mat.includes("skd")) {
+                    iso = 'H';
+                }
+
+                if (boxIso && txtIso) {
+                    boxIso.className = "p-1 rounded text-center fw-bold badge-iso-" + iso.toLowerCase() + " iso-theme-" + iso;
+                    txtIso.textContent = "ISO " + iso;
+                }
+
+                if (sustratoElem) {
+                    sustratoElem.value = (metodo === "fresa") ? "Carburo Sólido (Thread Mill)" : MAPA_SUSTRATOS[iso];
+                }
+
+                var vcElem = document.getElementById("vc_roscado");
+                if (vcElem && document.activeElement === document.getElementById("material_roscado")) {
+                    vcElem.value = "";
+                }
+            }
+
+            actualizarRoscadoEnVivo();
+        }
+
+        function actualizarRoscadoEnVivo() {
+            var metodo = getValSeguro("metodo_roscado") || "machuelo";
+            var tipoMachuelo = getValSeguro("tipo_machuelo_roscado") || "corte";
+            
+            var dVal = parseFloat(getValSeguro("d_roscado"));
+            var pasoVal = parseFloat(getValSeguro("paso_roscado"));
+            var pctVal = parseFloat(getValSeguro("pct_rosca_input")) || 75;
+            var vcVal = parseFloat(getValSeguro("vc_roscado"));
+            var profVal = parseFloat(getValSeguro("long_roscado"));
+
+            var dFresaVal = parseFloat(getValSeguro("d_fresa_input")) || 0;
+            var zFresaVal = parseInt(getValSeguro("z_fresa_input")) || 1;
+            var fzFresaVal = parseFloat(getValSeguro("fz_fresa_input")) || 0.05;
+
+            var badgeInfo = document.getElementById("badgeTipoMachueloInfo");
+            if (badgeInfo) {
+                if (metodo === 'fresa') {
+                    badgeInfo.textContent = "Fresado Helicoidal de Rosca (Thread Milling)";
+                } else {
+                    badgeInfo.textContent = (tipoMachuelo === 'laminacion') ? "Machuelo de Deformación / Laminación" : "Machuelo de Corte (Estándar)";
+                }
+            }
+
+            if (isNaN(vcVal) || vcVal <= 0) {
+                vcVal = (metodo === 'fresa') ? 120 : 15;
+            }
+
+            if (!isNaN(dVal) && dVal > 0 && !isNaN(pasoVal) && pasoVal > 0) {
+                var bStd = 0, bPct = 0;
+                if (tipoMachuelo === 'laminacion' && metodo === 'machuelo') {
+                    bStd = dVal - (0.5 * pasoVal);
+                    bPct = dVal - (0.53 * (pctVal / 100.0) * pasoVal);
+                } else {
+                    bStd = dVal - pasoVal;
+                    bPct = dVal - (1.08253 * (pctVal / 100.0) * pasoVal);
+                }
+                setTexto("roscBrocaStd", bStd.toFixed(2) + " mm");
+                setTexto("roscBrocaPct", bPct.toFixed(2) + " mm");
+            } else {
+                setTexto("roscBrocaStd", "-");
+                setTexto("roscBrocaPct", "-");
+            }
+
+            if (metodo === 'fresa') {
+                if (!isNaN(dVal) && dVal > 0 && dFresaVal > 0 && !isNaN(pasoVal) && pasoVal > 0) {
+                    var rpmF = (vcVal * 1000.0) / (Math.PI * dFresaVal);
+                    var vfPeriferia = rpmF * zFresaVal * fzFresaVal;
+                    var factorCorr = (dVal > dFresaVal) ? ((dVal - dFresaVal) / dVal) : 1.0;
+                    var vfCentro = vfPeriferia * factorCorr;
+
+                    setTexto("roscRpm", rpmF.toFixed(2));
+                    setTexto("roscVf", vfCentro.toFixed(2));
+
+                    if (!isNaN(profVal) && profVal > 0 && vfCentro > 0) {
+                        var pasadasH = profVal / pasoVal;
+                        var tMinF = (pasadasH * Math.PI * (dVal - dFresaVal)) / vfCentro;
+                        setTexto("roscTiempo", tMinF.toFixed(3));
+                        setTexto("roscTiempoSeg", (tMinF * 60.0).toFixed(1) + " seg");
+                    } else {
+                        setTexto("roscTiempo", "-");
+                        setTexto("roscTiempoSeg", "- seg");
+                    }
+                } else {
+                    setTexto("roscRpm", "-");
+                    setTexto("roscVf", "-");
+                    setTexto("roscTiempo", "-");
+                    setTexto("roscTiempoSeg", "- seg");
+                }
+            } else {
+                if (!isNaN(dVal) && dVal > 0) {
+                    var rpmM = (vcVal * 1000.0) / (Math.PI * dVal);
+                    var vfM = (!isNaN(pasoVal) && pasoVal > 0) ? (rpmM * pasoVal) : 0;
+
+                    setTexto("roscRpm", rpmM.toFixed(2));
+                    setTexto("roscVf", vfM > 0 ? vfM.toFixed(2) : "-");
+
+                    if (!isNaN(profVal) && profVal > 0 && vfM > 0) {
+                        var tMinM = (2.0 * (profVal + 5.0)) / vfM;
+                        setTexto("roscTiempo", tMinM.toFixed(3));
+                        setTexto("roscTiempoSeg", (tMinM * 60.0).toFixed(1) + " seg");
+                    } else {
+                        setTexto("roscTiempo", "-");
+                        setTexto("roscTiempoSeg", "- seg");
+                    }
+                } else {
+                    setTexto("roscRpm", "-");
+                    setTexto("roscVf", "-");
+                    setTexto("roscTiempo", "-");
+                    setTexto("roscTiempoSeg", "- seg");
+                }
+            }
+        }
+
+        // LISTENERS DE TECLADO
         document.addEventListener("DOMContentLoaded", function() {
+            var camposBarrenado = [
+                "material_barrenado",
+                "d_barrenado",
+                "vc_barrenado",
+                "fn_barrenado",
+                "long_barrenado",
+                "angulo_barrenado",
+                "tipo_agujero_barrenado"
+            ];
+
+            camposBarrenado.forEach(function(id, index) {
+                var elem = document.getElementById(id);
+                if (elem) {
+                    elem.addEventListener("keydown", function(e) {
+                        if (e.key === "Enter") {
+                            e.preventDefault();
+                            actualizarBarrenadoEnVivo();
+
+                            if (index < camposBarrenado.length - 1) {
+                                var sig = document.getElementById(camposBarrenado[index + 1]);
+                                if (sig) sig.focus();
+                            }
+                        }
+                    });
+                }
+            });
+
             var camposRoscado = [
                 "material_roscado",
+                "select_estandar_rosca",
                 "tipo_machuelo_roscado",
                 "d_roscado",
                 "paso_roscado",
@@ -2329,13 +2477,7 @@
                         if (e.key === "Enter") {
                             e.preventDefault();
                             actualizarRoscadoEnVivo();
-if (data && !data.error) {
-                    var sustratoElem = document.getElementById("sustrato_machuelo_roscado");
-                    if (sustratoElem && data.sustrato_sugerido) {
-                        sustratoElem.value = data.sustrato_sugerido;
-                    }
-                    // ... resto del código igual ...
-                }
+
                             if (index < camposRoscado.length - 1) {
                                 var sig = document.getElementById(camposRoscado[index + 1]);
                                 if (sig) sig.focus();
@@ -2346,7 +2488,7 @@ if (data && !data.error) {
             });
         });
 
-        // CONTROLADOR DE NAVEGACIÓN EN PESTAÑAS
+        // CONTROLADOR DE PESTAÑAS
         function mostrarPestana(pestana) {
             const vDash = document.getElementById("vista-dashboard");
             const vTorn = document.getElementById("vista-torneado");
