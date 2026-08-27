@@ -235,6 +235,17 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
 
+        /* TARJETAS CLICKEABLES PARA GRUPOS ISO */
+        .iso-clickable-card {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .iso-clickable-card:hover {
+            border-color: var(--brand-blue) !important;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+            transform: translateY(-2px);
+        }
+
         /* CELDAS DE INFORMACIÓN GENERAL */
         .info-box {
             background-color: #f8fafc;
@@ -843,70 +854,165 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN INFERIOR REORGANIZADA CON ALTURA HOMOGÉNEA -->
+            <!-- SECCIÓN INFERIOR REORGANIZADA: MATERIALES ISO INTERACTIVOS Y FÓRMULAS AMPLIADAS -->
             <div class="row g-3 mb-4 align-items-stretch">
-                <div class="col-lg-8">
+                <!-- LISTA DE GRUPOS DE MATERIALES ISO INTERACTIVA (DESPLEGABLE) -->
+                <div class="col-lg-6">
                     <div class="ui-card h-100 d-flex flex-column justify-content-between">
-                        <div class="ui-card-title d-flex justify-content-between align-items-center mb-3">
-                            <span><i class="bi bi-diagram-3-fill me-2 text-primary"></i>Resumen de Grupos de Materiales ISO</span>
-                            <span class="badge bg-dark">DIN / ISO 513</span>
-                        </div>
-                        <div class="row g-2">
-                            <div class="col-md-4 col-6">
-                                <div class="p-2 border rounded bg-light text-center">
-                                    <span class="badge badge-iso-p fs-7 mb-1">ISO P</span>
-                                    <div class="fw-bold small text-dark">Aceros / Aleados</div>
-                                    <small class="text-muted d-block" style="font-size: 0.7rem;">6 Materiales</small>
+                        <div>
+                            <div class="ui-card-title d-flex justify-content-between align-items-center mb-3">
+                                <span><i class="bi bi-diagram-3-fill me-2 text-primary"></i>Lista de Materiales por Grupo ISO</span>
+                                <span class="badge bg-dark">DIN / ISO 513</span>
+                            </div>
+                            <div class="row g-2">
+                                <!-- ISO P -->
+                                <div class="col-md-4 col-6">
+                                    <div class="p-2 border rounded bg-light text-center iso-clickable-card" data-bs-toggle="collapse" data-bs-target="#collapseIsoP">
+                                        <span class="badge badge-iso-p fs-7 mb-1">ISO P</span>
+                                        <div class="fw-bold small text-dark">Aceros / Aleados</div>
+                                        <small class="text-primary d-block" style="font-size: 0.7rem;">Ver 6 Materiales <i class="bi bi-chevron-down"></i></small>
+                                    </div>
+                                </div>
+                                <!-- ISO M -->
+                                <div class="col-md-4 col-6">
+                                    <div class="p-2 border rounded bg-light text-center iso-clickable-card" data-bs-toggle="collapse" data-bs-target="#collapseIsoM">
+                                        <span class="badge badge-iso-m fs-7 mb-1">ISO M</span>
+                                        <div class="fw-bold small text-dark">Inoxidables</div>
+                                        <small class="text-primary d-block" style="font-size: 0.7rem;">Ver 4 Materiales <i class="bi bi-chevron-down"></i></small>
+                                    </div>
+                                </div>
+                                <!-- ISO K -->
+                                <div class="col-md-4 col-6">
+                                    <div class="p-2 border rounded bg-light text-center iso-clickable-card" data-bs-toggle="collapse" data-bs-target="#collapseIsoK">
+                                        <span class="badge badge-iso-k fs-7 mb-1">ISO K</span>
+                                        <div class="fw-bold small text-dark">Fundición Hierro</div>
+                                        <small class="text-primary d-block" style="font-size: 0.7rem;">Ver 3 Materiales <i class="bi bi-chevron-down"></i></small>
+                                    </div>
+                                </div>
+                                <!-- ISO N -->
+                                <div class="col-md-4 col-6">
+                                    <div class="p-2 border rounded bg-light text-center iso-clickable-card" data-bs-toggle="collapse" data-bs-target="#collapseIsoN">
+                                        <span class="badge badge-iso-n fs-7 mb-1">ISO N</span>
+                                        <div class="fw-bold small text-dark">Aluminio / No Ferrosos</div>
+                                        <small class="text-primary d-block" style="font-size: 0.7rem;">Ver 4 Materiales <i class="bi bi-chevron-down"></i></small>
+                                    </div>
+                                </div>
+                                <!-- ISO S -->
+                                <div class="col-md-4 col-6">
+                                    <div class="p-2 border rounded bg-light text-center iso-clickable-card" data-bs-toggle="collapse" data-bs-target="#collapseIsoS">
+                                        <span class="badge badge-iso-s fs-7 mb-1">ISO S</span>
+                                        <div class="fw-bold small text-dark">Titanio / Inconel</div>
+                                        <small class="text-primary d-block" style="font-size: 0.7rem;">Ver 3 Materiales <i class="bi bi-chevron-down"></i></small>
+                                    </div>
+                                </div>
+                                <!-- ISO H -->
+                                <div class="col-md-4 col-6">
+                                    <div class="p-2 border rounded bg-light text-center iso-clickable-card" data-bs-toggle="collapse" data-bs-target="#collapseIsoH">
+                                        <span class="badge badge-iso-h fs-7 mb-1">ISO H</span>
+                                        <div class="fw-bold small text-dark">Aceros Templados</div>
+                                        <small class="text-primary d-block" style="font-size: 0.7rem;">Ver 2 Materiales <i class="bi bi-chevron-down"></i></small>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 col-6">
-                                <div class="p-2 border rounded bg-light text-center">
-                                    <span class="badge badge-iso-m fs-7 mb-1">ISO M</span>
-                                    <div class="fw-bold small text-dark">Inoxidables</div>
-                                    <small class="text-muted d-block" style="font-size: 0.7rem;">4 Materiales</small>
+
+                            <!-- CONTENEDORES ACCORDEON / DESPLEGABLES CON MATERIALES DETALLADOS -->
+                            <div class="mt-2">
+                                <div class="collapse" id="collapseIsoP">
+                                    <div class="card card-body p-2 small bg-light border-primary">
+                                        <strong class="text-primary border-bottom pb-1 mb-1">Grupo ISO P (Aceros al Carbono y Aleados):</strong>
+                                        <span>• AISI 1018 / 1045 (Acero al Carbono)</span>
+                                        <span>• AISI 4140 / 4340 (Acero Aleado / Bonificado)</span>
+                                        <span>• AISI 8620 (Acero para Cementación)</span>
+                                        <span>• Tool Steel A2 / D2 / O1 (Estado Recocido)</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4 col-6">
-                                <div class="p-2 border rounded bg-light text-center">
-                                    <span class="badge badge-iso-k fs-7 mb-1">ISO K</span>
-                                    <div class="fw-bold small text-dark">Fundición de Hierro</div>
-                                    <small class="text-muted d-block" style="font-size: 0.7rem;">3 Materiales</small>
+                                <div class="collapse" id="collapseIsoM">
+                                    <div class="card card-body p-2 small bg-light border-warning">
+                                        <strong class="text-warning-emphasis border-bottom pb-1 mb-1">Grupo ISO M (Aceros Inoxidables):</strong>
+                                        <span>• AISI 304 / 304L (Austenítico Estándar)</span>
+                                        <span>• AISI 316 / 316L (Austenítico Marino)</span>
+                                        <span>• AISI 410 / 420 (Martensítico)</span>
+                                        <span>• AISI 17-4PH (Endurecible por Precipitación)</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4 col-6">
-                                <div class="p-2 border rounded bg-light text-center">
-                                    <span class="badge badge-iso-n fs-7 mb-1">ISO N</span>
-                                    <div class="fw-bold small text-dark">Aluminio / No Ferrosos</div>
-                                    <small class="text-muted d-block" style="font-size: 0.7rem;">4 Materiales</small>
+                                <div class="collapse" id="collapseIsoK">
+                                    <div class="card card-body p-2 small bg-light border-danger">
+                                        <strong class="text-danger border-bottom pb-1 mb-1">Grupo ISO K (Fundiciones de Hierro):</strong>
+                                        <span>• Fundición Gris Class 30 / 40 (FC250)</span>
+                                        <span>• Fundición Nodular / Ductil 65-45-12 (FCD450)</span>
+                                        <span>• Hierro Maleable / Grafito Compactado</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4 col-6">
-                                <div class="p-2 border rounded bg-light text-center">
-                                    <span class="badge badge-iso-s fs-7 mb-1">ISO S</span>
-                                    <div class="fw-bold small text-dark">Titanio e Inconel</div>
-                                    <small class="text-muted d-block" style="font-size: 0.7rem;">3 Materiales</small>
+                                <div class="collapse" id="collapseIsoN">
+                                    <div class="card card-body p-2 small bg-light border-success">
+                                        <strong class="text-success border-bottom pb-1 mb-1">Grupo ISO N (Aluminio y No Ferrosos):</strong>
+                                        <span>• Aluminio 6061-T6 / 7075-T6</span>
+                                        <span>• Bronce al Aluminio / Bronce SAE 660</span>
+                                        <span>• Cobre Electrolítico / Latón SAE 40</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4 col-6">
-                                <div class="p-2 border rounded bg-light text-center">
-                                    <span class="badge badge-iso-h fs-7 mb-1">ISO H</span>
-                                    <div class="fw-bold small text-dark">Aceros Templados</div>
-                                    <small class="text-muted d-block" style="font-size: 0.7rem;">2 Materiales</small>
+                                <div class="collapse" id="collapseIsoS">
+                                    <div class="card card-body p-2 small bg-light border-dark">
+                                        <strong class="text-dark border-bottom pb-1 mb-1">Grupo ISO S (Superaleaciones y Titanio):</strong>
+                                        <span>• Titanio Grado 5 (Ti-6Al-4V)</span>
+                                        <span>• Inconel 718 / 625 (Base Níquel)</span>
+                                        <span>• Hastelloy C-276 / Waspaloy</span>
+                                    </div>
+                                </div>
+                                <div class="collapse" id="collapseIsoH">
+                                    <div class="card card-body p-2 small bg-light border-secondary">
+                                        <strong class="text-secondary border-bottom pb-1 mb-1">Grupo ISO H (Materiales Templados >45 HRC):</strong>
+                                        <span>• Acero D2 / H13 Templado (55 - 60 HRC)</span>
+                                        <span>• Acero 4140 Tratado Térmicamente</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-lg-4">
+                <!-- FORMULARIO CON TODAS LAS FÓRMULAS CNC COMPLETAS -->
+                <div class="col-lg-6">
                     <div class="ui-card h-100 d-flex flex-column justify-content-between">
                         <div>
-                            <div class="ui-card-title mb-2"><i class="bi bi-lightning-charge-fill me-2 text-warning"></i>Acceso Rápido a Torneado</div>
-                            <p class="small text-muted mb-0">Selecciona cualquier geometría del catálogo superior o presiona el botón para calcular pasadas, $V_c$, $V_f$ y potencia en kW.</p>
+                            <div class="ui-card-title mb-2"><i class="bi bi-calculator-fill me-2 text-primary"></i>Formulario de Ecuaciones CNC Completas</div>
+                            <p class="small text-muted mb-2">Formulario oficial de parámetros de corte para Torneado, Fresado, Barrenado y Roscado.</p>
+                            
+                            <div class="bg-dark text-white rounded p-2 small font-monospace">
+                                <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary">
+                                    <span class="text-info fw-bold">Velocidad Corte (Vc):</span>
+                                    <span class="text-warning">Vc = (π × D × n) / 1000 [m/min]</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary">
+                                    <span class="text-info fw-bold">RPM Husillo (n):</span>
+                                    <span class="text-warning">n = (Vc × 1000) / (π × D) [rev/min]</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary">
+                                    <span class="text-info fw-bold">Avance por diente (fz):</span>
+                                    <span class="text-warning">fz = Vf / (z × n) [mm/diente]</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary">
+                                    <span class="text-info fw-bold">Avance de Máquina (Vf):</span>
+                                    <span class="text-warning">Vf = fz × z × n [mm/min]</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary">
+                                    <span class="text-info fw-bold">Prof. Axial / Radial (ap / ae):</span>
+                                    <span class="text-warning">ap = Prof. Corte | ae = Ancho Corte [mm]</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary">
+                                    <span class="text-info fw-bold">Tasa Remoción (MRR):</span>
+                                    <span class="text-warning">MRR = (ap × ae × Vf) / 1000 [cm³/min]</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary">
+                                    <span class="text-info fw-bold">Potencia Corte (Pc):</span>
+                                    <span class="text-warning">Pc = (MRR × kc) / 60000 [kW]</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-info fw-bold">Tiempo de Corte (Tc):</span>
+                                    <span class="text-warning">Tc = Longitud L / Vf [minutos]</span>
+                                </div>
+                            </div>
                         </div>
-                        <button onclick="mostrarPestana('torneado')" class="btn btn-calc w-100 py-2 mt-3">
-                            <i class="bi bi-play-circle me-2"></i>Ir al Módulo de Torneado
-                        </button>
                     </div>
                 </div>
             </div>
