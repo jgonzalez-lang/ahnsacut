@@ -47,7 +47,7 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* SIDEBAR LATERAL DINÁMICO */
+        /* SIDEBAR LATERAL DINÁMICO (ESCRITORIO / WEB) */
         .sidebar {
             width: var(--sidebar-width);
             height: 100vh;
@@ -61,7 +61,7 @@
             z-index: 1000;
             overflow-x: hidden;
             overflow-y: auto;
-            transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s ease;
+            transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -602,9 +602,9 @@
         }
 
         /* ======================================================= */
-        /* REGIA MEDIA QUERIES PARA DISPOSITIVOS MÓVILES Y TABLETS */
+        /* MEDIA QUERIES PARA ADAPTABILIDAD EN MÓVILES Y TABLETS   */
         /* ======================================================= */
-        @media (max-width: 991.98px) {
+        @media (max-width: 768px) {
             :root {
                 --sidebar-width: 0px;
             }
@@ -614,11 +614,17 @@
                 height: auto;
                 position: sticky;
                 top: 0;
-                padding: 10px 14px;
-                flex-direction: row;
-                align-items: center;
+                padding: 8px 10px;
                 border-right: none;
                 border-bottom: 1px solid var(--sidebar-border);
+                overflow: visible;
+                display: block;
+            }
+
+            .sidebar > div {
+                display: flex;
+                align-items: center;
+                width: 100%;
             }
 
             .sidebar-brand {
@@ -626,6 +632,7 @@
                 padding-bottom: 0;
                 border-bottom: none;
                 width: auto;
+                flex-shrink: 0;
             }
 
             .sidebar-brand img {
@@ -639,15 +646,27 @@
                 white-space: nowrap;
                 margin-left: 10px;
                 gap: 6px;
+                width: 100%;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 4px;
+            }
+
+            .sidebar-nav::-webkit-scrollbar {
+                height: 3px;
+            }
+            .sidebar-nav::-webkit-scrollbar-thumb {
+                background: #334155;
+                border-radius: 4px;
             }
 
             .sidebar-nav li {
                 margin-bottom: 0;
+                flex-shrink: 0;
             }
 
             .sidebar-nav a {
-                padding: 6px 10px;
-                font-size: 0.8rem;
+                padding: 6px 12px;
+                font-size: 0.82rem;
                 min-height: 38px;
             }
 
@@ -661,7 +680,7 @@
 
             .main-content {
                 margin-left: 0;
-                padding: 16px 14px;
+                padding: 16px 12px;
             }
 
             .iso-tooltip-box {
@@ -696,7 +715,7 @@
 </head>
 <body>
 
-    <!-- Sidebar Lateral Dinámico / Barra Superior Adaptable Móvil -->
+    <!-- Sidebar Lateral Dinámico (Web) / Barra Superior Adaptable Deslizable (Móvil) -->
     <div class="sidebar" id="sidebar">
         <div>
             <div class="sidebar-brand">
