@@ -358,12 +358,11 @@ def calcular_fresado_ajax():
     })
 
 # ==========================================
-# API DE ROSCADO CON MACHUELO Y FRESA (THREAD MILLING)
+# API DE CÁLCULO DE ROSCADO / MACHUELEADO CNC
 # ==========================================
 @app.route('/api/calcular_roscado_ajax')
 def calcular_roscado_ajax():
     material = request.args.get('material', '').strip()
-    metodo = request.args.get('metodo', 'machuelo').strip().lower() # 'machuelo' o 'fresa'
     tipo_machuelo = request.args.get('tipo_machuelo', 'corte').strip().lower()
     
     try:
@@ -371,18 +370,12 @@ def calcular_roscado_ajax():
         paso = float(request.args.get('paso') or 0)
         pct_rosca = float(request.args.get('pct_rosca') or 75.0)
         profundidad = float(request.args.get('profundidad') or 0)
-        
-        # Parámetros exclusivos para Fresa de Rosca (Thread Mill)
-        d_fresa = float(request.args.get('d_fresa') or 0)
-        z_fresa = int(float(request.args.get('z_fresa') or 1))
-        fz_fresa = float(request.args.get('fz_fresa') or 0.05)
     except (ValueError, TypeError):
         d_machuelo, paso, pct_rosca, profundidad = 0, 0, 75.0, 0
-        d_fresa, z_fresa, fz_fresa = 0, 1, 0.05
 
     vc_raw = request.args.get('vc', '').strip()
 
-    # 1. Grupo ISO
+    # 1. Identificación de Grupo ISO y Recomendación de Material de Machuelo
     iso_detectado = 'P'
     if material:
         mat_lower = material.lower()
@@ -397,18 +390,19 @@ def calcular_roscado_ajax():
         elif any(x in mat_lower for x in ['templado', 'hrc', 'd2', 'skd']):
             iso_detectado = 'H'
 
+    # Matriz Técnica: Velocidad de corte Vc y Sustrato del Machuelo
     TABLA_ROSCADO = {
-        'P': {'vc_machuelo': 15.0, 'vc_fresa': 120.0, 'sustrato': 'HSS-E (Cobalto) / HSS-PM'},
-        'M': {'vc_machuelo': 8.0,  'vc_fresa': 80.0,  'sustrato': 'HSS-E-PM (Sinterizado)'},
-        'K': {'vc_machuelo': 18.0, 'vc_fresa': 140.0, 'sustrato': 'Carburo Sólido (Solid Carbide)'},
-        'N': {'vc_machuelo': 30.0, 'vc_fresa': 250.0, 'sustrato': 'HSS-E / Carburo Sólido'},
-        'S': {'vc_machuelo': 4.5,  'vc_fresa': 40.0,  'sustrato': 'HSS-E-PM / Carburo Micrograno'},
-        'H': {'vc_machuelo': 5.0,  'vc_fresa': 50.0,  'sustrato': 'Carburo Sólido (Ultra Dureza)'}
+        'P': {'vc': 15.0, 'sustrato': 'HSS-E (Cobalto) / HSS-PM'},
+        'M': {'vc': 8.0,  'sustrato': 'HSS-E-PM (Sinterizado)'},
+        'K': {'vc': 18.0, 'sustrato': 'Carburo Sólido (Solid Carbide)'},
+        'N': {'vc': 30.0, 'sustrato': 'HSS-E / Carburo Sólido'},
+        'S': {'vc': 4.5,  'sustrato': 'HSS-E-PM / Carburo Micrograno'},
+        'H': {'vc': 5.0,  'sustrato': 'Carburo Sólido (Ultra Dureza)'}
     }
 
     config = TABLA_ROSCADO.get(iso_detectado, TABLA_ROSCADO['P'])
-    vc_sugerido = config['vc_fresa'] if metodo == 'fresa' else config['vc_machuelo']
-    sustrato_sugerido = 'Carburo Sólido (Thread Mill)' if metodo == 'fresa' else config['sustrato']
+    vc_sugerido = config['vc']
+    sustrato_sugerido = config['sustrato']
 
     try:
         vc_final = float(vc_raw) if (vc_raw and float(vc_raw) > 0) else vc_sugerido
@@ -417,7 +411,7 @@ def calcular_roscado_ajax():
 
     # 2. Brocas Previas
     if d_machuelo > 0 and paso > 0:
-        if tipo_machuelo == 'laminacion' and metodo == 'machuelo':
+        if tipo_machuelo == 'laminacion':
             b_std = d_machuelo - (0.5 * paso)
             b_pct = d_machuelo - (0.53 * (pct_rosca / 100.0) * paso)
         else:
@@ -428,43 +422,27 @@ def calcular_roscado_ajax():
     else:
         txt_std, txt_pct = "-", "-"
 
-    # 3. RPM y Avances según el método
-    if metodo == 'fresa' and d_fresa > 0 and d_machuelo > 0 and paso > 0:
-        # Fresa de Rosca (Thread Milling) - Compensación de Avance por Centro de Herramienta
-        rpm = (vc_final * 1000.0) / (math.pi * d_fresa)
-        vf_periferia = rpm * z_fresa * fz_fresa
-        # Factor de corrección de la trayectoria circular (Interna)
-        factor_correccion = (d_machuelo - d_fresa) / d_machuelo
-        vf_centro = vf_periferia * factor_correccion
-        
-        txt_rpm = f"{round(rpm, 2)}"
-        txt_vf = f"{round(vf_centro, 2)}"
-        
-        if profundidad > 0 and vf_centro > 0:
-            pasadas_helice = profundidad / paso
-            tiempo_total_min = (pasadas_helice * math.pi * (d_machuelo - d_fresa)) / vf_centro
-            txt_tiempo = f"{round(tiempo_total_min, 3)}"
-            txt_tiempo_seg = f"{round(tiempo_total_min * 60.0, 1)} seg"
-        else:
-            txt_tiempo, txt_tiempo_seg = "-", "- seg"
-
+    # 3. RPM y Feed Rate (Vf)
+    if d_machuelo > 0:
+        rpm = (vc_final * 1000.0) / (math.pi * d_machuelo)
+        vf = rpm * paso
+        txt_rpm = str(round(rpm, 2))
+        txt_vf = str(round(vf, 2))
     else:
-        # Machuelo Tradicional (Roscado Rígido G84)
-        if d_machuelo > 0:
-            rpm = (vc_final * 1000.0) / (math.pi * d_machuelo)
-            vf = rpm * paso if paso > 0 else 0
-            txt_rpm = f"{round(rpm, 2)}"
-            txt_vf = f"{round(vf, 2)}" if vf > 0 else "-"
-        else:
-            txt_rpm, txt_vf = "-", "-"
+        txt_rpm, txt_vf = "-", "-"
 
-        if profundidad > 0 and d_machuelo > 0 and paso > 0 and rpm > 0 and paso > 0:
-            vf_val = rpm * paso
+    # 4. Tiempo Ciclo G84
+    if profundidad > 0 and d_machuelo > 0 and paso > 0:
+        rpm_val = (vc_final * 1000.0) / (math.pi * d_machuelo)
+        vf_val = rpm_val * paso
+        if vf_val > 0:
             tiempo_total_min = (2.0 * (profundidad + 5.0)) / vf_val
-            txt_tiempo = f"{round(tiempo_total_min, 3)}"
-            txt_tiempo_seg = f"{round(tiempo_total_min * 60.0, 1)} seg"
+            txt_tiempo = str(round(tiempo_total_min, 3))
+            txt_tiempo_seg = str(round(tiempo_total_min * 60.0, 1)) + " seg"
         else:
             txt_tiempo, txt_tiempo_seg = "-", "- seg"
+    else:
+        txt_tiempo, txt_tiempo_seg = "-", "- seg"
 
     return jsonify({
         'iso_detectado': iso_detectado,
