@@ -4,15 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>AhnsaCut CNC</title>
-    
-    <!-- PWA CONFIGURACIÓN E INSTALACIÓN EN MÓVILES -->
-    <link rel="manifest" href="/static/manifest.json">
-    <meta name="theme-color" content="#0f172a">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="AhnsaCut">
-    <link rel="apple-touch-icon" href="/static/logo.png">
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
@@ -126,7 +117,6 @@
             min-height: 44px;
         }
 
-        /* CONTENEDOR DE ICONOS/RENDERS EN SIDEBAR */
         .sidebar-nav a .nav-icon-box {
             display: flex;
             align-items: center;
@@ -153,7 +143,6 @@
             font-weight: 700;
         }
 
-        /* BOTÓN DE COLAPSAR / EXPANDIR SIDEBAR */
         .sidebar-toggle-btn {
             background-color: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--sidebar-border);
@@ -176,7 +165,6 @@
             color: #ffffff;
         }
 
-        /* ESTADOS COLAPSADOS (MODO COMPACTO DESKTOP - 65px) */
         body.sidebar-collapsed {
             --sidebar-width: 65px;
         }
@@ -200,7 +188,6 @@
             padding: 10px 0;
         }
 
-        /* ÁREA PRINCIPAL CON ANCHO ADAPTABLE */
         .main-content {
             margin-left: var(--sidebar-width);
             padding: 24px 28px;
@@ -222,7 +209,6 @@
             margin-bottom: 20px;
         }
 
-        /* TARJETAS DE CONTENEDOR UI */
         .ui-card {
             background-color: var(--card-bg);
             border-radius: 8px;
@@ -239,7 +225,6 @@
             margin-bottom: 12px;
         }
 
-        /* TARJETAS DE CATÁLOGO INTEGRADAS CON TRANSICIÓN HOVER */
         .cat-item-card {
             background-color: #ffffff;
             border: 1px solid var(--border-color);
@@ -255,7 +240,6 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
 
-        /* GLOBO CORPORATIVO ADAPTABLE PARA GRUPOS ISO */
         .iso-popup-wrapper {
             position: relative;
             cursor: pointer;
@@ -328,7 +312,6 @@
         .tooltip-iso-s { border-color: var(--iso-s) !important; }
         .tooltip-iso-h { border-color: var(--iso-h) !important; }
 
-        /* CELDAS DE INFORMACIÓN GENERAL */
         .info-box {
             background-color: #f8fafc;
             border: 1px solid var(--border-color);
@@ -350,9 +333,9 @@
             font-size: 0.88rem;
             font-weight: 700;
             color: #0f172a;
+            word-wrap: break-word;
         }
 
-        /* RECOMENDACIONES DESTACADAS */
         .highlight-blue {
             background-color: #f0f5ff;
             border-left: 4px solid var(--brand-blue);
@@ -387,19 +370,23 @@
             margin-bottom: 2px;
         }
 
-        /* TARJETAS TÉCNICAS OSCURAS DE PARÁMETROS CNC */
+        /* TARJETAS TÉCNICAS OSCURAS DE PARÁMETROS CNC - ADAPTABLES A TEXTO LARGO Y CIKAN NEÓN */
         .cnc-card {
             background-color: var(--dark-card-bg);
             border: 1px solid #1e293b;
             border-radius: 6px;
-            padding: 10px 8px;
+            padding: 10px 12px;
             text-align: center;
             color: #ffffff;
             height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            min-height: 70px;
+            align-items: center;
+            min-height: 80px;
+            box-sizing: border-box;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         .cnc-card-pasadas {
@@ -410,26 +397,40 @@
         .cnc-label {
             font-size: 0.7rem;
             font-weight: 700;
-            color: #94a3b8;
+            color: #94a3b8 !important;
             margin-bottom: 4px;
             text-transform: uppercase;
             letter-spacing: 0.4px;
+            line-height: 1.15;
+            word-break: break-word;
         }
 
         .cnc-value {
             font-size: 1.2rem;
             font-weight: 800;
-            color: #ffffff;
+            color: #38bdf8 !important;
             margin-bottom: 2px;
             letter-spacing: -0.2px;
+            line-height: 1.2;
+            word-break: break-word;
+        }
+
+        .cnc-subvalue {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #38bdf8 !important;
+            margin-top: 2px;
+            line-height: 1.25;
+            word-break: break-word;
+            width: 100%;
         }
 
         .cnc-unit {
             font-size: 0.68rem;
-            color: #94a3b8;
+            color: #94a3b8 !important;
+            line-height: 1.2;
         }
 
-        /* UNIDADES CON BADGES DE ALTO CONTRASTE */
         .unit-badge {
             display: inline-block;
             padding: 2px 6px;
@@ -438,6 +439,7 @@
             font-weight: 800;
             letter-spacing: 0.4px;
             text-transform: uppercase;
+            white-space: normal;
         }
         .unit-rpm { background-color: #f59e0b; color: #0f172a; }
         .unit-vf  { background-color: #10b981; color: #ffffff; }
@@ -446,7 +448,6 @@
         .unit-time { background-color: #06b6d4; color: #0f172a; }
         .unit-vol { background-color: #475569; color: #ffffff; }
 
-        /* TARJETAS RANGOS */
         .ui-card-rangos {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             border-radius: 8px;
@@ -483,9 +484,9 @@
             font-size: 0.9rem;
             font-weight: 800;
             color: #38bdf8;
+            word-break: break-word;
         }
 
-        /* BOTONES CORPORATIVOS OPTIMIZADOS PARA TÁCTIL */
         .btn-calc {
             background-color: var(--brand-blue);
             color: #ffffff;
@@ -552,7 +553,6 @@
             flex-shrink: 0;
         }
 
-        /* BARRA HORIZONTAL CONTINUA DE GRUPOS ISO */
         .iso-bar-container {
             display: flex;
             width: 100%;
@@ -570,7 +570,6 @@
             opacity: 0.85;
         }
 
-        /* NORMATIVA GRUPOS ISO */
         .badge-iso-p, .iso-theme-P { background-color: var(--iso-p) !important; color: #ffffff !important; }
         .badge-iso-m, .iso-theme-M { background-color: var(--iso-m) !important; color: #000000 !important; font-weight: 800; }
         .badge-iso-k, .iso-theme-K { background-color: var(--iso-k) !important; color: #ffffff !important; }
@@ -611,9 +610,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ======================================================= */
-        /* MEDIA QUERIES PARA ADAPTABILIDAD EN MÓVILES Y TABLETS   */
-        /* ======================================================= */
         @media (max-width: 768px) {
             :root {
                 --sidebar-width: 0px;
@@ -1610,36 +1606,45 @@
             </form>
         </div>
 
-        <!-- VISTA 3: FRESADO CNC SUMITOMO CON RENDERIZADO FRESA DE PLANEAR -->
+        <!-- VISTA 3: FRESADO CNC SUMITOMO Y CORTADORES SÓLIDOS (ENDMILLS) -->
         <div id="vista-fresado" style="display: none;">
-            <h1 class="page-title">Fresado CNC Sumitomo</h1>
-            <p class="page-subtitle">Calculadora de los 6 parámetros clave de fresado y catálogo oficial interactivo.</p>
+            <h1 class="page-title">Fresado CNC Sumitomo y Endmills</h1>
+            <p class="page-subtitle">Calculadora de parámetros clave de fresado, cortadores integrales de carburo y catálogo interactivo.</p>
 
+            <!-- PESTAÑAS LIMPIAS SIN ÍCONOS SECUNDARIOS EN EL TEXTO -->
             <ul class="nav nav-pills mb-4" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="pill-dgc-tab" data-bs-toggle="pill" data-bs-target="#pill-dgc" type="button" role="tab" onclick="seleccionarSerieDesdeTab('DGC (Dual-G-Cutter 45°)')">
-                        <i class="bi bi-pie-chart-fill me-2"></i>Serie DGC (Dual-G-Cutter 45°)
+                        Serie DGC (Dual-G-Cutter 45°)
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pill-wez-tab" data-bs-toggle="pill" data-bs-target="#pill-wez" type="button" role="tab" onclick="seleccionarSerieDesdeTab('WEZ (WaveMill 90°)')">
-                        <i class="bi bi-bounding-box me-2"></i>Serie WEZ (WaveMill 90°)
+                        Serie WEZ (WaveMill 90°)
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pill-endmill-tab" data-bs-toggle="pill" data-bs-target="#pill-endmill" type="button" role="tab" onclick="seleccionarSerieDesdeTab('ENDMILL')">
+                        Endmills / Cortadores Sólidos
                     </button>
                 </li>
             </ul>
 
+            <!-- CALCULADORA DE FRESADO -->
             <div class="ui-card mb-4">
                 <div class="ui-card-title d-flex align-items-center justify-content-between">
-                    <span><i class="bi bi-calculator me-2 text-primary"></i>Calculadora de Parámetros de Fresado (6 Métricas CNC)</span>
-                    <!-- RENDER SVG DE FRESA PLANADORA -->
-                    <svg width="30" height="30" viewBox="0 0 100 100" title="Fresa de Planear CNC">
-                        <circle cx="50" cy="50" r="40" fill="#1e293b" stroke="#0f172a" stroke-width="4"/>
-                        <circle cx="50" cy="50" r="16" fill="#0f172a" stroke="#2563eb" stroke-width="3"/>
-                        <rect x="42" y="10" width="16" height="12" rx="2" fill="#f59e0b"/>
-                        <rect x="42" y="78" width="16" height="12" rx="2" fill="#f59e0b"/>
-                        <rect x="10" y="42" width="12" height="16" rx="2" fill="#f59e0b"/>
-                        <rect x="78" y="42" width="12" height="16" rx="2" fill="#f59e0b"/>
-                    </svg>
+                    <span><i class="bi bi-calculator me-2 text-primary"></i>Calculadora de Parámetros de Fresado</span>
+                    <!-- RENDER SVG DINÁMICO DE HERRAMIENTA DE FRESADO -->
+                    <div id="iconFresadoDinamico">
+                        <svg width="30" height="30" viewBox="0 0 100 100" title="Fresa de Planear CNC">
+                            <circle cx="50" cy="50" r="40" fill="#1e293b" stroke="#0f172a" stroke-width="4"/>
+                            <circle cx="50" cy="50" r="16" fill="#0f172a" stroke="#2563eb" stroke-width="3"/>
+                            <rect x="42" y="10" width="16" height="12" rx="2" fill="#f59e0b"/>
+                            <rect x="42" y="78" width="16" height="12" rx="2" fill="#f59e0b"/>
+                            <rect x="10" y="42" width="12" height="16" rx="2" fill="#f59e0b"/>
+                            <rect x="78" y="42" width="12" height="16" rx="2" fill="#f59e0b"/>
+                        </svg>
+                    </div>
                 </div>
 
                 <div class="row g-2 mb-3 align-items-end">
@@ -1663,7 +1668,16 @@
                         </select>
                     </div>
 
-                    <div class="col-md-2">
+                    <!-- CAMPO DINÁMICO DE TIPO DE ENDMILL (SÓLO VISIBLE EN PESTAÑA ENDMILL) -->
+                    <div class="col-md-2" id="contenedor_geometria_endmill" style="display: none;">
+                        <label class="form-label small text-muted fw-bold mb-1 text-primary">Geometría Cortador</label>
+                        <select id="tipo_geometria_endmill" class="form-select form-select-sm fw-bold border-primary" onchange="actualizarFresadoEnVivo()">
+                            <option value="plano">Endmill Plano (Flat Nose)</option>
+                            <option value="bola">Endmill de Bola (Ball Nose)</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2" id="contenedor_rompevirutas_fresado">
                         <label class="form-label small text-muted fw-bold mb-1">Rompevirutas Recomendado</label>
                         <input type="text" id="valRompevirutasFresado" class="form-control form-control-sm bg-light fw-bold text-warning-emphasis" value="-" readonly>
                     </div>
@@ -1674,14 +1688,39 @@
                     </div>
                     <div class="col-md-1">
                         <label class="form-label small text-muted fw-bold mb-1">Filos z</label>
-                        <input type="number" id="z_fresado" class="form-control form-control-sm" value="4" oninput="actualizarFresadoEnVivo()">
+                        <input type="number" id="z_fresado" class="form-control form-control-sm" value="4" oninput="actualizarFresadoEnVivo()" onchange="actualizarFresadoEnVivo()">
                     </div>
                     <div class="col-md-2">
                         <label class="form-label small text-muted fw-bold mb-1">Avance Fz (mm/t)</label>
-                        <input type="number" step="0.01" id="fz_fresado" class="form-control form-control-sm fw-bold text-primary" placeholder="Auto por Tabla" oninput="actualizarFresadoEnVivo()">
+                        <input type="number" step="0.01" id="fz_fresado" class="form-control form-control-sm fw-bold text-primary" placeholder="Auto por Tabla" oninput="actualizarFresadoEnVivo()" onchange="actualizarFresadoEnVivo()">
                         <small id="badgeFzSugerido" class="d-block mt-1 text-muted" style="font-size: 0.72rem; font-weight: 600;">
                             💡 Sugerido: <span id="valFzSugerido" class="text-primary">-</span>
                         </small>
+                    </div>
+                </div>
+
+                <!-- RECOMENDACIONES DE CORTADORES ENDMILL EN TRES TARJETAS ESTANDARIZADAS B2B SIN ÍCONOS INTERNOS -->
+                <div id="panel_recomendaciones_endmill" class="row g-2 mb-3" style="display: none;">
+                    <div class="col-md-4">
+                        <div class="cnc-card">
+                            <span class="cnc-label">Flautas Sugeridas</span>
+                            <span class="cnc-value" id="endmill_res_z">-</span>
+                            <span class="cnc-unit">Optimizado por Grupo ISO</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="cnc-card">
+                            <span class="cnc-label">Recubrimiento PVD / DLC</span>
+                            <span class="cnc-subvalue" id="endmill_res_recubrimiento">-</span>
+                            <span class="cnc-unit">Protección Térmica Anti-Desgaste</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="cnc-card">
+                            <span class="cnc-label">Hélice / Indexado Irregular</span>
+                            <span class="cnc-subvalue" id="endmill_res_helice">-</span>
+                            <span class="cnc-unit">Geometría Antivibración (Chatter-Free)</span>
+                        </div>
                     </div>
                 </div>
 
@@ -1723,9 +1762,9 @@
                     </div>
                     <div class="col-md-2 col-6">
                         <div class="cnc-card">
-                            <span class="cnc-label">6. Vol. Total (VTR)</span>
+                            <span class="cnc-label" id="lbl_fresado_vtr">6. Vol. Total (VTR)</span>
                             <span class="cnc-value" id="fresVtr">0</span>
-                            <div class="mt-1"><span class="unit-badge unit-vol">cm³</span></div>
+                            <div class="mt-1"><span class="unit-badge unit-vol" id="unit_fresado_vtr">cm³</span></div>
                         </div>
                     </div>
                 </div>
@@ -1915,6 +1954,34 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- CONTENIDO TÉCNICO EXCLUSIVO PESTAÑA ENDMILLS -->
+                <div class="tab-pane fade" id="pill-endmill" role="tabpanel">
+                    <div class="ui-card mb-3">
+                        <div class="ui-card-title mb-3"><i class="bi bi-info-circle-fill me-2 text-primary"></i>Especificaciones Técnicas para Endmills de Carburo Sólido</div>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="p-3 border rounded bg-light">
+                                    <h6 class="fw-bold text-dark">Número de Flautas (z)</h6>
+                                    <p class="small text-muted mb-0">Seleccionado automáticamente según el Grupo ISO. Para materiales blandos (ISO N) se usan 2-3 flautas para evacuación de viruta, mientras que en materiales duros (ISO S/H) se recomiendan 5-6 flautas para rigidez estructural.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-3 border rounded bg-light">
+                                    <h6 class="fw-bold text-dark">Recubrimientos PVD / DLC</h6>
+                                    <p class="small text-muted mb-0">Protección contra abrasión y choque térmico. Recubrimiento DLC para Aluminio (evita soldadura de viruta) y AlTiN / AlCrN para Aceros, Inoxidables y Templados.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-3 border rounded bg-light">
+                                    <h6 class="fw-bold text-dark">Hélice Variable e Indexado</h6>
+                                    <p class="small text-muted mb-0">La geometría asimétrica altera la frecuencia armónica de corte, reduciendo las vibraciones (chatter) en pasadas profundas o maquinado dinámico (HEM).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -2292,20 +2359,16 @@
 
         var serieSeleccionadaActual = "DGC";
 
-        /* REGISTRO AUTOMÁTICO DE SERVICE WORKER PARA MODO OFFLINE EN MÓVILES (PWA) */
+        /* REGISTRO DE SERVICE WORKER PWA */
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
                 navigator.serviceWorker.register('/static/sw.js')
-                    .then(function(reg) {
-                        console.log('AhnsaCut PWA ServiceWorker registrado con éxito en scope:', reg.scope);
-                    })
-                    .catch(function(err) {
-                        console.warn('Error al registrar ServiceWorker de AhnsaCut:', err);
-                    });
+                    .then(function(reg) { console.log('PWA ServiceWorker activo:', reg.scope); })
+                    .catch(function(err) { console.warn('PWA ServiceWorker no registrado:', err); });
             });
         }
 
-        /* FUNCIONALIDAD DE COLAPSAR Y EXPANDIR MENÚ LATERAL EN ESCRITORIO */
+        /* FUNCIONALIDAD DE COLAPSAR Y EXPANDIR MENÚ LATERAL */
         function toggleSidebar() {
             document.body.classList.toggle("sidebar-collapsed");
             const icon = document.getElementById("toggleIcon");
@@ -2480,15 +2543,48 @@
             alCambiarMaterialFresado();
         }
 
+        /* MANEJO DE PESTAÑAS Y ADAPTACIÓN ENTRE DGC, WEZ Y ENDMILLS SÓLIDOS */
         function seleccionarSerieDesdeTab(serie) {
-            serieSeleccionadaActual = serie.indexOf("WEZ") !== -1 ? "WEZ" : "DGC";
+            serieSeleccionadaActual = serie;
             var contDgc = document.getElementById("contenedor_tipo_inserto_dgc");
-            if (contDgc) contDgc.style.display = serieSeleccionadaActual === "DGC" ? "block" : "none";
-            alCambiarDiametro();
-            alCambiarMaterialOFresa();
+            var contEndmillGeometria = document.getElementById("contenedor_geometria_endmill");
+            var contRompevirutas = document.getElementById("contenedor_rompevirutas_fresado");
+            var panelEndmill = document.getElementById("panel_recomendaciones_endmill");
+            var iconBox = document.getElementById("iconFresadoDinamico");
+            var dcInput = document.getElementById("dc_fresado");
+
+            if (serie === "ENDMILL") {
+                if (contDgc) contDgc.style.display = "none";
+                if (contRompevirutas) contRompevirutas.style.display = "none";
+                if (contEndmillGeometria) contEndmillGeometria.style.display = "block";
+                if (panelEndmill) panelEndmill.style.display = "flex";
+                if (dcInput && (dcInput.value === "50" || dcInput.value === "")) dcInput.value = "10";
+
+                // Render SVG de Cortador Endmill
+                if (iconBox) {
+                    iconBox.innerHTML = `<svg width="30" height="30" viewBox="0 0 100 100" title="Endmill de Carburo Sólido"><rect x="42" y="10" width="16" height="80" fill="#334155" rx="3"/><path d="M 42,10 L 58,15 L 42,30 L 58,35 L 42,50 L 58,55" stroke="#38bdf8" stroke-width="4" fill="none"/></svg>`;
+                }
+            } else {
+                if (contDgc) contDgc.style.display = (serie.indexOf("DGC") !== -1) ? "block" : "none";
+                if (contRompevirutas) contRompevirutas.style.display = "block";
+                if (contEndmillGeometria) contEndmillGeometria.style.display = "none";
+                if (panelEndmill) panelEndmill.style.display = "none";
+                if (dcInput && dcInput.value === "10") dcInput.value = "50";
+
+                // Render SVG Fresa Planadora DGC/WEZ
+                if (iconBox) {
+                    iconBox.innerHTML = `<svg width="30" height="30" viewBox="0 0 100 100" title="Fresa de Planear CNC"><circle cx="50" cy="50" r="40" fill="#1e293b" stroke="#0f172a" stroke-width="4"/><circle cx="50" cy="50" r="16" fill="#0f172a" stroke="#2563eb" stroke-width="3"/><rect x="42" y="10" width="16" height="12" rx="2" fill="#f59e0b"/><rect x="42" y="78" width="16" height="12" rx="2" fill="#f59e0b"/><rect x="10" y="42" width="12" height="16" rx="2" fill="#f59e0b"/><rect x="78" y="42" width="12" height="16" rx="2" fill="#f59e0b"/></svg>`;
+                }
+                alCambiarDiametro();
+            }
+            actualizarFresadoEnVivo();
         }
 
         function alCambiarDiametro() {
+            if (serieSeleccionadaActual === "ENDMILL") {
+                actualizarFresadoEnVivo();
+                return;
+            }
             const dcInput = document.getElementById("dc_fresado");
             const zInput = document.getElementById("z_fresado");
 
@@ -2497,9 +2593,9 @@
                 const dcVal = parseInt(dcInput.value) || 50;
                 const matriz = MATRIZ_DIENTES[sKey];
                 
-                if (matriz[dcVal]) {
+                if (matriz && matriz[dcVal]) {
                     zInput.value = matriz[dcVal];
-                } else {
+                } else if (matriz) {
                     const llaves = Object.keys(matriz).map(Number);
                     const cercana = llaves.reduce((prev, curr) => Math.abs(curr - dcVal) < Math.abs(prev - dcVal) ? curr : prev);
                     zInput.value = matriz[cercana];
@@ -2588,38 +2684,115 @@
                 .catch(err => console.error("Error en actualizarValoresEnVivo:", err));
         }
 
+        /* CONTROLADOR DE FRESADO AUTOMÁTICO DINÁMICO (DGC / WEZ / ENDMILLS) */
         function actualizarFresadoEnVivo() {
             var mat = getValSeguro("material_fresado");
             var rvpElem = document.getElementById("valRompevirutasFresado");
 
             if (!mat) {
-                setTexto("fresRpm", "-");
-                setTexto("fresVf", "-");
-                setTexto("fresValVc", "- m/min");
-                setTexto("fresMrr", "-");
-                setTexto("fresTiempo", "-");
-                setTexto("fresVtr", "-");
-                
+                setTexto("fresRpm", "0");
+                setTexto("fresVf", "0");
+                setTexto("fresValVc", "0 m/min");
+                setTexto("fresMrr", "0");
+                setTexto("fresTiempo", "0");
+                setTexto("fresVtr", "0");
                 var fzElem = document.getElementById("fz_fresado");
                 if (fzElem) fzElem.value = "";
-                
                 if (rvpElem) rvpElem.value = "-";
                 setTexto("valFzSugerido", "-");
                 return;
             }
 
-            var tipoInsertoDgc = getValSeguro("tipo_inserto_dgc") || "SNMT 13T6";
-            var dc = parseFloat(getValSeguro("dc_fresado")) || 50;
-            var z = parseInt(getValSeguro("z_fresado")) || 4;
-            var ap = parseFloat(getValSeguro("ap_fresado")) || 2.0;
-            var ae = parseFloat(getValSeguro("ae_fresado")) || 25.0;
-            var long = parseFloat(getValSeguro("longitud_fresado")) || 100.0;
-            
+            var dc = parseFloat(getValSeguro("dc_fresado")) || 10;
+            var zInputElem = document.getElementById("z_fresado");
+            var zValRaw = getValSeguro("z_fresado");
+
             var fzElem = document.getElementById("fz_fresado");
             var fzValRaw = getValSeguro("fz_fresado");
             var fzVal = (fzValRaw !== "" && !isNaN(parseFloat(fzValRaw))) ? parseFloat(fzValRaw) : 0;
 
-            var sKey = (typeof serieSeleccionadaActual !== "undefined" && serieSeleccionadaActual.indexOf("WEZ") !== -1) ? "WEZ" : "DGC";
+            // RUTA DIVERGENTE PARA PESTAÑA ENDMILLS SÓLIDOS (CÁLCULO LOCAL EN TIEMPO REAL)
+            if (serieSeleccionadaActual === "ENDMILL") {
+                var geom = getValSeguro("tipo_geometria_endmill") || "plano";
+                
+                // Identificación de Grupo ISO por texto
+                var matLower = mat.toLowerCase();
+                var iso = 'P';
+                if (matLower.includes("304") || matLower.includes("316") || matLower.includes("inox") || matLower.includes("inoxidable")) iso = 'M';
+                else if (matLower.includes("gris") || matLower.includes("nodular") || matLower.includes("fundicion") || matLower.includes("cast iron")) iso = 'K';
+                else if (matLower.includes("aluminio") || matLower.includes("6061") || matLower.includes("7075") || matLower.includes("bronce") || matLower.includes("cobre")) iso = 'N';
+                else if (matLower.includes("titanio") || matLower.includes("inconel") || matLower.includes("hastelloy")) iso = 'S';
+                else if (matLower.includes("templado") || matLower.includes("hrc") || matLower.includes("d2") || matLower.includes("skd")) iso = 'H';
+
+                // Matriz de parámetros según fabricantes
+                var RECOMENDACIONES_ENDMILL = {
+                    'P': { z: 4, rec: 'AlTiN / AlCrN', helice: 'Hélice Variable (35°/38°) - Antivibración', vc: 140, fz: 0.05 },
+                    'M': { z: 4, rec: 'AlCrN Nano-Lube', helice: 'Hélice Variable + Indexado Irregular', vc: 90, fz: 0.04 },
+                    'K': { z: 4, rec: 'TiCN / AlTiN Abrasión', helice: 'Hélice Estándar 30° / 45°', vc: 120, fz: 0.06 },
+                    'N': { z: 3, rec: 'DLC / Pulido Espejo', helice: 'Hélice Alta 45° / 55° (Corte Suave)', vc: 350, fz: 0.08 },
+                    'S': { z: 5, rec: 'nACo / AlTiN Micrograin', helice: 'Indexado Irregular + Hélice Variable', vc: 45, fz: 0.03 },
+                    'H': { z: 6, rec: 'AlCrN Ultra-Hard', helice: 'Hélice Variable Asimétrica (Seco/MQL)', vc: 70, fz: 0.025 }
+                };
+
+                var recData = RECOMENDACIONES_ENDMILL[iso] || RECOMENDACIONES_ENDMILL['P'];
+
+                // Sincronizar campo Filos z con las flautas sugeridas si no fue editado activamente por el usuario
+                if (zInputElem && (document.activeElement !== zInputElem || zValRaw === "")) {
+                    zInputElem.value = recData.z;
+                }
+                var z = parseInt(getValSeguro("z_fresado")) || recData.z;
+
+                // Si no se introdujo un fz manual, se aplica el recomendado por ISO
+                if (fzVal <= 0) {
+                    fzVal = recData.fz;
+                    if (fzElem && document.activeElement !== fzElem) {
+                        fzElem.value = fzVal;
+                    }
+                }
+
+                // Cálculo de Diámetro Efectivo (Deff) para Endmill de Bola
+                var apEndmill = 2.0;
+                var aeEndmill = dc * 0.5;
+                var dEfectivo = dc;
+                
+                if (geom === 'bola' && apEndmill < (dc / 2.0)) {
+                    dEfectivo = 2.0 * Math.sqrt(apEndmill * (dc - apEndmill));
+                    if (isNaN(dEfectivo) || dEfectivo <= 0) dEfectivo = dc;
+                }
+
+                // Cálculos dinámicos finales utilizando el z asignado/editado
+                var rpmCalculado = Math.round((recData.vc * 1000.0) / (Math.PI * dEfectivo));
+                var vfCalculado = Math.round(fzVal * z * rpmCalculado);
+                var mrrCalculado = parseFloat(((apEndmill * aeEndmill * vfCalculado) / 1000.0).toFixed(2));
+                var tiempoCalculado = (vfCalculado > 0) ? parseFloat((100.0 / vfCalculado).toFixed(2)) : 0;
+
+                // Actualizar interfaz en tiempo real
+                setTexto("valFzSugerido", recData.fz + " mm/t");
+                setTexto("fresRpm", rpmCalculado);
+                setTexto("fresVf", vfCalculado);
+                setTexto("fresValVc", recData.vc + " m/min");
+                setTexto("fresMrr", mrrCalculado);
+                setTexto("fresTiempo", tiempoCalculado);
+                setTexto("fresVtr", dEfectivo.toFixed(2) + " mm");
+
+                setTexto("lbl_fresado_vtr", "Ø Efectivo (Deff)");
+                setTexto("unit_fresado_vtr", "mm");
+
+                setTexto("endmill_res_z", z + " Flautas");
+                setTexto("endmill_res_recubrimiento", recData.rec);
+                setTexto("endmill_res_helice", recData.helice);
+                return;
+            }
+
+            // RUTA ESTÁNDAR DE FRESADO DE INSERTOS SUMITOMO (DGC / WEZ)
+            setTexto("lbl_fresado_vtr", "6. Vol. Total (VTR)");
+            setTexto("unit_fresado_vtr", "cm³");
+
+            var z = parseInt(getValSeguro("z_fresado")) || 4;
+            var tipoInsertoDgc = getValSeguro("tipo_inserto_dgc") || "SNMT 13T6";
+            var sKey = (serieSeleccionadaActual.indexOf("WEZ") !== -1) ? "WEZ" : "DGC";
+            var apVal = 2.0;
+            var aeVal = 25.0;
 
             var url = "/api/calcular_fresado_ajax?material=" + encodeURIComponent(mat) +
                         "&serie=" + encodeURIComponent(sKey) +
@@ -2627,9 +2800,9 @@
                         "&diametro=" + dc +
                         "&dientes=" + z +
                         "&fz=" + (fzVal > 0 ? fzVal : "") +
-                        "&ap=" + ap +
-                        "&ae=" + ae +
-                        "&longitud=" + long;
+                        "&ap=" + apVal +
+                        "&ae=" + aeVal +
+                        "&longitud=" + 100.0;
 
             fetch(url)
                 .then(function(response) { return response.json(); })
@@ -2638,27 +2811,19 @@
                         if (fzVal <= 0 && data.fz !== undefined && fzElem && document.activeElement !== fzElem) {
                             fzElem.value = data.fz;
                         }
-
                         var badgeFz = document.getElementById("valFzSugerido");
-                        if (badgeFz && data.fz !== undefined) {
-                            badgeFz.textContent = data.fz + " mm/t";
-                        }
+                        if (badgeFz && data.fz !== undefined) badgeFz.textContent = data.fz + " mm/t";
+                        if (rvpElem) rvpElem.value = data.rompevirutas || data.rompevirutas_sugerido || "-";
 
-                        if (rvpElem) {
-                            rvpElem.value = data.rompevirutas || data.rompevirutas_sugerido || "-";
-                        }
-
-                        setTexto("fresRpm", data.rpm !== undefined ? data.rpm : "-");
-                        setTexto("fresVf", data.vf !== undefined ? data.vf : "-");
-                        setTexto("fresValVc", data.vc !== undefined ? data.vc + " m/min" : "- m/min");
-                        setTexto("fresMrr", data.mrr !== undefined ? data.mrr : "-");
-                        setTexto("fresTiempo", data.tiempo !== undefined ? data.tiempo : "-");
-                        setTexto("fresVtr", data.vtr !== undefined ? data.vtr : "-");
+                        setTexto("fresRpm", data.rpm !== undefined ? data.rpm : "0");
+                        setTexto("fresVf", data.vf !== undefined ? data.vf : "0");
+                        setTexto("fresValVc", data.vc !== undefined ? data.vc + " m/min" : "0 m/min");
+                        setTexto("fresMrr", data.mrr !== undefined ? data.mrr : "0");
+                        setTexto("fresTiempo", data.tiempo !== undefined ? data.tiempo : "0");
+                        setTexto("fresVtr", data.vtr !== undefined ? data.vtr : "0");
                     }
                 })
-                .catch(function(err) {
-                    console.warn("Error en cálculo de fresado:", err);
-                });
+                .catch(function(err) { console.warn("Error en cálculo de fresado:", err); });
         }
 
         function alCambiarMaterialBarrenado() {
@@ -3019,6 +3184,37 @@
                 if (icon) icon.className = "bi bi-chevron-right";
             }
 
+            // EVENTOS ENTER NAVEGACIÓN EN FRESADO
+            var camposFresado = [
+                "material_fresado",
+                "tipo_inserto_dgc",
+                "tipo_geometria_endmill",
+                "dc_fresado",
+                "z_fresado",
+                "fz_fresado"
+            ];
+
+            camposFresado.forEach(function(id, index) {
+                var elem = document.getElementById(id);
+                if (elem) {
+                    elem.addEventListener("keydown", function(e) {
+                        if (e.key === "Enter") {
+                            e.preventDefault();
+                            actualizarFresadoEnVivo();
+
+                            for (var i = index + 1; i < camposFresado.length; i++) {
+                                var sig = document.getElementById(camposFresado[i]);
+                                if (sig && sig.offsetParent !== null) {
+                                    sig.focus();
+                                    break;
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+
+            // EVENTOS ENTER NAVEGACIÓN EN BARRENADO
             var camposBarrenado = [
                 "material_barrenado",
                 "d_barrenado",
@@ -3046,6 +3242,7 @@
                 }
             });
 
+            // EVENTOS ENTER NAVEGACIÓN EN ROSCADO
             var camposRoscado = [
                 "material_roscado",
                 "select_estandar_rosca",
