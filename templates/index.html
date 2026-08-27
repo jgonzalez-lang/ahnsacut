@@ -220,17 +220,19 @@
             margin-bottom: 12px;
         }
 
-        /* TARJETAS DE CATÁLOGO INTEGRADAS */
+        /* TARJETAS DE CATÁLOGO INTEGRADAS CON TRANSICIÓN HOVER */
         .cat-item-card {
             background-color: #ffffff;
             border: 1px solid var(--border-color);
             border-radius: 6px;
             padding: 8px 12px;
-            transition: border-color 0.15s ease;
+            transition: all 0.2s ease;
         }
 
         .cat-item-card:hover {
             border-color: var(--brand-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
 
         /* CELDAS DE INFORMACIÓN GENERAL */
@@ -649,12 +651,12 @@
                     </div>
                 </div>
 
-                <!-- KPI 2: INSERTO CNMG RENDERIZADO -->
+                <!-- KPI 2: INSERTO CNMG RENDERIZADO (Métrica Sincronizada a 11) -->
                 <div class="col-md-3">
                     <div class="dash-metric-card">
                         <div>
                             <span class="info-box-label">Catálogo de Insertos</span>
-                            <span class="dash-metric-value">{{ stats.total_insertos if stats else 21 }}</span>
+                            <span class="dash-metric-value">{{ stats.total_insertos if stats else 11 }}</span>
                         </div>
                         <div class="dash-metric-icon bg-warning bg-opacity-10" title="Inserto Romboico (CNMG)">
                             <svg width="32" height="32" viewBox="0 0 100 100">
@@ -706,17 +708,28 @@
                 </div>
             </div>
 
-            <!-- CATÁLOGO COMPLETO -->
+            <!-- CATÁLOGO INTERACTIVO CON CHIPS DE FILTRO POR ISO Y REDIRECCIÓN AL CLIC -->
             <div class="row g-3 mb-4">
                 <div class="col-12">
                     <div class="ui-card">
                         <div class="ui-card-title d-flex justify-content-between align-items-center mb-3">
                             <span><i class="bi bi-box-seam me-2 text-primary"></i>Catálogo de Geometrías de Inserto Disponibles por Grupo ISO</span>
-                            <span class="badge bg-secondary">11 Geometrías Maestras</span>
+                            
+                            <!-- Chips de Filtro por Grupo ISO -->
+                            <div class="d-flex gap-1 flex-wrap">
+                                <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 fw-bold active" onclick="filtrarCatalogoIso('TODOS', this)" style="font-size: 0.72rem;">TODOS</button>
+                                <button type="button" class="btn btn-sm btn-outline-primary py-0 px-2 fw-bold" onclick="filtrarCatalogoIso('P', this)" style="font-size: 0.72rem;">ISO P</button>
+                                <button type="button" class="btn btn-sm btn-outline-warning text-dark py-0 px-2 fw-bold" onclick="filtrarCatalogoIso('M', this)" style="font-size: 0.72rem;">ISO M</button>
+                                <button type="button" class="btn btn-sm btn-outline-danger py-0 px-2 fw-bold" onclick="filtrarCatalogoIso('K', this)" style="font-size: 0.72rem;">ISO K</button>
+                                <button type="button" class="btn btn-sm btn-outline-success py-0 px-2 fw-bold" onclick="filtrarCatalogoIso('N', this)" style="font-size: 0.72rem;">ISO N</button>
+                                <button type="button" class="btn btn-sm btn-outline-dark py-0 px-2 fw-bold" onclick="filtrarCatalogoIso('S', this)" style="font-size: 0.72rem;">ISO S</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 fw-bold" onclick="filtrarCatalogoIso('H', this)" style="font-size: 0.72rem;">ISO H</button>
+                            </div>
                         </div>
                         
-                        <div class="row g-2">
-                            <div class="col-xl-3 col-lg-4 col-sm-6">
+                        <!-- Rejilla de 11 geometrías con clic interactivo directo -->
+                        <div class="row g-2" id="gridInsertosCatalogo">
+                            <div class="col-xl-3 col-lg-4 col-sm-6 item-iso-card" data-iso="P" onclick="seleccionarInsertoDirecto('CNMG 120408')" style="cursor: pointer;">
                                 <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
                                         <div class="fw-bold text-dark small text-truncate">CNMG 120408</div>
@@ -725,92 +738,102 @@
                                     <span class="badge badge-iso-p px-2 py-1 fs-7 flex-shrink-0">ISO P</span>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-4 col-sm-6">
+
+                            <div class="col-xl-3 col-lg-4 col-sm-6 item-iso-card" data-iso="P" onclick="seleccionarInsertoDirecto('DNMG 150408')" style="cursor: pointer;">
                                 <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
                                         <div class="fw-bold text-dark small text-truncate">DNMG 150408</div>
-                                        <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Exterior</small>
+                                        <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Exterior 55°</small>
                                     </div>
                                     <span class="badge badge-iso-p px-2 py-1 fs-7 flex-shrink-0">ISO P</span>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-4 col-sm-6">
+
+                            <div class="col-xl-3 col-lg-4 col-sm-6 item-iso-card" data-iso="P" onclick="seleccionarInsertoDirecto('WNMG 080408')" style="cursor: pointer;">
                                 <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
                                         <div class="fw-bold text-dark small text-truncate">WNMG 080408</div>
-                                        <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Exterior</small>
+                                        <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Trígono / Exterior</small>
                                     </div>
                                     <span class="badge badge-iso-p px-2 py-1 fs-7 flex-shrink-0">ISO P</span>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-4 col-sm-6">
+
+                            <div class="col-xl-3 col-lg-4 col-sm-6 item-iso-card" data-iso="P" onclick="seleccionarInsertoDirecto('TNMG 160408')" style="cursor: pointer;">
                                 <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
                                         <div class="fw-bold text-dark small text-truncate">TNMG 160408</div>
-                                        <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Desbaste</small>
+                                        <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Triangular Desbaste</small>
                                     </div>
                                     <span class="badge badge-iso-p px-2 py-1 fs-7 flex-shrink-0">ISO P</span>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-4 col-sm-6">
+
+                            <div class="col-xl-3 col-lg-4 col-sm-6 item-iso-card" data-iso="M" onclick="seleccionarInsertoDirecto('DCMT 070204')" style="cursor: pointer;">
                                 <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
                                         <div class="fw-bold text-dark small text-truncate">DCMT 070204</div>
-                                        <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Acabado</small>
+                                        <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Acabado Fino</small>
                                     </div>
                                     <span class="badge badge-iso-m px-2 py-1 fs-7 flex-shrink-0">ISO M</span>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-4 col-sm-6">
+
+                            <div class="col-xl-3 col-lg-4 col-sm-6 item-iso-card" data-iso="M" onclick="seleccionarInsertoDirecto('TCMT 110204')" style="cursor: pointer;">
                                 <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
                                         <div class="fw-bold text-dark small text-truncate">TCMT 110204</div>
-                                        <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Acabado</small>
+                                        <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Triangular Acabado</small>
                                     </div>
                                     <span class="badge badge-iso-m px-2 py-1 fs-7 flex-shrink-0">ISO M</span>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-4 col-sm-6">
+
+                            <div class="col-xl-3 col-lg-4 col-sm-6 item-iso-card" data-iso="M" onclick="seleccionarInsertoDirecto('RCMT 1003MO')" style="cursor: pointer;">
                                 <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
                                         <div class="fw-bold text-dark small text-truncate">RCMT 1003MO</div>
-                                        <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Acabado / Perfilado Redondo</small>
+                                        <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Redondo Perfilado</small>
                                     </div>
                                     <span class="badge badge-iso-m px-2 py-1 fs-7 flex-shrink-0">ISO M</span>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-4 col-sm-6">
+
+                            <div class="col-xl-3 col-lg-4 col-sm-6 item-iso-card" data-iso="K" onclick="seleccionarInsertoDirecto('SNMG 120408')" style="cursor: pointer;">
                                 <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
                                         <div class="fw-bold text-dark small text-truncate">SNMG 120408</div>
-                                        <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Desbaste Pesado</small>
+                                        <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Cuadrado Pesado</small>
                                     </div>
                                     <span class="badge badge-iso-k px-2 py-1 fs-7 flex-shrink-0">ISO K</span>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-4 col-sm-6">
+
+                            <div class="col-xl-3 col-lg-4 col-sm-6 item-iso-card" data-iso="N" onclick="seleccionarInsertoDirecto('CCMT 060204')" style="cursor: pointer;">
                                 <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
                                         <div class="fw-bold text-dark small text-truncate">CCMT 060204</div>
-                                        <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Acabado</small>
+                                        <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Rombo 80° Acabado</small>
                                     </div>
                                     <span class="badge badge-iso-n px-2 py-1 fs-7 flex-shrink-0">ISO N</span>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-4 col-sm-6">
+
+                            <div class="col-xl-3 col-lg-4 col-sm-6 item-iso-card" data-iso="S" onclick="seleccionarInsertoDirecto('RNMG 120400')" style="cursor: pointer;">
                                 <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
                                         <div class="fw-bold text-dark small text-truncate">RNMG 120400</div>
-                                        <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Desbaste Pesado / Perfilado</small>
+                                        <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Redondo Desbaste</small>
                                     </div>
                                     <span class="badge badge-iso-s px-2 py-1 fs-7 flex-shrink-0">ISO S</span>
                                 </div>
                             </div>
-                            <div class="col-xl-3 col-lg-4 col-sm-6">
+
+                            <div class="col-xl-3 col-lg-4 col-sm-6 item-iso-card" data-iso="H" onclick="seleccionarInsertoDirecto('VNMG 160404')" style="cursor: pointer;">
                                 <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
                                         <div class="fw-bold text-dark small text-truncate">VNMG 160404</div>
-                                        <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Acabado</small>
+                                        <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Copiado 35°</small>
                                     </div>
                                     <span class="badge badge-iso-h px-2 py-1 fs-7 flex-shrink-0">ISO H</span>
                                 </div>
@@ -818,71 +841,72 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="row g-3 mb-4">
-                    <div class="col-lg-8">
-                        <div class="ui-card">
-                            <div class="ui-card-title d-flex justify-content-between align-items-center">
-                                <span>Distribución por Grupos de Materiales ISO</span>
-                                <span class="badge bg-dark">6 Grupos ISO</span>
+            <!-- SECCIÓN INFERIOR REORGANIZADA CON ALTURA HOMOGÉNEA -->
+            <div class="row g-3 mb-4 align-items-stretch">
+                <div class="col-lg-8">
+                    <div class="ui-card h-100 d-flex flex-column justify-content-between">
+                        <div class="ui-card-title d-flex justify-content-between align-items-center mb-3">
+                            <span><i class="bi bi-diagram-3-fill me-2 text-primary"></i>Resumen de Grupos de Materiales ISO</span>
+                            <span class="badge bg-dark">DIN / ISO 513</span>
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-md-4 col-6">
+                                <div class="p-2 border rounded bg-light text-center">
+                                    <span class="badge badge-iso-p fs-7 mb-1">ISO P</span>
+                                    <div class="fw-bold small text-dark">Aceros / Aleados</div>
+                                    <small class="text-muted d-block" style="font-size: 0.7rem;">6 Materiales</small>
+                                </div>
                             </div>
-                            <div class="row g-2 mt-2">
-                                <div class="col-md-4">
-                                    <div class="p-3 border rounded bg-light text-center">
-                                        <span class="badge badge-iso-p fs-6 mb-1">ISO P</span>
-                                        <div class="fw-bold">Aceros Carbono / Aleados</div>
-                                        <small class="text-muted">6 Materiales</small>
-                                    </div>
+                            <div class="col-md-4 col-6">
+                                <div class="p-2 border rounded bg-light text-center">
+                                    <span class="badge badge-iso-m fs-7 mb-1">ISO M</span>
+                                    <div class="fw-bold small text-dark">Inoxidables</div>
+                                    <small class="text-muted d-block" style="font-size: 0.7rem;">4 Materiales</small>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="p-3 border rounded bg-light text-center">
-                                        <span class="badge badge-iso-m fs-6 mb-1">ISO M</span>
-                                        <div class="fw-bold">Aceros Inoxidables</div>
-                                        <small class="text-muted">4 Materiales</small>
-                                    </div>
+                            </div>
+                            <div class="col-md-4 col-6">
+                                <div class="p-2 border rounded bg-light text-center">
+                                    <span class="badge badge-iso-k fs-7 mb-1">ISO K</span>
+                                    <div class="fw-bold small text-dark">Fundición de Hierro</div>
+                                    <small class="text-muted d-block" style="font-size: 0.7rem;">3 Materiales</small>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="p-3 border rounded bg-light text-center">
-                                        <span class="badge badge-iso-k fs-6 mb-1">ISO K</span>
-                                        <div class="fw-bold">Fundiciones Gris/Nodular</div>
-                                        <small class="text-muted">3 Materiales</small>
-                                    </div>
+                            </div>
+                            <div class="col-md-4 col-6">
+                                <div class="p-2 border rounded bg-light text-center">
+                                    <span class="badge badge-iso-n fs-7 mb-1">ISO N</span>
+                                    <div class="fw-bold small text-dark">Aluminio / No Ferrosos</div>
+                                    <small class="text-muted d-block" style="font-size: 0.7rem;">4 Materiales</small>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="p-3 border rounded bg-light text-center">
-                                        <span class="badge badge-iso-n fs-6 mb-1">ISO N</span>
-                                        <div class="fw-bold">Aluminio / No Ferrosos</div>
-                                        <small class="text-muted">4 Materiales</small>
-                                    </div>
+                            </div>
+                            <div class="col-md-4 col-6">
+                                <div class="p-2 border rounded bg-light text-center">
+                                    <span class="badge badge-iso-s fs-7 mb-1">ISO S</span>
+                                    <div class="fw-bold small text-dark">Titanio e Inconel</div>
+                                    <small class="text-muted d-block" style="font-size: 0.7rem;">3 Materiales</small>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="p-3 border rounded bg-light text-center">
-                                        <span class="badge badge-iso-s fs-6 mb-1">ISO S</span>
-                                        <div class="fw-bold">Titanio e Inconel</div>
-                                        <small class="text-muted">3 Materiales</small>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="p-3 border rounded bg-light text-center">
-                                        <span class="badge badge-iso-h fs-6 mb-1">ISO H</span>
-                                        <div class="fw-bold">Aceros Templados</div>
-                                        <small class="text-muted">2 Materiales</small>
-                                    </div>
+                            </div>
+                            <div class="col-md-4 col-6">
+                                <div class="p-2 border rounded bg-light text-center">
+                                    <span class="badge badge-iso-h fs-7 mb-1">ISO H</span>
+                                    <div class="fw-bold small text-dark">Aceros Templados</div>
+                                    <small class="text-muted d-block" style="font-size: 0.7rem;">2 Materiales</small>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="col-lg-4">
-                        <div class="ui-card d-flex flex-column justify-content-between">
-                            <div>
-                                <div class="ui-card-title">Módulo de Torneado AhnsaCut</div>
-                                <p class="small text-muted mb-3">Calcula RPM, Vf, ap, avance, potencia y tiempos de mecanizado según la geometría Sumitomo.</p>
-                            </div>
-                            <button onclick="mostrarPestana('torneado')" class="btn btn-calc w-100 py-2">
-                                <i class="bi bi-play-circle me-2"></i>Ir al Módulo de Torneado
-                            </button>
+                <div class="col-lg-4">
+                    <div class="ui-card h-100 d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="ui-card-title mb-2"><i class="bi bi-lightning-charge-fill me-2 text-warning"></i>Acceso Rápido a Torneado</div>
+                            <p class="small text-muted mb-0">Selecciona cualquier geometría del catálogo superior o presiona el botón para calcular pasadas, $V_c$, $V_f$ y potencia en kW.</p>
                         </div>
+                        <button onclick="mostrarPestana('torneado')" class="btn btn-calc w-100 py-2 mt-3">
+                            <i class="bi bi-play-circle me-2"></i>Ir al Módulo de Torneado
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2001,6 +2025,35 @@
             }
 
             localStorage.setItem("ahnsacut_sidebar_collapsed", isCollapsed ? "true" : "false");
+        }
+
+        /* FILTRADO DINÁMICO POR CHIPS ISO EN EL DASHBOARD */
+        function filtrarCatalogoIso(grupoIso, btnElement) {
+            var btns = btnElement.parentElement.querySelectorAll("button");
+            btns.forEach(b => b.classList.remove("active"));
+            btnElement.classList.add("active");
+
+            var items = document.querySelectorAll("#gridInsertosCatalogo .item-iso-card");
+            items.forEach(function(item) {
+                var isoCard = item.getAttribute("data-iso");
+                if (grupoIso === "TODOS" || isoCard === grupoIso) {
+                    item.style.display = "block";
+                } else {
+                    item.style.display = "none";
+                }
+            });
+        }
+
+        /* REDIRECCIÓN DIRECTA AL MÓDULO DE TORNEADO AL HACER CLIC EN UN INSERTO */
+        function seleccionarInsertoDirecto(codigoInserto) {
+            mostrarPestana('torneado');
+            var selectInserto = document.getElementById("inserto");
+            if (selectInserto) {
+                selectInserto.value = codigoInserto;
+                if (typeof actualizarValoresEnVivo === "function") {
+                    actualizarValoresEnVivo();
+                }
+            }
         }
 
         function getValSeguro(id) {
