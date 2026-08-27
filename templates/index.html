@@ -22,13 +22,16 @@
             --text-sub: #64748b;
             --border-color: #e2e8f0;
 
-            /* COLORES NORMATIVA ISO (ESTÁNDAR METALMECÁNICO INVIOLABLE) */
+            /* COLORES NORMATIVA ISO */
             --iso-p: #2563eb;
             --iso-m: #eab308;
             --iso-k: #dc2626;
             --iso-n: #16a34a;
             --iso-s: #991b1b;
             --iso-h: #475569;
+
+            /* ANCHOS DINÁMICOS DE SIDEBAR */
+            --sidebar-width: 220px;
         }
 
         body {
@@ -39,19 +42,23 @@
             overflow-x: hidden;
         }
 
-        /* SIDEBAR LATERAL INTEGRADO */
+        /* SIDEBAR LATERAL DINÁMICO */
         .sidebar {
-            width: 220px;
+            width: var(--sidebar-width);
             height: 100vh;
             background-color: var(--sidebar-bg);
             border-right: 1px solid var(--sidebar-border);
             position: fixed;
             top: 0;
             left: 0;
-            padding: 16px 14px;
+            padding: 16px 10px;
             color: #ffffff;
             z-index: 100;
             overflow-x: hidden;
+            transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .sidebar-brand {
@@ -64,6 +71,7 @@
             border-bottom: 1px solid var(--sidebar-border);
             width: 100%;
             box-sizing: border-box;
+            transition: padding 0.25s ease;
         }
 
         .sidebar-brand img {
@@ -75,19 +83,22 @@
             border-radius: 6px;
             padding: 4px;
             display: block;
+            transition: max-height 0.25s ease;
         }
 
         .sidebar-nav {
             list-style: none;
             padding: 0;
             margin: 0;
+            flex-grow: 1;
         }
 
         .sidebar-nav li { margin-bottom: 4px; }
 
         .sidebar-nav a {
-            display: block;
-            padding: 9px 12px;
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
             color: #94a3b8;
             text-decoration: none;
             font-weight: 600;
@@ -95,6 +106,15 @@
             border-radius: 6px;
             transition: all 0.15s ease;
             cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .sidebar-nav a i {
+            font-size: 1.1rem;
+            min-width: 24px;
+            text-align: center;
+            margin-right: 12px;
+            transition: margin 0.25s ease;
         }
 
         .sidebar-nav a:hover {
@@ -108,10 +128,57 @@
             font-weight: 700;
         }
 
-        /* ÁREA PRINCIPAL DE TRABAJO */
+        /* BOTÓN DE COLAPSAR / EXPANDIR SIDEBAR */
+        .sidebar-toggle-btn {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--sidebar-border);
+            color: #94a3b8;
+            padding: 8px 12px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.82rem;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .sidebar-toggle-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+
+        /* ESTADOS COLAPSADOS (MODO COMPACTO - 65px) */
+        body.sidebar-collapsed {
+            --sidebar-width: 65px;
+        }
+
+        body.sidebar-collapsed .sidebar-brand img {
+            max-height: 32px;
+            padding: 2px;
+        }
+
+        body.sidebar-collapsed .nav-text,
+        body.sidebar-collapsed .toggle-text {
+            display: none;
+        }
+
+        body.sidebar-collapsed .sidebar-nav a i {
+            margin-right: 0;
+        }
+
+        body.sidebar-collapsed .sidebar-nav a {
+            justify-content: center;
+            padding: 10px 0;
+        }
+
+        /* ÁREA PRINCIPAL CON ANCHO ADAPTABLE */
         .main-content {
-            margin-left: 220px;
+            margin-left: var(--sidebar-width);
             padding: 24px 28px;
+            transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .page-title {
@@ -448,18 +515,26 @@
 </head>
 <body>
 
-    <!-- Sidebar Lateral -->
-    <div class="sidebar">
-        <div class="sidebar-brand">
-            <img src="/static/logo.png" alt="AHNSA TOOLS AhnsaCut">
+    <!-- Sidebar Lateral Dinámico -->
+    <div class="sidebar" id="sidebar">
+        <div>
+            <div class="sidebar-brand">
+                <img src="/static/logo.png" alt="AHNSA TOOLS AhnsaCut">
+            </div>
+            <ul class="sidebar-nav">
+                <li><a id="nav-dashboard" onclick="mostrarPestana('dashboard')" class="active" title="Dashboard"><i class="bi bi-speedometer"></i><span class="nav-text">Dashboard</span></a></li>
+                <li><a id="nav-fresado" onclick="mostrarPestana('fresado')" title="Fresado"><i class="bi bi-disc"></i><span class="nav-text">Fresado</span></a></li>
+                <li><a id="nav-torneado" onclick="mostrarPestana('torneado')" title="Torneado"><i class="bi bi-gear-wide-connected"></i><span class="nav-text">Torneado</span></a></li>
+                <li><a id="nav-barrenado" onclick="mostrarPestana('barrenado')" title="Barrenado"><i class="bi bi-pin-angle"></i><span class="nav-text">Barrenado</span></a></li>
+                <li><a id="nav-roscado" onclick="mostrarPestana('roscado')" title="Roscado"><i class="bi bi-symmetry-horizontal"></i><span class="nav-text">Roscado</span></a></li>
+            </ul>
         </div>
-        <ul class="sidebar-nav">
-            <li><a id="nav-dashboard" onclick="mostrarPestana('dashboard')" class="active"><i class="bi bi-speedometer me-2"></i>Dashboard</a></li>
-            <li><a id="nav-fresado" onclick="mostrarPestana('fresado')"><i class="bi bi-disc me-2"></i>Fresado</a></li>
-            <li><a id="nav-torneado" onclick="mostrarPestana('torneado')"><i class="bi bi-gear-wide-connected me-2"></i>Torneado</a></li>
-            <li><a id="nav-barrenado" onclick="mostrarPestana('barrenado')"><i class="bi bi-pin-angle me-2"></i>Barrenado</a></li>
-            <li><a id="nav-roscado" onclick="mostrarPestana('roscado')"><i class="bi bi-symmetry-horizontal me-2"></i>Roscado</a></li>
-        </ul>
+
+        <!-- Botón de Colapsar / Expandir Menú -->
+        <div class="sidebar-toggle-btn" id="sidebarToggle" onclick="toggleSidebar()" title="Colapsar / Expandir Menú">
+            <i class="bi bi-chevron-left me-2" id="toggleIcon"></i>
+            <span class="toggle-text">Colapsar Menú</span>
+        </div>
     </div>
 
     <!-- Contenido Principal -->
@@ -940,6 +1015,7 @@
                     </div>
                 </div>
 
+                <!-- TARJETAS TÉCNICAS ESTANDARIZADAS EN OSCURO CON RESALTES -->
                 <div class="ui-card mb-3">
                     <div class="ui-card-title d-flex justify-content-between align-items-center">
                         <span>Parámetros CNC Calculados y Estimación de Pasadas</span>
@@ -1767,6 +1843,20 @@
 
         var serieSeleccionadaActual = "DGC";
 
+        /* FUNCIONALIDAD DE COLAPSAR Y EXPANDIR MENÚ LATERAL */
+        function toggleSidebar() {
+            document.body.classList.toggle("sidebar-collapsed");
+            const icon = document.getElementById("toggleIcon");
+            const isCollapsed = document.body.classList.contains("sidebar-collapsed");
+            
+            if (icon) {
+                icon.className = isCollapsed ? "bi bi-chevron-right" : "bi bi-chevron-left me-2";
+            }
+
+            // Guardar preferencia del usuario en LocalStorage
+            localStorage.setItem("ahnsacut_sidebar_collapsed", isCollapsed ? "true" : "false");
+        }
+
         function getValSeguro(id) {
             var el = document.getElementById(id);
             return (el && el.value !== undefined && el.value !== null) ? el.value.toString().trim() : "";
@@ -2430,8 +2520,16 @@
             }
         }
 
-        // LISTENERS DE TECLADO
+        // CARGA INICIAL DE CONFIGURACIONES
         document.addEventListener("DOMContentLoaded", function() {
+            // Recuperar preferencia de Sidebar colapsado
+            const sidebarGuardado = localStorage.getItem("ahnsacut_sidebar_collapsed");
+            if (sidebarGuardado === "true") {
+                document.body.classList.add("sidebar-collapsed");
+                const icon = document.getElementById("toggleIcon");
+                if (icon) icon.className = "bi bi-chevron-right";
+            }
+
             var camposBarrenado = [
                 "material_barrenado",
                 "d_barrenado",
