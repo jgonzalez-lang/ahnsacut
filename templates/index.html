@@ -312,6 +312,99 @@
         .tooltip-iso-s { border-color: var(--iso-s) !important; }
         .tooltip-iso-h { border-color: var(--iso-h) !important; }
 
+        /* ESTILO PARA CELDAS CON OPCIONES FLOTANTES (HOVER SELECTION) */
+        .hover-select-container {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .hover-select-display {
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--brand-blue);
+            min-height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+        }
+
+        .hover-select-container:hover .hover-select-display {
+            border-color: var(--brand-blue);
+            box-shadow: 0 2px 8px rgba(13, 71, 161, 0.15);
+        }
+
+        .hover-select-dropdown {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            min-width: 220px;
+            max-height: 260px;
+            overflow-y: auto;
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            z-index: 1050;
+            padding: 4px 0;
+            transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+            transform: translateY(8px);
+        }
+
+        .hover-select-container:hover .hover-select-dropdown {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(2px);
+        }
+
+        .hover-select-dropdown::-webkit-scrollbar {
+            width: 4px;
+        }
+        .hover-select-dropdown::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+
+        .hover-group-label {
+            padding: 6px 12px 2px 12px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: #38bdf8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .hover-select-item {
+            padding: 7px 12px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .hover-select-item:hover {
+            background-color: #1e293b;
+            color: #38bdf8;
+        }
+
+        .hover-select-item.selected {
+            color: #ffffff;
+            font-weight: 800;
+            background-color: rgba(37, 99, 235, 0.2);
+        }
+
         .info-box {
             background-color: #f8fafc;
             border: 1px solid var(--border-color);
@@ -370,7 +463,6 @@
             margin-bottom: 2px;
         }
 
-        /* TARJETAS TÉCNICAS OSCURAS DE PARÁMETROS CNC */
         .cnc-card {
             background-color: var(--dark-card-bg);
             border: 1px solid #1e293b;
@@ -1266,14 +1358,31 @@
                                 </div>
                                 <div class="col-6">
                                     <label class="form-label small text-muted fw-bold mb-1">Operación</label>
-                                    <select name="operacion" id="operacion" class="form-select form-select-sm" onchange="actualizarValoresEnVivo()">
-                                        <option {% if operacion_sel == 'Desbaste' %}selected{% endif %}>Desbaste</option>
-                                        <option {% if operacion_sel == 'Desbaste / Exterior' %}selected{% endif %}>Desbaste / Exterior</option>
-                                        <option {% if operacion_sel == 'Desbaste Pesado' %}selected{% endif %}>Desbaste Pesado</option>
-                                        <option {% if operacion_sel == 'Exterior / Acabado' %}selected{% endif %}>Exterior / Acabado</option>
-                                        <option {% if operacion_sel == 'Exterior' %}selected{% endif %}>Exterior</option>
-                                        <option {% if operacion_sel == 'Acabado' %}selected{% endif %}>Acabado</option>
+                                    
+                                    <!-- SELECTOR CON OPCIONES EN MENÚ FLOTANTE AL PASAR EL MOUSE -->
+                                    <div class="hover-select-container">
+                                        <div class="hover-select-display" id="display_operacion">
+                                            <span>{% if operacion_sel %}{{ operacion_sel }}{% else %}Desbaste{% endif %}</span>
+                                            <i class="bi bi-chevron-down ms-1 text-muted" style="font-size: 0.75rem;"></i>
+                                        </div>
+                                        <div class="hover-select-dropdown">
+                                            <div class="hover-select-item" onclick="seleccionarOpcionHover('operacion', 'Desbaste', 'display_operacion', this)">Desbaste</div>
+                                            <div class="hover-select-item" onclick="seleccionarOpcionHover('operacion', 'Desbaste / Exterior', 'display_operacion', this)">Desbaste / Exterior</div>
+                                            <div class="hover-select-item" onclick="seleccionarOpcionHover('operacion', 'Desbaste Pesado', 'display_operacion', this)">Desbaste Pesado</div>
+                                            <div class="hover-select-item" onclick="seleccionarOpcionHover('operacion', 'Exterior / Acabado', 'display_operacion', this)">Exterior / Acabado</div>
+                                            <div class="hover-select-item" onclick="seleccionarOpcionHover('operacion', 'Exterior', 'display_operacion', this)">Exterior</div>
+                                            <div class="hover-select-item" onclick="seleccionarOpcionHover('operacion', 'Acabado', 'display_operacion', this)">Acabado</div>
+                                        </div>
+                                    </div>
+                                    <select name="operacion" id="operacion" style="display: none;" onchange="actualizarValoresEnVivo()">
+                                        <option value="Desbaste" {% if operacion_sel == 'Desbaste' %}selected{% endif %}>Desbaste</option>
+                                        <option value="Desbaste / Exterior" {% if operacion_sel == 'Desbaste / Exterior' %}selected{% endif %}>Desbaste / Exterior</option>
+                                        <option value="Desbaste Pesado" {% if operacion_sel == 'Desbaste Pesado' %}selected{% endif %}>Desbaste Pesado</option>
+                                        <option value="Exterior / Acabado" {% if operacion_sel == 'Exterior / Acabado' %}selected{% endif %}>Exterior / Acabado</option>
+                                        <option value="Exterior" {% if operacion_sel == 'Exterior' %}selected{% endif %}>Exterior</option>
+                                        <option value="Acabado" {% if operacion_sel == 'Acabado' %}selected{% endif %}>Acabado</option>
                                     </select>
+
                                 </div>
                             </div>
 
@@ -1634,7 +1743,6 @@
             <div class="ui-card mb-4">
                 <div class="ui-card-title d-flex align-items-center justify-content-between">
                     <span><i class="bi bi-calculator me-2 text-primary"></i>Calculadora de Parámetros de Fresado</span>
-                    <!-- RENDER SVG DINÁMICO DE HERRAMIENTA DE FRESADO -->
                     <div id="iconFresadoDinamico">
                         <svg width="30" height="30" viewBox="0 0 100 100" title="Fresa de Planear CNC">
                             <circle cx="50" cy="50" r="40" fill="#1e293b" stroke="#0f172a" stroke-width="4"/>
@@ -1655,24 +1763,44 @@
                     
                     <div class="col-md-1">
                         <label class="form-label small text-muted fw-bold mb-1">Grupo ISO</label>
-                        <div id="boxIsoFresado" class="p-1 rounded text-center fw-bold text-white bg-secondary" style="height: 31px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem;">
+                        <div id="boxIsoFresado" class="p-1 rounded text-center fw-bold text-white bg-secondary" style="height: 38px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem;">
                             <span id="txtIsoFresado">-</span>
                         </div>
                     </div>
 
                     <div class="col-md-2" id="contenedor_tipo_inserto_dgc">
                         <label class="form-label small text-muted fw-bold mb-1">Tipo Inserto DGC</label>
-                        <select id="tipo_inserto_dgc" class="form-select form-select-sm" onchange="alCambiarMaterialOFresa()">
-                            <option value="SNMT 13T6">SNMT 13T6 (8 Filos - 45°)</option>
+                        <div class="hover-select-container">
+                            <div class="hover-select-display" id="display_tipo_inserto_dgc">
+                                <span>SNMT 13T6 (8 Filos - 45°)</span>
+                                <i class="bi bi-chevron-down ms-1 text-muted" style="font-size: 0.75rem;"></i>
+                            </div>
+                            <div class="hover-select-dropdown">
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('tipo_inserto_dgc', 'SNMT 13T6', 'display_tipo_inserto_dgc', this)">SNMT 13T6 (8 Filos - 45°)</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('tipo_inserto_dgc', 'ONMT 05T6', 'display_tipo_inserto_dgc', this)">ONMT 05T6 (16 Filos - 45°)</div>
+                            </div>
+                        </div>
+                        <select id="tipo_inserto_dgc" style="display: none;" onchange="alCambiarMaterialOFresa()">
+                            <option value="SNMT 13T6" selected>SNMT 13T6 (8 Filos - 45°)</option>
                             <option value="ONMT 05T6">ONMT 05T6 (16 Filos - 45°)</option>
                         </select>
                     </div>
 
-                    <!-- CAMPO DINÁMICO DE TIPO DE ENDMILL (SÓLO VISIBLE EN PESTAÑA ENDMILL) -->
+                    <!-- CAMPO DINÁMICO DE TIPO DE ENDMILL CON MENÚ FLOTANTE AL PASAR EL MOUSE -->
                     <div class="col-md-2" id="contenedor_geometria_endmill" style="display: none;">
                         <label class="form-label small text-muted fw-bold mb-1 text-primary">Geometría Cortador</label>
-                        <select id="tipo_geometria_endmill" class="form-select form-select-sm fw-bold border-primary" onchange="actualizarFresadoEnVivo()">
-                            <option value="plano">Endmill Plano (Flat Nose)</option>
+                        <div class="hover-select-container">
+                            <div class="hover-select-display" id="display_geometria_endmill">
+                                <span>Endmill Plano (Flat)</span>
+                                <i class="bi bi-chevron-down ms-1 text-muted" style="font-size: 0.75rem;"></i>
+                            </div>
+                            <div class="hover-select-dropdown">
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('tipo_geometria_endmill', 'plano', 'display_geometria_endmill', this)">Endmill Plano (Flat)</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('tipo_geometria_endmill', 'bola', 'display_geometria_endmill', this)">Endmill de Bola (Ball)</div>
+                            </div>
+                        </div>
+                        <select id="tipo_geometria_endmill" style="display: none;" onchange="actualizarFresadoEnVivo()">
+                            <option value="plano" selected>Endmill Plano (Flat Nose)</option>
                             <option value="bola">Endmill de Bola (Ball Nose)</option>
                         </select>
                     </div>
@@ -2154,15 +2282,82 @@
 
                     <div class="col-md-2">
                         <label class="form-label small text-muted fw-bold mb-1">Método Roscado</label>
-                        <select id="metodo_roscado" class="form-select form-select-sm fw-bold text-primary" onchange="alCambiarMetodoRoscado()">
-                            <option value="machuelo">Machuelo Tradicional</option>
+                        <div class="hover-select-container">
+                            <div class="hover-select-display" id="display_metodo_roscado">
+                                <span>Machuelo Tradicional</span>
+                                <i class="bi bi-chevron-down ms-1 text-muted" style="font-size: 0.75rem;"></i>
+                            </div>
+                            <div class="hover-select-dropdown">
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('metodo_roscado', 'machuelo', 'display_metodo_roscado', this)">Machuelo Tradicional</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('metodo_roscado', 'fresa', 'display_metodo_roscado', this)">Fresa de Rosca (Thread Mill)</div>
+                            </div>
+                        </div>
+                        <select id="metodo_roscado" style="display: none;" onchange="alCambiarMetodoRoscado()">
+                            <option value="machuelo" selected>Machuelo Tradicional</option>
                             <option value="fresa">Fresa de Rosca (Thread Mill)</option>
                         </select>
                     </div>
 
+                    <!-- ESTÁNDAR DE ROSCA NORMALIZADO EN MENÚ FLOTANTE AL PASAR EL MOUSE (HOVER SELECTION) -->
                     <div class="col-md-4">
                         <label class="form-label small text-muted fw-bold mb-1">Estándar de Rosca Normalizado</label>
-                        <select id="select_estandar_rosca" class="form-select form-select-sm fw-bold text-dark" onchange="seleccionarRoscaEstandar()">
+                        <div class="hover-select-container">
+                            <div class="hover-select-display" id="display_estandar_rosca">
+                                <span>-- Personalizado / Manual --</span>
+                                <i class="bi bi-chevron-down ms-1 text-muted" style="font-size: 0.75rem;"></i>
+                            </div>
+                            <div class="hover-select-dropdown">
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '', 'display_estandar_rosca', this)">-- Personalizado / Manual --</div>
+                                
+                                <div class="hover-group-label">Métrica Estándar (M)</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '6,1.0', 'display_estandar_rosca', this)">M6 × 1.0</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '8,1.25', 'display_estandar_rosca', this)">M8 × 1.25</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '10,1.5', 'display_estandar_rosca', this)">M10 × 1.5</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '12,1.75', 'display_estandar_rosca', this)">M12 × 1.75</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '16,2.0', 'display_estandar_rosca', this)">M16 × 2.0</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '20,2.5', 'display_estandar_rosca', this)">M20 × 2.5</div>
+
+                                <div class="hover-group-label">Métrica Fina (MF)</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '8,1.0', 'display_estandar_rosca', this)">M8 × 1.0</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '10,1.25', 'display_estandar_rosca', this)">M10 × 1.25</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '12,1.25', 'display_estandar_rosca', this)">M12 × 1.25</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '12,1.5', 'display_estandar_rosca', this)">M12 × 1.5</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '14,1.5', 'display_estandar_rosca', this)">M14 × 1.5</div>
+
+                                <div class="hover-group-label">Americana Coarse (UNC)</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '6.35,1.27', 'display_estandar_rosca', this)">1/4" - 20 UNC</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '7.938,1.411', 'display_estandar_rosca', this)">5/16" - 18 UNC</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '9.525,1.588', 'display_estandar_rosca', this)">3/8" - 16 UNC</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '12.7,1.954', 'display_estandar_rosca', this)">1/2" - 13 UNC</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '15.875,2.309', 'display_estandar_rosca', this)">5/8" - 11 UNC</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '19.05,2.54', 'display_estandar_rosca', this)">3/4" - 10 UNC</div>
+
+                                <div class="hover-group-label">Americana Fine (UNF)</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '6.35,0.907', 'display_estandar_rosca', this)">1/4" - 28 UNF</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '7.938,1.058', 'display_estandar_rosca', this)">5/16" - 24 UNF</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '9.525,1.058', 'display_estandar_rosca', this)">3/8" - 24 UNF</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '12.7,1.27', 'display_estandar_rosca', this)">1/2" - 20 UNF</div>
+
+                                <div class="hover-group-label">Tubería Sellada (NPT)</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '10.29,0.941', 'display_estandar_rosca', this)">1/8" - 27 NPT</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '13.72,1.411', 'display_estandar_rosca', this)">1/4" - 18 NPT</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '17.15,1.411', 'display_estandar_rosca', this)">3/8" - 18 NPT</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '21.34,1.814', 'display_estandar_rosca', this)">1/2" - 14 NPT</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '26.67,1.814', 'display_estandar_rosca', this)">3/4" - 14 NPT</div>
+
+                                <div class="hover-group-label">Tubería Paralela (BSPP / G)</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '9.73,0.907', 'display_estandar_rosca', this)">G 1/8"</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '13.16,1.337', 'display_estandar_rosca', this)">G 1/4"</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '16.66,1.337', 'display_estandar_rosca', this)">G 3/8"</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '20.96,1.814', 'display_estandar_rosca', this)">G 1/2"</div>
+
+                                <div class="hover-group-label">Aeroespacial (UNJ)</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '6.35,0.907', 'display_estandar_rosca', this)">1/4" - 28 UNJ</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '9.525,1.058', 'display_estandar_rosca', this)">3/8" - 24 UNJ</div>
+                                <div class="hover-select-item" onclick="seleccionarOpcionHover('select_estandar_rosca', '12.7,1.27', 'display_estandar_rosca', this)">1/2" - 20 UNJ</div>
+                            </div>
+                        </div>
+                        <select id="select_estandar_rosca" style="display: none;" onchange="seleccionarRoscaEstandar()">
                             <option value="">-- Personalizado / Manual --</option>
                             <optgroup label="Métrica Estándar (M)">
                                 <option value="6,1.0">M6 × 1.0</option>
@@ -2358,6 +2553,25 @@
         };
 
         var serieSeleccionadaActual = "DGC";
+
+        /* FUNCIÓN DE SELECCIÓN FLOTANTE (HOVER DROPDOWN SYNCHRONIZER) */
+        function seleccionarOpcionHover(selectId, valor, displayId, itemElem) {
+            var selectObj = document.getElementById(selectId);
+            var displayObj = document.getElementById(displayId);
+            if (selectObj && displayObj) {
+                selectObj.value = valor;
+                displayObj.querySelector("span").textContent = itemElem.textContent;
+
+                // Marcar clase activa en menú flotante
+                var items = itemElem.parentElement.querySelectorAll(".hover-select-item");
+                items.forEach(el => el.classList.remove("selected"));
+                itemElem.classList.add("selected");
+
+                // Disparar evento change en el select oculto para activar la lógica
+                var event = new Event('change', { bubbles: true });
+                selectObj.dispatchEvent(event);
+            }
+        }
 
         /* REGISTRO DE SERVICE WORKER PWA */
         if ('serviceWorker' in navigator) {
@@ -2736,7 +2950,7 @@
 
                 var recData = RECOMENDACIONES_ENDMILL[iso] || RECOMENDACIONES_ENDMILL['P'];
 
-                // Sincronizar campo Filos z con las flautas sugeridas si no fue editado activamente por el usuario
+                // Sincronizar campo Filos z con las flautas sugeridas si el campo está vacío o no está enfocado
                 if (zInputElem && (document.activeElement !== zInputElem || zValRaw === "")) {
                     zInputElem.value = recData.z;
                 }
