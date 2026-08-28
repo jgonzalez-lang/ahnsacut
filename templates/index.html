@@ -6,21 +6,27 @@
     <title>AhnsaCut CNC</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    
+    <!-- FUENTES INDUSTRIALES DE ALTA PRECISIÓN -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            /* PALETA CORPORATIVA INDUSTRIAL B2B */
-            --bg-body: #f8fafc;
+            /* PALETA CORPORATIVA INDUSTRIAL DARK TECH (SCADA/CNC) */
+            --bg-body: #0b0f19;
             --sidebar-bg: #0f172a;
             --sidebar-border: #1e293b;
-            --brand-blue: #0d47a1;
-            --brand-blue-hover: #1565c0;
+            --brand-blue: #2563eb;
+            --brand-blue-hover: #1d4ed8;
             
-            --card-bg: #ffffff;
-            --dark-card-bg: #0f172a;
+            --card-bg: #161f30;
+            --dark-card-bg: #111827;
             
-            --text-title: #0f172a;
-            --text-sub: #64748b;
-            --border-color: #e2e8f0;
+            --text-title: #f8fafc;
+            --text-sub: #94a3b8;
+            --border-color: #2a374e;
 
             /* COLORES NORMATIVA ISO */
             --iso-p: #2563eb;
@@ -40,11 +46,61 @@
 
         body {
             background-color: var(--bg-body);
-            font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
             margin: 0;
-            color: #1e293b;
+            color: #f8fafc;
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
+        }
+
+        /* CORRECCIÓN VISIBILIDAD DE ETIQUETAS, PLACEHOLDERS Y CAMPOS DE TEXTO */
+        label, .form-label {
+            color: #94a3b8 !important;
+            font-weight: 600 !important;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: #94a3b8 !important;
+            opacity: 0.8 !important;
+        }
+
+        .form-control-sm, .form-select-sm {
+            background-color: #1a2438 !important;
+            color: #38bdf8 !important;
+            border: 1px solid var(--border-color) !important;
+        }
+
+        .form-control-sm:focus, .form-select-sm:focus {
+            background-color: #1f2d47 !important;
+            color: #ffffff !important;
+            border-color: #00e5ff !important;
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.25) !important;
+        }
+
+        /* ESTILOS DE BOTONES CHIPS DE FILTRO ISO EN DASHBOARD (100% VISIBILIDAD HD) */
+        .btn-iso-chip-m {
+            color: #facc15 !important;
+            border-color: #facc15 !important;
+            background-color: transparent;
+        }
+        .btn-iso-chip-m:hover, .btn-iso-chip-m.active {
+            background-color: #facc15 !important;
+            color: #000000 !important;
+        }
+
+        .btn-iso-chip-s {
+            color: #f87171 !important;
+            border-color: #ef4444 !important;
+            background-color: transparent;
+        }
+        .btn-iso-chip-s:hover, .btn-iso-chip-s.active {
+            background-color: #ef4444 !important;
+            color: #ffffff !important;
+        }
+
+        /* TIPOGRAFÍA MONOSPACIADA PARA VALORES TÉCNICOS */
+        .cnc-value, .cnc-subvalue, .rango-box-value, .dash-metric-value, .font-mono {
+            font-family: 'JetBrains Mono', monospace !important;
         }
 
         /* SIDEBAR LATERAL DINÁMICO (ESCRITORIO / WEB) */
@@ -213,7 +269,7 @@
             background-color: var(--card-bg);
             border-radius: 8px;
             padding: 16px 18px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
             border: 1px solid var(--border-color);
             height: 100%;
         }
@@ -226,7 +282,7 @@
         }
 
         .cat-item-card {
-            background-color: #ffffff;
+            background-color: #1a2438;
             border: 1px solid var(--border-color);
             border-radius: 6px;
             padding: 10px 12px;
@@ -235,9 +291,9 @@
         }
 
         .cat-item-card:hover {
-            border-color: var(--brand-blue);
+            border-color: #00e5ff;
             transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 12px rgba(0,229,255,0.15);
         }
 
         .iso-popup-wrapper {
@@ -250,7 +306,7 @@
             border-radius: 6px;
             padding: 10px;
             text-align: center;
-            background-color: #f8fafc;
+            background-color: #1a2438;
             border: 1px solid var(--border-color);
             transition: all 0.2s ease;
             height: 100%;
@@ -259,9 +315,9 @@
 
         .iso-popup-wrapper:hover .iso-popup-card,
         .iso-popup-wrapper:active .iso-popup-card {
-            border-color: var(--brand-blue);
-            background-color: #ffffff;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-color: #00e5ff;
+            background-color: #1f2d47;
+            box-shadow: 0 4px 12px rgba(0,229,255,0.15);
         }
 
         .iso-tooltip-box {
@@ -280,7 +336,7 @@
             left: 50%;
             transform: translateX(-50%) translateY(10px);
             transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
             pointer-events: none;
             font-size: 0.78rem;
             line-height: 1.4;
@@ -319,13 +375,13 @@
         }
 
         .hover-select-display {
-            background-color: #ffffff;
+            background-color: #1a2438;
             border: 1px solid var(--border-color);
             border-radius: 6px;
             padding: 6px 10px;
             font-size: 0.85rem;
             font-weight: 700;
-            color: var(--brand-blue);
+            color: #00e5ff;
             min-height: 38px;
             display: flex;
             align-items: center;
@@ -334,8 +390,8 @@
         }
 
         .hover-select-container:hover .hover-select-display {
-            border-color: var(--brand-blue);
-            box-shadow: 0 2px 8px rgba(13, 71, 161, 0.15);
+            border-color: #00e5ff;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
         }
 
         .hover-select-dropdown {
@@ -351,7 +407,7 @@
             background-color: #0f172a;
             border: 1px solid #334155;
             border-radius: 6px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
             z-index: 1050;
             padding: 4px 0;
             transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
@@ -376,7 +432,7 @@
             padding: 6px 12px 2px 12px;
             font-size: 0.7rem;
             font-weight: 800;
-            color: #38bdf8;
+            color: #00e5ff;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -396,7 +452,7 @@
 
         .hover-select-item:hover {
             background-color: #1e293b;
-            color: #38bdf8;
+            color: #00e5ff;
         }
 
         .hover-select-item.selected {
@@ -406,7 +462,7 @@
         }
 
         .info-box {
-            background-color: #f8fafc;
+            background-color: #1a2438;
             border: 1px solid var(--border-color);
             border-radius: 6px;
             padding: 6px 10px;
@@ -415,7 +471,7 @@
         .info-box-label {
             font-size: 0.68rem;
             font-weight: 700;
-            color: #64748b;
+            color: #94a3b8;
             margin-bottom: 1px;
             display: block;
             text-transform: uppercase;
@@ -425,12 +481,12 @@
         .info-box-value {
             font-size: 0.88rem;
             font-weight: 700;
-            color: #0f172a;
+            color: #f8fafc;
             word-wrap: break-word;
         }
 
         .highlight-blue {
-            background-color: #f0f5ff;
+            background-color: rgba(37, 99, 235, 0.1);
             border-left: 4px solid var(--brand-blue);
             border-radius: 6px;
             padding: 10px 14px;
@@ -438,7 +494,7 @@
         }
 
         .highlight-blue-title {
-            color: var(--brand-blue);
+            color: #60a5fa;
             font-size: 0.72rem;
             font-weight: 800;
             text-transform: uppercase;
@@ -447,7 +503,7 @@
         }
 
         .highlight-gold {
-            background-color: #fffbf0;
+            background-color: rgba(245, 158, 11, 0.1);
             border-left: 4px solid #d97706;
             border-radius: 6px;
             padding: 10px 14px;
@@ -455,7 +511,7 @@
         }
 
         .highlight-gold-title {
-            color: #b45309;
+            color: #fbbf24;
             font-size: 0.72rem;
             font-weight: 800;
             text-transform: uppercase;
@@ -463,9 +519,10 @@
             margin-bottom: 2px;
         }
 
+        /* MARCO FIJO CIAN CUBRIENDO TODAS LAS CELDAS DE PARÁMETROS EN TODOS LOS MÓDULOS */
         .cnc-card {
             background-color: var(--dark-card-bg);
-            border: 1px solid #1e293b;
+            border: 1px solid #00e5ff !important;
             border-radius: 6px;
             padding: 10px 12px;
             text-align: center;
@@ -479,11 +536,22 @@
             box-sizing: border-box;
             word-wrap: break-word;
             overflow-wrap: break-word;
+            transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+            position: relative;
+            z-index: 1;
         }
 
         .cnc-card-pasadas {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            border: 1px solid #3b82f6;
+            border: 1px solid #00e5ff !important;
+        }
+
+        @media (hover: hover) {
+            .cnc-card:hover, .cnc-card-pasadas:hover {
+                transform: translateY(-3px);
+                z-index: 10;
+                box-shadow: 0 8px 20px rgba(0, 229, 255, 0.35), 0 0 12px rgba(0, 229, 255, 0.2);
+            }
         }
 
         .cnc-label {
@@ -492,25 +560,25 @@
             color: #94a3b8 !important;
             margin-bottom: 4px;
             text-transform: uppercase;
-            letter-spacing: 0.4px;
+            letter-spacing: 0.5px;
             line-height: 1.15;
             word-break: break-word;
         }
 
         .cnc-value {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 800;
-            color: #38bdf8 !important;
+            color: #00e5ff !important;
             margin-bottom: 2px;
-            letter-spacing: -0.2px;
+            letter-spacing: -0.5px;
             line-height: 1.2;
             word-break: break-word;
         }
 
         .cnc-subvalue {
-            font-size: 0.85rem;
+            font-size: 0.88rem;
             font-weight: 700;
-            color: #38bdf8 !important;
+            color: #00e5ff !important;
             margin-top: 2px;
             line-height: 1.25;
             word-break: break-word;
@@ -527,9 +595,9 @@
             display: inline-block;
             padding: 2px 6px;
             border-radius: 4px;
-            font-size: 0.68rem;
+            font-size: 0.65rem;
             font-weight: 800;
-            letter-spacing: 0.4px;
+            letter-spacing: 0.8px;
             text-transform: uppercase;
             white-space: normal;
         }
@@ -541,10 +609,13 @@
         .unit-vol { background-color: #475569; color: #ffffff; }
 
         .ui-card-rangos {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            background: linear-gradient(135deg, #161f30 0%, #0f172a 100%);
             border-radius: 8px;
             padding: 16px 18px;
             border-left: 4px solid #f59e0b;
+            border-top: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
             color: #ffffff;
         }
 
@@ -557,7 +628,7 @@
         }
 
         .rango-box {
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 6px;
             padding: 8px 12px;
@@ -575,7 +646,7 @@
         .rango-box-value {
             font-size: 0.9rem;
             font-weight: 800;
-            color: #38bdf8;
+            color: #00e5ff;
             word-break: break-word;
         }
 
@@ -596,7 +667,7 @@
         }
 
         .btn-clear {
-            background-color: #64748b;
+            background-color: #475569;
             color: #ffffff;
             font-weight: 700;
             font-size: 0.85rem;
@@ -606,20 +677,12 @@
             min-height: 44px;
         }
         .btn-clear:hover {
-            background-color: #475569;
+            background-color: #334155;
             color: #ffffff;
         }
 
-        .form-select-sm, .form-control-sm {
-            font-size: 0.85rem;
-            padding: 6px 10px;
-            border-radius: 6px;
-            border-color: var(--border-color);
-            min-height: 38px;
-        }
-
         .dash-metric-card {
-            background-color: #ffffff;
+            background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 8px;
             padding: 14px 18px;
@@ -631,7 +694,7 @@
         .dash-metric-value {
             font-size: 1.6rem;
             font-weight: 800;
-            color: #0f172a;
+            color: #f8fafc;
             line-height: 1;
         }
 
@@ -651,7 +714,7 @@
             height: 12px;
             border-radius: 6px;
             overflow: hidden;
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
         }
         .iso-bar-segment {
             flex: 1;
@@ -662,19 +725,45 @@
             opacity: 0.85;
         }
 
-        .badge-iso-p, .iso-theme-P { background-color: var(--iso-p) !important; color: #ffffff !important; }
-        .badge-iso-m, .iso-theme-M { background-color: var(--iso-m) !important; color: #000000 !important; font-weight: 800; }
-        .badge-iso-k, .iso-theme-K { background-color: var(--iso-k) !important; color: #ffffff !important; }
-        .badge-iso-n, .iso-theme-N { background-color: var(--iso-n) !important; color: #ffffff !important; }
-        .badge-iso-s, .iso-theme-S { background-color: var(--iso-s) !important; color: #ffffff !important; }
-        .badge-iso-h, .iso-theme-H { background-color: var(--iso-h) !important; color: #ffffff !important; }
+        /* ALTO CONTRASTE NORMATIVA GRUPOS ISO FORZADO PARA IMÁGENES M Y S Y BOTONES DE FILTRO */
+        .badge-iso-p, .iso-theme-P { 
+            background-color: var(--iso-p) !important; 
+            color: #ffffff !important; 
+        }
+
+        .badge-iso-m, span.badge-iso-m, .iso-theme-M { 
+            background-color: #eab308 !important; 
+            color: #000000 !important; 
+            font-weight: 800 !important; 
+        }
+
+        .badge-iso-k, .iso-theme-K { 
+            background-color: var(--iso-k) !important; 
+            color: #ffffff !important; 
+        }
+
+        .badge-iso-n, .iso-theme-N { 
+            background-color: var(--iso-n) !important; 
+            color: #ffffff !important; 
+        }
+
+        .badge-iso-s, span.badge-iso-s, .iso-theme-S { 
+            background-color: #991b1b !important; 
+            color: #ffffff !important; 
+            font-weight: 800 !important; 
+        }
+
+        .badge-iso-h, .iso-theme-H { 
+            background-color: var(--iso-h) !important; 
+            color: #ffffff !important; 
+        }
 
         .nav-pills .nav-link {
             font-weight: 700;
-            color: #475569;
+            color: #94a3b8;
             border-radius: 6px;
             padding: 8px 18px;
-            background-color: #ffffff;
+            background-color: #1a2438;
             border: 1px solid var(--border-color);
             min-height: 40px;
         }
@@ -944,7 +1033,7 @@
                         <div class="w-100 me-2">
                             <div class="d-flex justify-content-between align-items-center mb-1">
                                 <span class="info-box-label">Grupos ISO</span>
-                                <span class="fw-extrabold fs-6" style="color: #0f172a; font-weight: 800;">6 Familias</span>
+                                <span class="fw-extrabold fs-6" style="color: #f8fafc; font-weight: 800;">6 Familias</span>
                             </div>
                             <!-- BARRA HORIZONTAL CON COLORES NORMATIVOS ISO -->
                             <div class="iso-bar-container" title="Grupos ISO: P (Azul), M (Amarillo), K (Rojo), N (Verde), S (Guinda), H (Gris)">
@@ -985,14 +1074,14 @@
                         <div class="ui-card-title d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
                             <span><i class="bi bi-box-seam me-2 text-primary"></i>Catálogo de Geometrías de Inserto Disponibles por Grupo ISO</span>
                             
-                            <!-- Chips de Filtro por Grupo ISO -->
+                            <!-- Chips de Filtro por Grupo ISO con Estilos Corregidos M y S -->
                             <div class="d-flex gap-1 flex-wrap">
                                 <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 fw-bold active" onclick="filtrarCatalogoIso('TODOS', this)" style="font-size: 0.72rem; min-height: 30px;">TODOS</button>
                                 <button type="button" class="btn btn-sm btn-outline-primary py-0 px-2 fw-bold" onclick="filtrarCatalogoIso('P', this)" style="font-size: 0.72rem; min-height: 30px;">ISO P</button>
-                                <button type="button" class="btn btn-sm btn-outline-warning text-dark py-0 px-2 fw-bold" onclick="filtrarCatalogoIso('M', this)" style="font-size: 0.72rem; min-height: 30px;">ISO M</button>
+                                <button type="button" class="btn btn-sm btn-iso-chip-m py-0 px-2 fw-bold" onclick="filtrarCatalogoIso('M', this)" style="font-size: 0.72rem; min-height: 30px;">ISO M</button>
                                 <button type="button" class="btn btn-sm btn-outline-danger py-0 px-2 fw-bold" onclick="filtrarCatalogoIso('K', this)" style="font-size: 0.72rem; min-height: 30px;">ISO K</button>
                                 <button type="button" class="btn btn-sm btn-outline-success py-0 px-2 fw-bold" onclick="filtrarCatalogoIso('N', this)" style="font-size: 0.72rem; min-height: 30px;">ISO N</button>
-                                <button type="button" class="btn btn-sm btn-outline-dark py-0 px-2 fw-bold" onclick="filtrarCatalogoIso('S', this)" style="font-size: 0.72rem; min-height: 30px;">ISO S</button>
+                                <button type="button" class="btn btn-sm btn-iso-chip-s py-0 px-2 fw-bold" onclick="filtrarCatalogoIso('S', this)" style="font-size: 0.72rem; min-height: 30px;">ISO S</button>
                                 <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 fw-bold" onclick="filtrarCatalogoIso('H', this)" style="font-size: 0.72rem; min-height: 30px;">ISO H</button>
                             </div>
                         </div>
@@ -1002,7 +1091,7 @@
                             <div class="col-xl-3 col-lg-4 col-sm-6 item-iso-card" data-iso="P" onclick="seleccionarInsertoDirecto('CNMG 120408')" style="cursor: pointer;">
                                 <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
-                                        <div class="fw-bold text-dark small text-truncate">CNMG 120408</div>
+                                        <div class="fw-bold text-light small text-truncate">CNMG 120408</div>
                                         <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Desbaste / Exterior</small>
                                     </div>
                                     <span class="badge badge-iso-p px-2 py-1 fs-7 flex-shrink-0">ISO P</span>
@@ -1012,7 +1101,7 @@
                             <div class="col-xl-3 col-lg-4 col-sm-6 item-iso-card" data-iso="P" onclick="seleccionarInsertoDirecto('DNMG 150408')" style="cursor: pointer;">
                                 <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
-                                        <div class="fw-bold text-dark small text-truncate">DNMG 150408</div>
+                                        <div class="fw-bold text-light small text-truncate">DNMG 150408</div>
                                         <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Exterior 55°</small>
                                     </div>
                                     <span class="badge badge-iso-p px-2 py-1 fs-7 flex-shrink-0">ISO P</span>
@@ -1022,7 +1111,7 @@
                             <div class="col-xl-3 col-lg-4 col-sm-6 item-iso-card" data-iso="P" onclick="seleccionarInsertoDirecto('WNMG 080408')" style="cursor: pointer;">
                                 <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
-                                        <div class="fw-bold text-dark small text-truncate">WNMG 080408</div>
+                                        <div class="fw-bold text-light small text-truncate">WNMG 080408</div>
                                         <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Trígono / Exterior</small>
                                     </div>
                                     <span class="badge badge-iso-p px-2 py-1 fs-7 flex-shrink-0">ISO P</span>
@@ -1032,7 +1121,7 @@
                             <div class="col-xl-3 col-lg-4 col-sm-6 item-iso-card" data-iso="P" onclick="seleccionarInsertoDirecto('TNMG 160408')" style="cursor: pointer;">
                                 <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
-                                        <div class="fw-bold text-dark small text-truncate">TNMG 160408</div>
+                                        <div class="fw-bold text-light small text-truncate">TNMG 160408</div>
                                         <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Triangular Desbaste</small>
                                     </div>
                                     <span class="badge badge-iso-p px-2 py-1 fs-7 flex-shrink-0">ISO P</span>
@@ -1042,7 +1131,7 @@
                             <div class="col-xl-3 col-lg-4 col-sm-6 item-iso-card" data-iso="M" onclick="seleccionarInsertoDirecto('DCMT 070204')" style="cursor: pointer;">
                                 <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
-                                        <div class="fw-bold text-dark small text-truncate">DCMT 070204</div>
+                                        <div class="fw-bold text-light small text-truncate">DCMT 070204</div>
                                         <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Acabado Fino</small>
                                     </div>
                                     <span class="badge badge-iso-m px-2 py-1 fs-7 flex-shrink-0">ISO M</span>
@@ -1052,7 +1141,7 @@
                             <div class="col-xl-3 col-lg-4 col-sm-6 item-iso-card" data-iso="M" onclick="seleccionarInsertoDirecto('TCMT 110204')" style="cursor: pointer;">
                                 <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
-                                        <div class="fw-bold text-dark small text-truncate">TCMT 110204</div>
+                                        <div class="fw-bold text-light small text-truncate">TCMT 110204</div>
                                         <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Triangular Acabado</small>
                                     </div>
                                     <span class="badge badge-iso-m px-2 py-1 fs-7 flex-shrink-0">ISO M</span>
@@ -1062,7 +1151,7 @@
                             <div class="col-xl-3 col-lg-4 col-sm-6 item-iso-card" data-iso="M" onclick="seleccionarInsertoDirecto('RCMT 1003MO')" style="cursor: pointer;">
                                 <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
-                                        <div class="fw-bold text-dark small text-truncate">RCMT 1003MO</div>
+                                        <div class="fw-bold text-light small text-truncate">RCMT 1003MO</div>
                                         <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Redondo Perfilado</small>
                                     </div>
                                     <span class="badge badge-iso-m px-2 py-1 fs-7 flex-shrink-0">ISO M</span>
@@ -1072,7 +1161,7 @@
                             <div class="col-xl-3 col-lg-4 col-sm-6 item-iso-card" data-iso="K" onclick="seleccionarInsertoDirecto('SNMG 120408')" style="cursor: pointer;">
                                 <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
-                                        <div class="fw-bold text-dark small text-truncate">SNMG 120408</div>
+                                        <div class="fw-bold text-light small text-truncate">SNMG 120408</div>
                                         <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Cuadrado Pesado</small>
                                     </div>
                                     <span class="badge badge-iso-k px-2 py-1 fs-7 flex-shrink-0">ISO K</span>
@@ -1082,7 +1171,7 @@
                             <div class="col-xl-3 col-lg-4 col-sm-6 item-iso-card" data-iso="N" onclick="seleccionarInsertoDirecto('CCMT 060204')" style="cursor: pointer;">
                                 <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
-                                        <div class="fw-bold text-dark small text-truncate">CCMT 060204</div>
+                                        <div class="fw-bold text-light small text-truncate">CCMT 060204</div>
                                         <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Rombo 80° Acabado</small>
                                     </div>
                                     <span class="badge badge-iso-n px-2 py-1 fs-7 flex-shrink-0">ISO N</span>
@@ -1092,7 +1181,7 @@
                             <div class="col-xl-3 col-lg-4 col-sm-6 item-iso-card" data-iso="S" onclick="seleccionarInsertoDirecto('RNMG 120400')" style="cursor: pointer;">
                                 <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
-                                        <div class="fw-bold text-dark small text-truncate">RNMG 120400</div>
+                                        <div class="fw-bold text-light small text-truncate">RNMG 120400</div>
                                         <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Redondo Desbaste</small>
                                     </div>
                                     <span class="badge badge-iso-s px-2 py-1 fs-7 flex-shrink-0">ISO S</span>
@@ -1102,7 +1191,7 @@
                             <div class="col-xl-3 col-lg-4 col-sm-6 item-iso-card" data-iso="H" onclick="seleccionarInsertoDirecto('VNMG 160404')" style="cursor: pointer;">
                                 <div class="cat-item-card d-flex align-items-center justify-content-between h-100">
                                     <div class="me-2 overflow-hidden">
-                                        <div class="fw-bold text-dark small text-truncate">VNMG 160404</div>
+                                        <div class="fw-bold text-light small text-truncate">VNMG 160404</div>
                                         <small class="text-muted text-truncate d-block" style="font-size: 0.72rem;">Copiado 35°</small>
                                     </div>
                                     <span class="badge badge-iso-h px-2 py-1 fs-7 flex-shrink-0">ISO H</span>
@@ -1121,7 +1210,7 @@
                         <div>
                             <div class="ui-card-title d-flex justify-content-between align-items-center mb-3">
                                 <span><i class="bi bi-diagram-3-fill me-2 text-primary"></i>Lista de Materiales por Grupo ISO</span>
-                                <span class="badge bg-dark">DIN / ISO 513</span>
+                                <span class="badge bg-dark border border-secondary">DIN / ISO 513</span>
                             </div>
                             <div class="row g-2">
                                 <!-- ISO P -->
@@ -1129,7 +1218,7 @@
                                     <div class="iso-popup-wrapper" tabindex="0">
                                         <div class="iso-popup-card">
                                             <span class="badge badge-iso-p fs-7 mb-1">ISO P</span>
-                                            <div class="fw-bold small text-dark">Aceros / Aleados</div>
+                                            <div class="fw-bold small text-light">Aceros / Aleados</div>
                                             <small class="text-primary d-block" style="font-size: 0.7rem;">Información <i class="bi bi-info-circle"></i></small>
                                         </div>
                                         <div class="iso-tooltip-box tooltip-iso-p">
@@ -1147,7 +1236,7 @@
                                     <div class="iso-popup-wrapper" tabindex="0">
                                         <div class="iso-popup-card">
                                             <span class="badge badge-iso-m fs-7 mb-1">ISO M</span>
-                                            <div class="fw-bold small text-dark">Inoxidables</div>
+                                            <div class="fw-bold small text-light">Inoxidables</div>
                                             <small class="text-warning-emphasis d-block" style="font-size: 0.7rem;">Información <i class="bi bi-info-circle"></i></small>
                                         </div>
                                         <div class="iso-tooltip-box tooltip-iso-m">
@@ -1165,7 +1254,7 @@
                                     <div class="iso-popup-wrapper" tabindex="0">
                                         <div class="iso-popup-card">
                                             <span class="badge badge-iso-k fs-7 mb-1">ISO K</span>
-                                            <div class="fw-bold small text-dark">Fundición Hierro</div>
+                                            <div class="fw-bold small text-light">Fundición Hierro</div>
                                             <small class="text-danger d-block" style="font-size: 0.7rem;">Información <i class="bi bi-info-circle"></i></small>
                                         </div>
                                         <div class="iso-tooltip-box tooltip-iso-k">
@@ -1182,7 +1271,7 @@
                                     <div class="iso-popup-wrapper" tabindex="0">
                                         <div class="iso-popup-card">
                                             <span class="badge badge-iso-n fs-7 mb-1">ISO N</span>
-                                            <div class="fw-bold small text-dark">Aluminio / No Ferrosos</div>
+                                            <div class="fw-bold small text-light">Aluminio / No Ferrosos</div>
                                             <small class="text-success d-block" style="font-size: 0.7rem;">Información <i class="bi bi-info-circle"></i></small>
                                         </div>
                                         <div class="iso-tooltip-box tooltip-iso-n">
@@ -1199,7 +1288,7 @@
                                     <div class="iso-popup-wrapper" tabindex="0">
                                         <div class="iso-popup-card">
                                             <span class="badge badge-iso-s fs-7 mb-1">ISO S</span>
-                                            <div class="fw-bold small text-dark">Titanio / Inconel</div>
+                                            <div class="fw-bold small text-light">Titanio / Inconel</div>
                                             <small class="text-danger-emphasis d-block" style="font-size: 0.7rem;">Información <i class="bi bi-info-circle"></i></small>
                                         </div>
                                         <div class="iso-tooltip-box tooltip-iso-s">
@@ -1216,7 +1305,7 @@
                                     <div class="iso-popup-wrapper" tabindex="0">
                                         <div class="iso-popup-card">
                                             <span class="badge badge-iso-h fs-7 mb-1">ISO H</span>
-                                            <div class="fw-bold small text-dark">Aceros Templados</div>
+                                            <div class="fw-bold small text-light">Aceros Templados</div>
                                             <small class="text-secondary d-block" style="font-size: 0.7rem;">Información <i class="bi bi-info-circle"></i></small>
                                         </div>
                                         <div class="iso-tooltip-box tooltip-iso-h">
@@ -1238,7 +1327,7 @@
                             <div class="ui-card-title mb-2"><i class="bi bi-calculator-fill me-2 text-primary"></i>Formulario de Ecuaciones CNC Completas</div>
                             <p class="small text-muted mb-2">Formulario oficial de parámetros de corte para Torneado, Fresado, Barrenado y Roscado.</p>
                             
-                            <div class="bg-dark text-white rounded p-2 small font-monospace overflow-x-auto">
+                            <div class="bg-dark text-white rounded p-2 small font-monospace overflow-x-auto border border-secondary">
                                 <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary gap-2">
                                     <span class="text-info fw-bold">Velocidad Corte (Vc):</span>
                                     <span class="text-warning text-nowrap">Vc = (π × D × n) / 1000 [m/min]</span>
@@ -1298,7 +1387,7 @@
                             
                             <div class="row g-2 align-items-end mb-2">
                                 <div class="col-9">
-                                    <label class="form-label small text-muted fw-bold mb-1">Buscar Material (Escriba para filtrar)</label>
+                                    <label class="form-label small mb-1">Buscar Material (Escriba para filtrar)</label>
                                     <input type="text" list="lista-materiales" name="material" id="material" 
                                            class="form-control form-control-sm fw-semibold text-primary" 
                                            placeholder="Escriba ej: AISI 4140, 1045, Inoxidable, Aluminio..." 
@@ -1315,8 +1404,8 @@
                                 </div>
 
                                 <div class="col-3">
-                                    <label class="form-label small text-muted fw-bold mb-1">Grupo ISO</label>
-                                    <div id="boxIsoTorneado" class="p-1 rounded text-center fw-bold {% if resultado %}badge-iso-{{ resultado.familia_iso|lower }} iso-theme-{{ resultado.familia_iso }}{% else %}text-white bg-secondary{% endif %}" style="height: 31px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem;">
+                                    <label class="form-label small mb-1">Grupo ISO</label>
+                                    <div id="boxIsoTorneado" class="p-1 rounded text-center fw-bold {% if resultado %}badge-iso-{{ resultado.familia_iso|lower }} iso-theme-{{ resultado.familia_iso }}{% else %}text-white bg-secondary{% endif %}" style="height: 38px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem;">
                                         <span id="txtIsoTorneado">{% if resultado %}ISO {{ resultado.familia_iso }}{% else %}-{% endif %}</span>
                                     </div>
                                 </div>
@@ -1352,12 +1441,12 @@
                             
                             <div class="row g-2 mb-2">
                                 <div class="col-6">
-                                    <label class="form-label small text-muted fw-bold mb-1">Tipo de corte (Automático)</label>
-                                    <input type="text" id="tipo_corte_display" class="form-control form-control-sm bg-light fw-bold text-primary" value="{% if resultado %}{{ resultado.tipo_corte }}{% else %}Automático por Sistema{% endif %}" readonly>
+                                    <label class="form-label small mb-1">Tipo de corte (Automático)</label>
+                                    <input type="text" id="tipo_corte_display" class="form-control form-control-sm bg-dark text-primary fw-bold border-secondary" value="{% if resultado %}{{ resultado.tipo_corte }}{% else %}Automático por Sistema{% endif %}" readonly>
                                     <input type="hidden" name="tipo_corte" id="tipo_corte" value="{% if resultado %}{{ resultado.tipo_corte }}{% endif %}">
                                 </div>
                                 <div class="col-6">
-                                    <label class="form-label small text-muted fw-bold mb-1">Operación</label>
+                                    <label class="form-label small mb-1">Operación</label>
                                     
                                     <!-- SELECTOR CON OPCIONES EN MENÚ FLOTANTE AL PASAR EL MOUSE -->
                                     <div class="hover-select-container">
@@ -1388,15 +1477,15 @@
 
                             <div class="row g-2 mb-3">
                                 <div class="col-4">
-                                    <label class="form-label small text-muted fw-bold mb-1">D. Inicial (mm)</label>
+                                    <label class="form-label small mb-1">D. Inicial (mm)</label>
                                     <input type="number" step="0.1" name="diametro_inicial" id="diametro_inicial" class="form-control form-control-sm" value="{{ diametro_inicial_sel if diametro_inicial_sel else 50 }}" oninput="actualizarValoresEnVivo()">
                                 </div>
                                 <div class="col-4">
-                                    <label class="form-label small text-muted fw-bold mb-1">D. Final (mm)</label>
+                                    <label class="form-label small mb-1">D. Final (mm)</label>
                                     <input type="number" step="0.1" name="diametro_final" id="diametro_final" class="form-control form-control-sm" value="{{ diametro_final_sel if diametro_final_sel else 40 }}" oninput="actualizarValoresEnVivo()">
                                 </div>
                                 <div class="col-4">
-                                    <label class="form-label small text-muted fw-bold mb-1">Longitud (mm)</label>
+                                    <label class="form-label small mb-1">Longitud (mm)</label>
                                     <input type="number" step="1" name="longitud" id="longitud" class="form-control form-control-sm" value="{{ longitud_sel if longitud_sel else 100 }}" oninput="actualizarValoresEnVivo()">
                                 </div>
                             </div>
@@ -1417,13 +1506,13 @@
 
                             <div class="highlight-blue">
                                 <div class="highlight-blue-title">Grado recomendado</div>
-                                <div class="fs-5 fw-bold text-dark" id="valGrado">{% if resultado %}{{ resultado.grado_calidad }}{% else %}-{% endif %}</div>
+                                <div class="fs-5 fw-bold text-light" id="valGrado">{% if resultado %}{{ resultado.grado_calidad }}{% else %}-{% endif %}</div>
                                 <div class="small text-muted" style="font-size: 0.75rem;">{% if resultado %}Gama Principal Sumitomo{% else %}-{% endif %}</div>
                             </div>
 
                             <div class="highlight-gold">
                                 <div class="highlight-gold-title">ROMPEVIRUTAS SUMITOMO RECOMENDADO</div>
-                                <div class="fs-5 fw-bold text-dark mb-1" id="valRompevirutas">{% if resultado %}{{ resultado.rompevirutas }}{% else %}-{% endif %}</div>
+                                <div class="fs-5 fw-bold text-light mb-1" id="valRompevirutas">{% if resultado %}{{ resultado.rompevirutas }}{% else %}-{% endif %}</div>
                                 <div class="small text-warning-emphasis" style="font-size: 0.73rem;">Seleccionado según ISO, material, operación y tipo de corte.</div>
                             </div>
 
@@ -1473,7 +1562,7 @@
                                     <div class="info-box">
                                         <span class="info-box-label">Inserto</span>
                                         <span class="info-box-value text-primary">
-                                            <select name="inserto" id="inserto" class="form-select border-0 p-0 fs-6 fw-bold text-primary" style="background: transparent;" onchange="actualizarValoresEnVivo()">
+                                            <select name="inserto" id="inserto" class="form-select border-0 p-0 fs-6 fw-bold text-primary bg-transparent" onchange="actualizarValoresEnVivo()">
                                                 {% if resultado %}
                                                     <option selected>{{ resultado.inserto }}</option>
                                                 {% else %}
@@ -1690,9 +1779,9 @@
                         <ol class="list-group list-group-numbered list-group-flush" id="listaNumeradaInsertos">
                             {% if resultado and resultado.lista_recomendaciones %}
                                 {% for item in resultado.lista_recomendaciones %}
-                                    <li class="list-group-item d-flex justify-content-between align-items-center py-2 px-3">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center py-2 px-3 bg-transparent text-light border-secondary">
                                         <div class="ms-2 me-auto">
-                                            <div class="fw-bold text-dark">{{ item.numero }}. {{ item.codigo_inserto }}</div>
+                                            <div class="fw-bold text-light">{{ item.numero }}. {{ item.codigo_inserto }}</div>
                                             <small class="text-muted">
                                                 Grado Sumitomo: <span class="fw-semibold text-primary">{{ item.grado_sumitomo }}</span> | 
                                                 Rompevirutas: <span class="fw-semibold text-secondary">{{ item.rompevirutas }}</span>
@@ -1701,12 +1790,12 @@
                                         {% if item.es_principal %}
                                             <span class="badge bg-warning text-dark fw-bold"><i class="bi bi-star-fill me-1"></i>Selección Actual</span>
                                         {% else %}
-                                            <span class="badge bg-light text-secondary border">Compatible</span>
+                                            <span class="badge bg-dark text-secondary border border-secondary">Compatible</span>
                                         {% endif %}
                                     </li>
                                 {% endfor %}
                             {% else %}
-                                <li class="list-group-item text-muted text-center py-3">Seleccione un material para desplegar las opciones.</li>
+                                <li class="list-group-item text-muted text-center py-3 bg-transparent border-secondary">Seleccione un material para desplegar las opciones.</li>
                             {% endif %}
                         </ol>
                     </div>
@@ -1743,6 +1832,7 @@
             <div class="ui-card mb-4">
                 <div class="ui-card-title d-flex align-items-center justify-content-between">
                     <span><i class="bi bi-calculator me-2 text-primary"></i>Calculadora de Parámetros de Fresado</span>
+                    <!-- RENDER SVG DINÁMICO DE HERRAMIENTA DE FRESADO -->
                     <div id="iconFresadoDinamico">
                         <svg width="30" height="30" viewBox="0 0 100 100" title="Fresa de Planear CNC">
                             <circle cx="50" cy="50" r="40" fill="#1e293b" stroke="#0f172a" stroke-width="4"/>
@@ -1757,19 +1847,19 @@
 
                 <div class="row g-2 mb-3 align-items-end">
                     <div class="col-md-3">
-                        <label class="form-label small text-muted fw-bold mb-1">Buscar Material</label>
+                        <label class="form-label small mb-1">Buscar Material</label>
                         <input type="text" list="lista-materiales" id="material_fresado" class="form-control form-control-sm fw-semibold text-primary" placeholder="Escriba ej: 4140, Inox, Aluminio..." oninput="alCambiarMaterialFresado()" onchange="alCambiarMaterialFresado()" onblur="alCambiarMaterialFresado()">
                     </div>
                     
                     <div class="col-md-1">
-                        <label class="form-label small text-muted fw-bold mb-1">Grupo ISO</label>
+                        <label class="form-label small mb-1">Grupo ISO</label>
                         <div id="boxIsoFresado" class="p-1 rounded text-center fw-bold text-white bg-secondary" style="height: 38px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem;">
                             <span id="txtIsoFresado">-</span>
                         </div>
                     </div>
 
                     <div class="col-md-2" id="contenedor_tipo_inserto_dgc">
-                        <label class="form-label small text-muted fw-bold mb-1">Tipo Inserto DGC</label>
+                        <label class="form-label small mb-1">Tipo Inserto DGC</label>
                         <div class="hover-select-container">
                             <div class="hover-select-display" id="display_tipo_inserto_dgc">
                                 <span>SNMT 13T6 (8 Filos - 45°)</span>
@@ -1788,7 +1878,7 @@
 
                     <!-- CAMPO DINÁMICO DE TIPO DE ENDMILL CON MENÚ FLOTANTE AL PASAR EL MOUSE -->
                     <div class="col-md-2" id="contenedor_geometria_endmill" style="display: none;">
-                        <label class="form-label small text-muted fw-bold mb-1 text-primary">Geometría Cortador</label>
+                        <label class="form-label small mb-1 text-primary">Geometría Cortador</label>
                         <div class="hover-select-container">
                             <div class="hover-select-display" id="display_geometria_endmill">
                                 <span>Endmill Plano (Flat)</span>
@@ -1806,20 +1896,20 @@
                     </div>
 
                     <div class="col-md-2" id="contenedor_rompevirutas_fresado">
-                        <label class="form-label small text-muted fw-bold mb-1">Rompevirutas Recomendado</label>
-                        <input type="text" id="valRompevirutasFresado" class="form-control form-control-sm bg-light fw-bold text-warning-emphasis" value="-" readonly>
+                        <label class="form-label small mb-1">Rompevirutas Recomendado</label>
+                        <input type="text" id="valRompevirutasFresado" class="form-control form-control-sm bg-dark text-warning fw-bold border-secondary" value="-" readonly>
                     </div>
 
                     <div class="col-md-1">
-                        <label class="form-label small text-muted fw-bold mb-1">D (mm)</label>
+                        <label class="form-label small mb-1">D (mm)</label>
                         <input type="number" id="dc_fresado" class="form-control form-control-sm" value="50" oninput="alCambiarDiametro()" onchange="alCambiarDiametro()">
                     </div>
                     <div class="col-md-1">
-                        <label class="form-label small text-muted fw-bold mb-1">Filos z</label>
+                        <label class="form-label small mb-1">Filos z</label>
                         <input type="number" id="z_fresado" class="form-control form-control-sm" value="4" oninput="actualizarFresadoEnVivo()" onchange="actualizarFresadoEnVivo()">
                     </div>
                     <div class="col-md-2">
-                        <label class="form-label small text-muted fw-bold mb-1">Avance Fz (mm/t)</label>
+                        <label class="form-label small mb-1">Avance Fz (mm/t)</label>
                         <input type="number" step="0.01" id="fz_fresado" class="form-control form-control-sm fw-bold text-primary" placeholder="Auto por Tabla" oninput="actualizarFresadoEnVivo()" onchange="actualizarFresadoEnVivo()">
                         <small id="badgeFzSugerido" class="d-block mt-1 text-muted" style="font-size: 0.72rem; font-weight: 600;">
                             💡 Sugerido: <span id="valFzSugerido" class="text-primary">-</span>
@@ -1904,7 +1994,7 @@
                         <div class="ui-card-title mb-3"><i class="bi bi-grid-3x3-gap-fill me-2 text-primary"></i>Catálogo Técnico Serie DGC (45°)</div>
                         <div class="row g-3">
                             <div class="col-md-3 col-sm-6">
-                                <div class="card h-100 border shadow-sm">
+                                <div class="card h-100 border border-secondary bg-dark text-light shadow-sm">
                                     <img src="/static/grades_milling.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Grados 1">
                                     <div class="card-body p-2 text-center d-flex flex-column justify-content-between">
                                         <div>
@@ -1918,7 +2008,7 @@
                                 </div>
                             </div>
                             <div class="col-md-3 col-sm-6">
-                                <div class="card h-100 border shadow-sm">
+                                <div class="card h-100 border border-secondary bg-dark text-light shadow-sm">
                                     <img src="/static/grades_milling1.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Grados 2">
                                     <div class="card-body p-2 text-center d-flex flex-column justify-content-between">
                                         <div>
@@ -1932,7 +2022,7 @@
                                 </div>
                             </div>
                             <div class="col-md-3 col-sm-6">
-                                <div class="card h-100 border shadow-sm">
+                                <div class="card h-100 border border-secondary bg-dark text-light shadow-sm">
                                     <img src="/static/dgc_condiciones.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Condiciones DGC">
                                     <div class="card-body p-2 text-center d-flex flex-column justify-content-between">
                                         <div>
@@ -1946,7 +2036,7 @@
                                 </div>
                             </div>
                             <div class="col-md-3 col-sm-6">
-                                <div class="card h-100 border shadow-sm">
+                                <div class="card h-100 border border-secondary bg-dark text-light shadow-sm">
                                     <img src="/static/dgc_chipbreaker.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Chipbreaker DGC">
                                     <div class="card-body p-2 text-center d-flex flex-column justify-content-between">
                                         <div>
@@ -1960,7 +2050,7 @@
                                 </div>
                             </div>
                             <div class="col-md-3 col-sm-6">
-                                <div class="card h-100 border shadow-sm">
+                                <div class="card h-100 border border-secondary bg-dark text-light shadow-sm">
                                     <img src="/static/dgc_filos.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Filos DGC">
                                     <div class="card-body p-2 text-center d-flex flex-column justify-content-between">
                                         <div>
@@ -1982,7 +2072,7 @@
                         <div class="ui-card-title mb-3"><i class="bi bi-grid-3x3-gap-fill me-2 text-primary"></i>Catálogo Técnico Serie WEZ (90°)</div>
                         <div class="row g-3">
                             <div class="col-md-3 col-sm-6">
-                                <div class="card h-100 border shadow-sm">
+                                <div class="card h-100 border border-secondary bg-dark text-light shadow-sm">
                                     <img src="/static/grades_milling.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Grados 1">
                                     <div class="card-body p-2 text-center d-flex flex-column justify-content-between">
                                         <div>
@@ -1996,7 +2086,7 @@
                                 </div>
                             </div>
                             <div class="col-md-3 col-sm-6">
-                                <div class="card h-100 border shadow-sm">
+                                <div class="card h-100 border border-secondary bg-dark text-light shadow-sm">
                                     <img src="/static/grades_milling1.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Grados 2">
                                     <div class="card-body p-2 text-center d-flex flex-column justify-content-between">
                                         <div>
@@ -2010,7 +2100,7 @@
                                 </div>
                             </div>
                             <div class="col-md-3 col-sm-6">
-                                <div class="card h-100 border shadow-sm">
+                                <div class="card h-100 border border-secondary bg-dark text-light shadow-sm">
                                     <img src="/static/wez_condiciones.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Condiciones WEZ 1">
                                     <div class="card-body p-2 text-center d-flex flex-column justify-content-between">
                                         <div>
@@ -2024,7 +2114,7 @@
                                 </div>
                             </div>
                             <div class="col-md-3 col-sm-6">
-                                <div class="card h-100 border shadow-sm">
+                                <div class="card h-100 border border-secondary bg-dark text-light shadow-sm">
                                     <img src="/static/wez_condiciones1.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Condiciones WEZ 2">
                                     <div class="card-body p-2 text-center d-flex flex-column justify-content-between">
                                         <div>
@@ -2038,7 +2128,7 @@
                                 </div>
                             </div>
                             <div class="col-md-3 col-sm-6">
-                                <div class="card h-100 border shadow-sm">
+                                <div class="card h-100 border border-secondary bg-dark text-light shadow-sm">
                                     <img src="/static/wez_chipbreaker.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Chipbreaker WEZ">
                                     <div class="card-body p-2 text-center d-flex flex-column justify-content-between">
                                         <div>
@@ -2052,7 +2142,7 @@
                                 </div>
                             </div>
                             <div class="col-md-3 col-sm-6">
-                                <div class="card h-100 border shadow-sm">
+                                <div class="card h-100 border border-secondary bg-dark text-light shadow-sm">
                                     <img src="/static/wez_filos.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Filos WEZ 1">
                                     <div class="card-body p-2 text-center d-flex flex-column justify-content-between">
                                         <div>
@@ -2066,7 +2156,7 @@
                                 </div>
                             </div>
                             <div class="col-md-3 col-sm-6">
-                                <div class="card h-100 border shadow-sm">
+                                <div class="card h-100 border border-secondary bg-dark text-light shadow-sm">
                                     <img src="/static/wez_filos1.png" class="card-img-top p-2 bg-light" style="height: 140px; object-fit: contain;" alt="Filos WEZ 2">
                                     <div class="card-body p-2 text-center d-flex flex-column justify-content-between">
                                         <div>
@@ -2083,27 +2173,27 @@
                     </div>
                 </div>
 
-                <!-- CONTENIDO TÉCNICO EXCLUSIVO PESTAÑA ENDMILLS -->
+                <!-- CONTENIDO TÉCNICO EXCLUSIVO PESTAÑA ENDMILLS CON VISIBILIDAD HD -->
                 <div class="tab-pane fade" id="pill-endmill" role="tabpanel">
                     <div class="ui-card mb-3">
                         <div class="ui-card-title mb-3"><i class="bi bi-info-circle-fill me-2 text-primary"></i>Especificaciones Técnicas para Endmills de Carburo Sólido</div>
                         <div class="row g-3">
                             <div class="col-md-4">
-                                <div class="p-3 border rounded bg-light">
-                                    <h6 class="fw-bold text-dark">Número de Flautas (z)</h6>
-                                    <p class="small text-muted mb-0">Seleccionado automáticamente según el Grupo ISO. Para materiales blandos (ISO N) se usan 2-3 flautas para evacuación de viruta, mientras que en materiales duros (ISO S/H) se recomiendan 5-6 flautas para rigidez estructural.</p>
+                                <div class="p-3 border border-secondary rounded bg-dark text-light">
+                                    <h6 class="fw-bold text-info">Número de Flautas (z)</h6>
+                                    <p class="small text-light mb-0" style="color: #cbd5e1 !important;">Seleccionado automáticamente según el Grupo ISO. Para materiales blandos (ISO N) se usan 2-3 flautas para evacuación de viruta, mientras que en materiales duros (ISO S/H) se recomiendan 5-6 flautas para rigidez estructural.</p>
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="p-3 border rounded bg-light">
-                                    <h6 class="fw-bold text-dark">Recubrimientos PVD / DLC</h6>
-                                    <p class="small text-muted mb-0">Protección contra abrasión y choque térmico. Recubrimiento DLC para Aluminio (evita soldadura de viruta) y AlTiN / AlCrN para Aceros, Inoxidables y Templados.</p>
+                                <div class="p-3 border border-secondary rounded bg-dark text-light">
+                                    <h6 class="fw-bold text-info">Recubrimientos PVD / DLC</h6>
+                                    <p class="small text-light mb-0" style="color: #cbd5e1 !important;">Protección contra abrasión y choque térmico. Recubrimiento DLC para Aluminio (evita soldadura de viruta) y AlTiN / AlCrN para Aceros, Inoxidables y Templados.</p>
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="p-3 border rounded bg-light">
-                                    <h6 class="fw-bold text-dark">Hélice Variable e Indexado</h6>
-                                    <p class="small text-muted mb-0">La geometría asimétrica altera la frecuencia armónica de corte, reduciendo las vibraciones (chatter) en pasadas profundas o maquinado dinámico (HEM).</p>
+                                <div class="p-3 border border-secondary rounded bg-dark text-light">
+                                    <h6 class="fw-bold text-info">Hélice Variable e Indexado</h6>
+                                    <p class="small text-light mb-0" style="color: #cbd5e1 !important;">La geometría asimétrica altera la frecuencia armónica de corte, reduciendo las vibraciones (chatter) en pasadas profundas o maquinado dinámico (HEM).</p>
                                 </div>
                             </div>
                         </div>
@@ -2124,62 +2214,62 @@
                     <!-- RENDER SVG BROCA DE CARBURO SÓLIDO -->
                     <svg width="30" height="30" viewBox="0 0 100 100" title="Broca de Carburo Sólido">
                         <path d="M 38,90 L 38,40 L 50,10 L 62,40 L 62,90 Z" fill="#334155" stroke="#0f172a" stroke-width="3"/>
-                        <path d="M 38,60 C 48,50 52,40 62,30" stroke="#10b981" stroke-width="4" fill="none"/>
+                        <path d="M 38,60 C 48,50 52,40 62,30" stroke="#10b981" stroke-width="6" fill="none"/>
                         <path d="M 38,80 C 48,70 52,60 62,50" stroke="#10b981" stroke-width="4" fill="none"/>
                         <polygon points="50,10 38,40 62,40" fill="#059669"/>
                     </svg>
                 </div>
 
-                <div class="alert alert-info py-2 px-3 mb-3 d-flex align-items-center justify-content-between" id="alertaLubricacionBox">
+                <div class="alert alert-info py-2 px-3 mb-3 d-flex align-items-center justify-content-between bg-dark border-secondary text-light" id="alertaLubricacionBox">
                     <div>
-                        <i class="bi bi-droplet-half me-2 fs-5"></i>
-                        <strong class="me-1">Recomendación de Refrigerante:</strong>
+                        <i class="bi bi-droplet-half me-2 fs-5 text-info"></i>
+                        <strong class="me-1 text-info">Recomendación de Refrigerante:</strong>
                         <span id="textoLubricacion">Ingrese el Diámetro D y la Profundidad L para calcular las condiciones técnicas.</span>
                     </div>
                 </div>
 
                 <div class="row g-2 mb-3 align-items-end">
                     <div class="col-md-2">
-                        <label class="form-label small text-muted fw-bold mb-1">Buscar Material</label>
+                        <label class="form-label small mb-1">Buscar Material</label>
                         <input type="text" list="lista-materiales" id="material_barrenado" class="form-control form-control-sm fw-semibold text-primary" placeholder="Escriba ej: 4140, Inox..." oninput="alCambiarMaterialBarrenado()" onchange="alCambiarMaterialBarrenado()">
                     </div>
                     
                     <div class="col-md-1">
-                        <label class="form-label small text-muted fw-bold mb-1">Grupo ISO</label>
+                        <label class="form-label small mb-1">Grupo ISO</label>
                         <div id="boxIsoBarrenado" class="p-1 rounded text-center fw-bold text-white bg-secondary" style="height: 31px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem;">
                             <span id="txtIsoBarrenado">-</span>
                         </div>
                     </div>
 
                     <div class="col-md-2">
-                        <label class="form-label small text-muted fw-bold mb-1">Recubrimiento</label>
-                        <input type="text" id="recubrimiento_barrenado" class="form-control form-control-sm bg-dark text-white fw-bold border-0" value="-" readonly style="font-size: 0.8rem;" title="Recubrimiento sugerido">
+                        <label class="form-label small mb-1">Recubrimiento</label>
+                        <input type="text" id="recubrimiento_barrenado" class="form-control form-control-sm bg-dark text-white fw-bold border-secondary" value="-" readonly style="font-size: 0.8rem;" title="Recubrimiento sugerido">
                     </div>
 
                     <div class="col-md-2">
-                        <label class="form-label small text-muted fw-bold mb-1">Flautas Broca</label>
-                        <input type="text" id="flautas_barrenado" class="form-control form-control-sm bg-light fw-bold text-primary" value="-" readonly style="font-size: 0.8rem;">
+                        <label class="form-label small mb-1">Flautas Broca</label>
+                        <input type="text" id="flautas_barrenado" class="form-control form-control-sm bg-dark text-primary fw-bold border-secondary" value="-" readonly style="font-size: 0.8rem;">
                     </div>
 
                     <div class="col-md-1">
-                        <label class="form-label small text-muted fw-bold mb-1">Ángulo Punta</label>
-                        <input type="text" id="angulo_sugerido_barrenado" class="form-control form-control-sm bg-light fw-bold text-dark text-center" value="140°" readonly style="font-size: 0.8rem;">
+                        <label class="form-label small mb-1">Ángulo Punta</label>
+                        <input type="text" id="angulo_sugerido_barrenado" class="form-control form-control-sm bg-dark text-light fw-bold text-center border-secondary" value="140°" readonly style="font-size: 0.8rem;">
                     </div>
 
                     <div class="col-md-1">
-                        <label class="form-label small text-muted fw-bold mb-1">D (mm)</label>
+                        <label class="form-label small mb-1">D (mm)</label>
                         <input type="number" step="0.1" id="d_barrenado" class="form-control form-control-sm fw-bold" placeholder="Ej: 18" oninput="actualizarBarrenadoEnVivo()" onchange="actualizarBarrenadoEnVivo()">
                     </div>
                     <div class="col-md-1">
-                        <label class="form-label small text-muted fw-bold mb-1">Vc (m/min)</label>
+                        <label class="form-label small mb-1">Vc (m/min)</label>
                         <input type="number" step="1" id="vc_barrenado" class="form-control form-control-sm" placeholder="Ej: 30" oninput="actualizarBarrenadoEnVivo()" onchange="actualizarBarrenadoEnVivo()">
                     </div>
                     <div class="col-md-1">
-                        <label class="form-label small text-muted fw-bold mb-1">f (mm/rev)</label>
+                        <label class="form-label small mb-1">f (mm/rev)</label>
                         <input type="number" step="0.01" id="fn_barrenado" class="form-control form-control-sm fw-bold text-primary" placeholder="Ej: 0.12" oninput="actualizarBarrenadoEnVivo()" onchange="actualizarBarrenadoEnVivo()">
                     </div>
                     <div class="col-md-1">
-                        <label class="form-label small text-muted fw-bold mb-1">Prof. L (mm)</label>
+                        <label class="form-label small mb-1">Prof. L (mm)</label>
                         <input type="number" step="1" id="long_barrenado" class="form-control form-control-sm" placeholder="Ej: 85" oninput="actualizarBarrenadoEnVivo()" onchange="actualizarBarrenadoEnVivo()">
                     </div>
                 </div>
@@ -2261,7 +2351,7 @@
                         <rect x="44" y="70" width="12" height="25" fill="#475569"/>
                         <path d="M 40,70 L 40,15 C 40,10 60,10 60,15 L 60,70 Z" fill="#3b82f6" stroke="#1d4ed8" stroke-width="2"/>
                         <line x1="36" y1="20" x2="64" y2="24" stroke="#ffffff" stroke-width="3"/>
-                        <line x1="36" y1="32" x2="64" y2="36" stroke="#ffffff" stroke-width="3"/>
+                        <line x1="36" y1="36" x2="64" y2="40" stroke="#ffffff" stroke-width="3"/>
                         <line x1="36" y1="44" x2="64" y2="48" stroke="#ffffff" stroke-width="3"/>
                         <line x1="36" y1="56" x2="64" y2="60" stroke="#ffffff" stroke-width="3"/>
                     </svg>
@@ -2269,19 +2359,19 @@
 
                 <div class="row g-2 mb-2 align-items-end">
                     <div class="col-md-2">
-                        <label class="form-label small text-muted fw-bold mb-1">Buscar Material</label>
+                        <label class="form-label small mb-1">Buscar Material</label>
                         <input type="text" list="lista-materiales" id="material_roscado" class="form-control form-control-sm fw-semibold text-primary" placeholder="Escriba ej: 4140, Inox..." oninput="alCambiarMaterialRoscado()" onchange="alCambiarMaterialRoscado()">
                     </div>
 
                     <div class="col-md-1">
-                        <label class="form-label small text-muted fw-bold mb-1">Grupo ISO</label>
+                        <label class="form-label small mb-1">Grupo ISO</label>
                         <div id="boxIsoRoscado" class="p-1 rounded text-center fw-bold text-white bg-secondary" style="height: 31px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem;">
                             <span id="txtIsoRoscado">-</span>
                         </div>
                     </div>
 
                     <div class="col-md-2">
-                        <label class="form-label small text-muted fw-bold mb-1">Método Roscado</label>
+                        <label class="form-label small mb-1">Método Roscado</label>
                         <div class="hover-select-container">
                             <div class="hover-select-display" id="display_metodo_roscado">
                                 <span>Machuelo Tradicional</span>
@@ -2300,7 +2390,7 @@
 
                     <!-- ESTÁNDAR DE ROSCA NORMALIZADO EN MENÚ FLOTANTE AL PASAR EL MOUSE (HOVER SELECTION) -->
                     <div class="col-md-4">
-                        <label class="form-label small text-muted fw-bold mb-1">Estándar de Rosca Normalizado</label>
+                        <label class="form-label small mb-1">Estándar de Rosca Normalizado</label>
                         <div class="hover-select-container">
                             <div class="hover-select-display" id="display_estandar_rosca">
                                 <span>-- Personalizado / Manual --</span>
@@ -2410,14 +2500,14 @@
                     </div>
 
                     <div class="col-md-3">
-                        <label class="form-label small text-muted fw-bold mb-1">Mat. Herramienta</label>
-                        <input type="text" id="sustrato_machuelo_roscado" class="form-control form-control-sm bg-dark text-white fw-bold border-0" value="-" readonly style="font-size: 0.78rem;" title="Sustrato recomendado según Grupo ISO">
+                        <label class="form-label small mb-1">Mat. Herramienta</label>
+                        <input type="text" id="sustrato_machuelo_roscado" class="form-control form-control-sm bg-dark text-white fw-bold border-secondary" value="-" readonly style="font-size: 0.78rem;" title="Sustrato recomendado según Grupo ISO">
                     </div>
                 </div>
 
                 <div class="row g-2 mb-3 align-items-end">
                     <div class="col-md-2" id="col_tipo_machuelo">
-                        <label class="form-label small text-muted fw-bold mb-1">Tipo de Machuelo</label>
+                        <label class="form-label small mb-1">Tipo de Machuelo</label>
                         <select id="tipo_machuelo_roscado" class="form-select form-select-sm fw-bold text-dark" onchange="actualizarRoscadoEnVivo()">
                             <option value="corte">Corte (Con Viruta)</option>
                             <option value="laminacion">Laminación (Sin Viruta)</option>
@@ -2425,42 +2515,42 @@
                     </div>
 
                     <div class="col-md-2">
-                        <label class="form-label small text-muted fw-bold mb-1">D (mm)</label>
+                        <label class="form-label small mb-1">D (mm)</label>
                         <input type="number" step="0.001" id="d_roscado" class="form-control form-control-sm fw-bold" placeholder="Ej: 20" oninput="actualizarRoscadoEnVivo()" onchange="actualizarRoscadoEnVivo()">
                     </div>
 
                     <div class="col-md-2">
-                        <label class="form-label small text-muted fw-bold mb-1">Paso (mm)</label>
+                        <label class="form-label small mb-1">Paso (mm)</label>
                         <input type="number" step="0.001" id="paso_roscado" class="form-control form-control-sm fw-bold text-primary" placeholder="Ej: 2.5" oninput="actualizarRoscadoEnVivo()" onchange="actualizarRoscadoEnVivo()">
                     </div>
 
                     <div class="col-md-1" id="box_d_fresa" style="display: none;">
-                        <label class="form-label small text-muted fw-bold mb-1 text-danger">Ø Fresa (mm)</label>
+                        <label class="form-label small mb-1 text-danger">Ø Fresa (mm)</label>
                         <input type="number" step="0.1" id="d_fresa_input" class="form-control form-control-sm fw-bold border-danger" placeholder="Ej: 10" oninput="actualizarRoscadoEnVivo()">
                     </div>
 
                     <div class="col-md-1" id="box_z_fresa" style="display: none;">
-                        <label class="form-label small text-muted fw-bold mb-1 text-danger">Filos z</label>
+                        <label class="form-label small mb-1 text-danger">Filos z</label>
                         <input type="number" step="1" id="z_fresa_input" class="form-control form-control-sm fw-bold border-danger" value="4" oninput="actualizarRoscadoEnVivo()">
                     </div>
 
                     <div class="col-md-1" id="box_fz_fresa" style="display: none;">
-                        <label class="form-label small text-muted fw-bold mb-1 text-danger">fz (mm/t)</label>
+                        <label class="form-label small mb-1 text-danger">fz (mm/t)</label>
                         <input type="number" step="0.01" id="fz_fresa_input" class="form-control form-control-sm fw-bold border-danger" value="0.05" oninput="actualizarRoscadoEnVivo()">
                     </div>
 
                     <div class="col-md-2" id="col_pct_altura">
-                        <label class="form-label small text-muted fw-bold mb-1">% Altura</label>
+                        <label class="form-label small mb-1">% Altura</label>
                         <input type="number" step="1" id="pct_rosca_input" class="form-control form-control-sm text-center" value="75" oninput="actualizarRoscadoEnVivo()" onchange="actualizarRoscadoEnVivo()">
                     </div>
 
                     <div class="col-md-2">
-                        <label class="form-label small text-muted fw-bold mb-1">Vc (m/min)</label>
+                        <label class="form-label small mb-1">Vc (m/min)</label>
                         <input type="number" step="0.1" id="vc_roscado" class="form-control form-control-sm" placeholder="Auto" oninput="actualizarRoscadoEnVivo()" onchange="actualizarRoscadoEnVivo()">
                     </div>
 
                     <div class="col-md-2">
-                        <label class="form-label small text-muted fw-bold mb-1">Prof. L (mm)</label>
+                        <label class="form-label small mb-1">Prof. L (mm)</label>
                         <input type="number" step="1" id="long_roscado" class="form-control form-control-sm" placeholder="Ej: 85" oninput="actualizarRoscadoEnVivo()" onchange="actualizarRoscadoEnVivo()">
                     </div>
                 </div>
