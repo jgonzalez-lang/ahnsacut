@@ -262,21 +262,39 @@
         }
 
         /* ANIMACIÓN EN CASCADA MÁS LENTA QUE SE QUEDA FIJA EN CIAN */
-@keyframes efectoEntradaZoom {
-    0% {
-        transform: scale(1);
-    }
-    100% {
-        transform: scale(1.35);
-        color: #00e5ff !important;
-        filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.9));
-    }
-}
+        @keyframes efectoEntradaZoom {
+            0% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1.35);
+                color: #00e5ff !important;
+                filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.9));
+            }
+        }
 
-.icono-animado-entrada {
-    animation: efectoEntradaZoom 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important;
-    z-index: 100 !important;
-}
+        .icono-animado-entrada {
+            animation: efectoEntradaZoom 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important;
+            z-index: 100 !important;
+        }
+
+        /* AJUSTE TIPOGRÁFICO ADAPTABLE PARA BOTONES GD&T EN MÓVIL */
+        .gdt-btn-title {
+            font-size: 0.8rem;
+            line-height: 1.1;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+            width: 100%;
+        }
+
+        @media (max-width: 575.98px) {
+            .gdt-btn-title {
+                font-size: 0.68rem !important;
+                letter-spacing: -0.2px;
+            }
+        }
+
         .main-content {
             margin-left: var(--sidebar-width);
             padding: 24px 28px;
@@ -1249,7 +1267,7 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN INFERIOR REORGANIZADA CON PROPÓSITO DEL SISTEMA ESTANDARIZADO CIAN -->
+            <!-- SECCIÓN INFERIOR REORGANIZADA -->
             <div class="row g-3 mb-4 align-items-stretch">
                 <div class="col-lg-6">
                     <div class="ui-card h-100 d-flex flex-column justify-content-between">
@@ -2434,11 +2452,11 @@
                     </div>
                     <svg width="30" height="30" viewBox="0 0 100 100" title="Machuelo Helicoidal / Thread Mill">
                         <rect x="44" y="70" width="12" height="25" fill="#475569"/>
-                        <path d="M 40,70 L 40,15 C 40,10 60,10 60,15 L 60,70 Z" fill="#3b82f6" stroke="#1d4ed8" stroke-width="2"/>
-                        <line x1="36" y1="20" x2="64" y2="24" stroke="#ffffff" stroke-width="3"/>
-                        <line x1="36" y1="36" x2="64" y2="40" stroke="#ffffff" stroke-width="3"/>
-                        <line x1="36" y1="44" x2="64" y2="48" stroke="#ffffff" stroke-width="3"/>
-                        <line x1="36" y1="56" x2="64" y2="60" stroke="#ffffff" stroke-width="3"/>
+                        <path d="M 40,68 L 40,15 C 40,10 60,10 60,15 L 60,68 Z" fill="#3b82f6" stroke="#1d4ed8" stroke-width="2"/>
+                        <line x1="36" y1="22" x2="64" y2="26" stroke="#ffffff" stroke-width="4"/>
+                        <line x1="36" y1="36" x2="64" y2="40" stroke="#ffffff" stroke-width="4"/>
+                        <line x1="36" y1="44" x2="64" y2="48" stroke="#ffffff" stroke-width="4"/>
+                        <line x1="36" y1="56" x2="64" y2="60" stroke="#ffffff" stroke-width="4"/>
                     </svg>
                 </div>
 
@@ -2911,7 +2929,7 @@
                 </div>
                 <div class="modal-body p-3" style="max-height: 80vh; overflow-y: auto;">
                     
-                    <!-- MALLA PRINCIPAL DE SÍMBOLOS CIAN ESTANDARIZADOS -->
+                    <!-- MALLA PRINCIPAL DE SÍMBOLOS CIAN ESTANDARIZADOS (ADAPTABILIDAD MÓVIL OPTIMIZADA) -->
                     <div id="gdtGridPrincipal">
                         
                         <!-- CATEGORÍA 1: FORMA -->
@@ -2921,30 +2939,30 @@
                             </div>
                             <div class="row g-2">
                                 <div class="col-md-3 col-6">
-                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info" onclick="verDetalleGDT('rectitud')">
-                                        <svg width="40" height="40" viewBox="0 0 100 100" class="mb-1"><line x1="15" y1="50" x2="85" y2="50" stroke="#00e5ff" stroke-width="12" stroke-linecap="round"/></svg>
-                                        <div class="fw-bold small text-light">Rectitud</div>
+                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info d-flex flex-column align-items-center justify-content-center" onclick="verDetalleGDT('rectitud')">
+                                        <svg width="36" height="36" viewBox="0 0 100 100" class="mb-1"><line x1="15" y1="50" x2="85" y2="50" stroke="#00e5ff" stroke-width="12" stroke-linecap="round"/></svg>
+                                        <div class="fw-bold text-light gdt-btn-title">Rectitud</div>
                                     </button>
                                 </div>
                                 <div class="col-md-3 col-6">
-                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info" onclick="verDetalleGDT('planicidad')">
-                                        <svg width="40" height="40" viewBox="0 0 100 100" class="mb-1"><polygon points="20,25 80,25 65,75 5,75" fill="none" stroke="#00e5ff" stroke-width="10"/></svg>
-                                        <div class="fw-bold small text-light">Planicidad</div>
+                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info d-flex flex-column align-items-center justify-content-center" onclick="verDetalleGDT('planicidad')">
+                                        <svg width="36" height="36" viewBox="0 0 100 100" class="mb-1"><polygon points="20,25 80,25 65,75 5,75" fill="none" stroke="#00e5ff" stroke-width="10"/></svg>
+                                        <div class="fw-bold text-light gdt-btn-title">Planicidad</div>
                                     </button>
                                 </div>
                                 <div class="col-md-3 col-6">
-                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info" onclick="verDetalleGDT('circularidad')">
-                                        <svg width="40" height="40" viewBox="0 0 100 100" class="mb-1"><circle cx="50" cy="50" r="32" fill="none" stroke="#00e5ff" stroke-width="10"/></svg>
-                                        <div class="fw-bold small text-light">Circularidad</div>
+                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info d-flex flex-column align-items-center justify-content-center" onclick="verDetalleGDT('circularidad')">
+                                        <svg width="36" height="36" viewBox="0 0 100 100" class="mb-1"><circle cx="50" cy="50" r="32" fill="none" stroke="#00e5ff" stroke-width="10"/></svg>
+                                        <div class="fw-bold text-light gdt-btn-title">Circularidad</div>
                                     </button>
                                 </div>
                                 <div class="col-md-3 col-6">
-                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info" onclick="verDetalleGDT('cilindricidad')">
-                                        <svg width="40" height="40" viewBox="0 0 100 100" class="mb-1">
+                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info d-flex flex-column align-items-center justify-content-center" onclick="verDetalleGDT('cilindricidad')">
+                                        <svg width="36" height="36" viewBox="0 0 100 100" class="mb-1">
                                             <circle cx="50" cy="50" r="32" fill="none" stroke="#00e5ff" stroke-width="8"/>
                                             <line x1="18" y1="50" x2="82" y2="50" stroke="#00e5ff" stroke-width="8"/>
                                         </svg>
-                                        <div class="fw-bold small text-light">Cilindricidad</div>
+                                        <div class="fw-bold text-light gdt-btn-title">Cilindricidad</div>
                                     </button>
                                 </div>
                             </div>
@@ -2957,21 +2975,21 @@
                             </div>
                             <div class="row g-2">
                                 <div class="col-md-4 col-4">
-                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info" onclick="verDetalleGDT('angularidad')">
-                                        <svg width="40" height="40" viewBox="0 0 100 100" class="mb-1"><path d="M 20,80 L 80,80 M 20,80 L 70,20" fill="none" stroke="#00e5ff" stroke-width="10" stroke-linecap="round"/></svg>
-                                        <div class="fw-bold small text-light">Angularidad</div>
+                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info d-flex flex-column align-items-center justify-content-center" onclick="verDetalleGDT('angularidad')">
+                                        <svg width="36" height="36" viewBox="0 0 100 100" class="mb-1"><path d="M 20,80 L 80,80 M 20,80 L 70,20" fill="none" stroke="#00e5ff" stroke-width="10" stroke-linecap="round"/></svg>
+                                        <div class="fw-bold text-light gdt-btn-title">Angularidad</div>
                                     </button>
                                 </div>
                                 <div class="col-md-4 col-4">
-                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info" onclick="verDetalleGDT('perpendicularidad')">
-                                        <svg width="40" height="40" viewBox="0 0 100 100" class="mb-1"><path d="M 20,80 L 80,80 M 50,80 L 50,20" fill="none" stroke="#00e5ff" stroke-width="10" stroke-linecap="round"/></svg>
-                                        <div class="fw-bold small text-light">Perpendicularidad</div>
+                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info d-flex flex-column align-items-center justify-content-center" onclick="verDetalleGDT('perpendicularidad')">
+                                        <svg width="36" height="36" viewBox="0 0 100 100" class="mb-1"><path d="M 20,80 L 80,80 M 50,80 L 50,20" fill="none" stroke="#00e5ff" stroke-width="10" stroke-linecap="round"/></svg>
+                                        <div class="fw-bold text-light gdt-btn-title">Perpendicularidad</div>
                                     </button>
                                 </div>
                                 <div class="col-md-4 col-4">
-                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info" onclick="verDetalleGDT('paralelismo')">
-                                        <svg width="40" height="40" viewBox="0 0 100 100" class="mb-1"><line x1="35" y1="20" x2="35" y2="80" stroke="#00e5ff" stroke-width="10"/><line x1="65" y1="20" x2="65" y2="80" stroke="#00e5ff" stroke-width="10"/></svg>
-                                        <div class="fw-bold small text-light">Paralelismo</div>
+                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info d-flex flex-column align-items-center justify-content-center" onclick="verDetalleGDT('paralelismo')">
+                                        <svg width="36" height="36" viewBox="0 0 100 100" class="mb-1"><line x1="35" y1="20" x2="35" y2="80" stroke="#00e5ff" stroke-width="10"/><line x1="65" y1="20" x2="65" y2="80" stroke="#00e5ff" stroke-width="10"/></svg>
+                                        <div class="fw-bold text-light gdt-btn-title">Paralelismo</div>
                                     </button>
                                 </div>
                             </div>
@@ -2984,21 +3002,21 @@
                             </div>
                             <div class="row g-2">
                                 <div class="col-md-4 col-4">
-                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info" onclick="verDetalleGDT('posicion')">
-                                        <svg width="40" height="40" viewBox="0 0 100 100" class="mb-1"><circle cx="50" cy="50" r="28" fill="none" stroke="#00e5ff" stroke-width="8"/><line x1="50" y1="10" x2="50" y2="90" stroke="#00e5ff" stroke-width="8"/><line x1="10" y1="50" x2="90" y2="50" stroke="#00e5ff" stroke-width="8"/></svg>
-                                        <div class="fw-bold small text-light">Posición Verdader.</div>
+                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info d-flex flex-column align-items-center justify-content-center" onclick="verDetalleGDT('posicion')">
+                                        <svg width="36" height="36" viewBox="0 0 100 100" class="mb-1"><circle cx="50" cy="50" r="28" fill="none" stroke="#00e5ff" stroke-width="8"/><line x1="50" y1="10" x2="50" y2="90" stroke="#00e5ff" stroke-width="8"/><line x1="10" y1="50" x2="90" y2="50" stroke="#00e5ff" stroke-width="8"/></svg>
+                                        <div class="fw-bold text-light gdt-btn-title">Posición Verdadera</div>
                                     </button>
                                 </div>
                                 <div class="col-md-4 col-4">
-                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info" onclick="verDetalleGDT('concentricidad')">
-                                        <svg width="40" height="40" viewBox="0 0 100 100" class="mb-1"><circle cx="50" cy="50" r="32" fill="none" stroke="#00e5ff" stroke-width="8"/><circle cx="50" cy="50" r="16" fill="none" stroke="#00e5ff" stroke-width="8"/></svg>
-                                        <div class="fw-bold small text-light">Concentricidad</div>
+                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info d-flex flex-column align-items-center justify-content-center" onclick="verDetalleGDT('concentricidad')">
+                                        <svg width="36" height="36" viewBox="0 0 100 100" class="mb-1"><circle cx="50" cy="50" r="32" fill="none" stroke="#00e5ff" stroke-width="8"/><circle cx="50" cy="50" r="16" fill="none" stroke="#00e5ff" stroke-width="8"/></svg>
+                                        <div class="fw-bold text-light gdt-btn-title">Concentricidad</div>
                                     </button>
                                 </div>
                                 <div class="col-md-4 col-4">
-                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info" onclick="verDetalleGDT('cabeceo')">
-                                        <svg width="40" height="40" viewBox="0 0 100 100" class="mb-1"><path d="M 20,70 L 60,30 L 60,50 M 60,30 L 80,70" fill="none" stroke="#00e5ff" stroke-width="8" stroke-linecap="round"/></svg>
-                                        <div class="fw-bold small text-light">Cabeceo (Runout)</div>
+                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info d-flex flex-column align-items-center justify-content-center" onclick="verDetalleGDT('cabeceo')">
+                                        <svg width="36" height="36" viewBox="0 0 100 100" class="mb-1"><path d="M 20,70 L 60,30 L 60,50 M 60,30 L 80,70" fill="none" stroke="#00e5ff" stroke-width="8" stroke-linecap="round"/></svg>
+                                        <div class="fw-bold text-light gdt-btn-title">Cabeceo (Runout)</div>
                                     </button>
                                 </div>
                             </div>
@@ -3050,17 +3068,16 @@
         var serieSeleccionadaActual = "DGC";
         var animacionEjecutada = false;
 
-        /* ANIMACIÓN MÁS LENTA Y PERMANENTE DE ARRIBA A ABAJO */
-function animarIconosSidebarEntrada() {
-    const elementosNav = document.querySelectorAll(".sidebar-nav a .nav-icon-box");
-    
-    elementosNav.forEach((box, index) => {
-        setTimeout(() => {
-            // Aplica la clase y la propiedad 'forwards' del CSS mantendrá el efecto fijo
-            box.classList.add("icono-animado-entrada");
-        }, index * 250); // Desfase de 250ms (más lento y paulatino de arriba a abajo)
-    });
-}
+        /* CONFIGURACIÓN DE AUTO-COLAPSO Y EFECTO EN CASCADA */
+        function animarIconosSidebarEntrada() {
+            const elementosNav = document.querySelectorAll(".sidebar-nav a .nav-icon-box");
+            
+            elementosNav.forEach((box, index) => {
+                setTimeout(() => {
+                    box.classList.add("icono-animado-entrada");
+                }, index * 250);
+            });
+        }
 
         function inicializarAutoHoverSidebar() {
             const sidebar = document.getElementById("sidebar");
