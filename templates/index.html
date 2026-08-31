@@ -77,6 +77,46 @@
             box-shadow: 0 0 8px rgba(0, 229, 255, 0.25) !important;
         }
 
+        /* ESTILOS DEL MENÚ DESPLEGABLE PERSONALIZADO PARA MATERIALES (DARK SCADA/CNC) */
+        .custom-mat-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 1060;
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            max-height: 240px;
+            overflow-y: auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            display: none;
+            margin-top: 2px;
+        }
+
+        .custom-mat-dropdown::-webkit-scrollbar {
+            width: 5px;
+        }
+        .custom-mat-dropdown::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+
+        .custom-mat-item {
+            padding: 8px 12px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .custom-mat-item:hover, .custom-mat-item.active-item {
+            background-color: #1e293b;
+            color: #00e5ff;
+        }
+
         /* ESTILOS DE BOTONES CHIPS DE FILTRO ISO EN DASHBOARD (100% VISIBILIDAD HD) */
         .btn-iso-chip-m {
             color: #facc15 !important;
@@ -870,16 +910,23 @@
                 padding: 16px 12px;
             }
 
+            /* ADAPTACIÓN MÓVIL CAJA EMERGENTE DE MATERIALES ISO (CERO DESBORDAMIENTO) */
             .iso-tooltip-box {
-                bottom: auto;
-                top: 110%;
-                left: 50%;
+                bottom: 110%;
+                top: auto;
+                left: 0 !important;
+                transform: translateY(10px) !important;
+                width: 270px;
+                max-width: 85vw;
             }
 
             .iso-tooltip-box::after {
-                top: auto;
-                bottom: 100%;
-                border-color: transparent transparent #0f172a transparent;
+                left: 25% !important;
+            }
+
+            .iso-popup-wrapper:hover .iso-tooltip-box,
+            .iso-popup-wrapper:focus .iso-tooltip-box {
+                transform: translateY(0) !important;
             }
         }
 
@@ -1386,21 +1433,17 @@
                             </div>
                             
                             <div class="row g-2 align-items-end mb-2">
-                                <div class="col-9">
+                                <div class="col-9 position-relative">
                                     <label class="form-label small mb-1">Buscar Material (Escriba para filtrar)</label>
-                                    <input type="text" list="lista-materiales" name="material" id="material" 
-                                           class="form-control form-control-sm fw-semibold text-primary" 
+                                    <input type="text" name="material" id="material" 
+                                           class="form-control form-control-sm fw-semibold text-primary material-input-scada" 
                                            placeholder="Escriba ej: AISI 4140, 1045, Inoxidable, Aluminio..." 
                                            value="{% if resultado %}{{ material_sel }}{% endif %}" 
                                            oninput="alCambiarMaterialTorneado()" 
                                            onchange="alCambiarMaterialTorneado()" 
                                            onblur="alCambiarMaterialTorneado()" 
                                            autocomplete="off">
-                                    <datalist id="lista-materiales">
-                                        {% for m in materiales %}
-                                            <option value="{{ m }}">
-                                        {% endfor %}
-                                    </datalist>
+                                    <div class="custom-mat-dropdown" id="dropdown_material"></div>
                                 </div>
 
                                 <div class="col-3">
@@ -1846,9 +1889,10 @@
                 </div>
 
                 <div class="row g-2 mb-3 align-items-end">
-                    <div class="col-md-3">
+                    <div class="col-md-3 position-relative">
                         <label class="form-label small mb-1">Buscar Material</label>
-                        <input type="text" list="lista-materiales" id="material_fresado" class="form-control form-control-sm fw-semibold text-primary" placeholder="Escriba ej: 4140, Inox, Aluminio..." oninput="alCambiarMaterialFresado()" onchange="alCambiarMaterialFresado()" onblur="alCambiarMaterialFresado()">
+                        <input type="text" id="material_fresado" class="form-control form-control-sm fw-semibold text-primary material-input-scada" placeholder="Escriba ej: 4140, Inox, Aluminio..." oninput="alCambiarMaterialFresado()" onchange="alCambiarMaterialFresado()" onblur="alCambiarMaterialFresado()" autocomplete="off">
+                        <div class="custom-mat-dropdown" id="dropdown_material_fresado"></div>
                     </div>
                     
                     <div class="col-md-1">
@@ -2229,9 +2273,10 @@
                 </div>
 
                 <div class="row g-2 mb-3 align-items-end">
-                    <div class="col-md-2">
+                    <div class="col-md-2 position-relative">
                         <label class="form-label small mb-1">Buscar Material</label>
-                        <input type="text" list="lista-materiales" id="material_barrenado" class="form-control form-control-sm fw-semibold text-primary" placeholder="Escriba ej: 4140, Inox..." oninput="alCambiarMaterialBarrenado()" onchange="alCambiarMaterialBarrenado()">
+                        <input type="text" id="material_barrenado" class="form-control form-control-sm fw-semibold text-primary material-input-scada" placeholder="Escriba ej: 4140, Inox..." oninput="alCambiarMaterialBarrenado()" onchange="alCambiarMaterialBarrenado()" autocomplete="off">
+                        <div class="custom-mat-dropdown" id="dropdown_material_barrenado"></div>
                     </div>
                     
                     <div class="col-md-1">
@@ -2351,16 +2396,17 @@
                         <rect x="44" y="70" width="12" height="25" fill="#475569"/>
                         <path d="M 40,70 L 40,15 C 40,10 60,10 60,15 L 60,70 Z" fill="#3b82f6" stroke="#1d4ed8" stroke-width="2"/>
                         <line x1="36" y1="20" x2="64" y2="24" stroke="#ffffff" stroke-width="3"/>
-                        <line x1="36" y1="36" x2="64" y2="40" stroke="#ffffff" stroke-width="3"/>
+                        <line x1="36" y1="32" x2="64" y2="40" stroke="#ffffff" stroke-width="3"/>
                         <line x1="36" y1="44" x2="64" y2="48" stroke="#ffffff" stroke-width="3"/>
                         <line x1="36" y1="56" x2="64" y2="60" stroke="#ffffff" stroke-width="3"/>
                     </svg>
                 </div>
 
                 <div class="row g-2 mb-2 align-items-end">
-                    <div class="col-md-2">
+                    <div class="col-md-2 position-relative">
                         <label class="form-label small mb-1">Buscar Material</label>
-                        <input type="text" list="lista-materiales" id="material_roscado" class="form-control form-control-sm fw-semibold text-primary" placeholder="Escriba ej: 4140, Inox..." oninput="alCambiarMaterialRoscado()" onchange="alCambiarMaterialRoscado()">
+                        <input type="text" id="material_roscado" class="form-control form-control-sm fw-semibold text-primary material-input-scada" placeholder="Escriba ej: 4140, Inox..." oninput="alCambiarMaterialRoscado()" onchange="alCambiarMaterialRoscado()" autocomplete="off">
+                        <div class="custom-mat-dropdown" id="dropdown_material_roscado"></div>
                     </div>
 
                     <div class="col-md-1">
@@ -2643,6 +2689,76 @@
         };
 
         var serieSeleccionadaActual = "DGC";
+
+        /* MATRIZ COMPLETA DE MATERIALES PARA EL DESPLEGABLE PERSONALIZADO */
+        const LISTA_MATERIALES_SCADA = [
+            {% for m in materiales %}
+                "{{ m }}",
+            {% endfor %}
+        ];
+
+        /* CONTROLADOR DE DESPLEGABLE PERSONALIZADO DE MATERIALES (DARK SCADA) */
+        function inicializarDropdownsMateriales() {
+            const inputs = document.querySelectorAll(".material-input-scada");
+
+            inputs.forEach(input => {
+                const parent = input.parentElement;
+                const dropdown = parent.querySelector(".custom-mat-dropdown");
+
+                if (!dropdown) return;
+
+                function renderizarOpciones(filtro = "") {
+                    dropdown.innerHTML = "";
+                    const textoFiltro = filtro.toLowerCase().trim();
+                    
+                    const filtrados = LISTA_MATERIALES_SCADA.filter(mat => 
+                        mat.toLowerCase().includes(textoFiltro)
+                    );
+
+                    if (filtrados.length === 0) {
+                        dropdown.style.display = "none";
+                        return;
+                    }
+
+                    filtrados.forEach(matText => {
+                        const item = document.createElement("div");
+                        item.className = "custom-mat-item";
+                        item.textContent = matText;
+
+                        item.addEventListener("mousedown", (e) => {
+                            e.preventDefault();
+                            input.value = matText;
+                            dropdown.style.display = "none";
+
+                            // Disparar evento de actualización del módulo correspondiente
+                            const event = new Event('change', { bubbles: true });
+                            input.dispatchEvent(event);
+                            
+                            if (input.id === "material") alCambiarMaterialTorneado();
+                            if (input.id === "material_fresado") alCambiarMaterialFresado();
+                            if (input.id === "material_barrenado") alCambiarMaterialBarrenado();
+                            if (input.id === "material_roscado") alCambiarMaterialRoscado();
+                        });
+
+                        dropdown.appendChild(item);
+                    });
+
+                    dropdown.style.display = "block";
+                }
+
+                input.addEventListener("focus", () => {
+                    renderizarOpciones(input.value);
+                });
+
+                input.addEventListener("input", () => {
+                    renderizarOpciones(input.value);
+                });
+
+                input.addEventListener("blur", () => {
+                    setTimeout(() => { dropdown.style.display = "none"; }, 150);
+                });
+            });
+        }
 
         /* FUNCIÓN DE SELECCIÓN FLOTANTE (HOVER DROPDOWN SYNCHRONIZER) */
         function seleccionarOpcionHover(selectId, valor, displayId, itemElem) {
@@ -3481,6 +3597,8 @@
 
         // LISTENERS DE TECLADO Y CARGA
         document.addEventListener("DOMContentLoaded", function() {
+            inicializarDropdownsMateriales();
+
             const sidebarGuardado = localStorage.getItem("ahnsacut_sidebar_collapsed");
             if (sidebarGuardado === "true") {
                 document.body.classList.add("sidebar-collapsed");
