@@ -248,21 +248,30 @@ def calcular_barrenado_ajax():
         'tipo_alerta': tipo_alerta
     })
 
-@app.route('/api/calcular_fresado_ajax')
+@app.route('/api/calcular_fresado_ajax', methods=['GET'])
 def calcular_fresado_ajax():
-    material = request.args.get('material', '').strip()
-    serie = request.args.get('serie', 'DGC').strip().upper()
-    tipo_inserto = request.args.get('tipo_inserto', 'SNMT 13T6').strip()
-    
-    try:
-        dc = float(request.args.get('diametro') or 50)
-        z = int(request.args.get('dientes') or 4)
-        ap = float(request.args.get('ap') or 2.0)
-        ae = float(request.args.get('ae') or 25.0)
-        longitud = float(request.args.get('longitud') or 100.0)
-        fz_in = request.args.get('fz', '').strip()
-    except (ValueError, TypeError):
-        return jsonify({'error': 'Parámetros numéricos inválidos'}), 400
+    material = request.args.get('material', '')
+    serie = request.args.get('serie', 'DGC')
+    tipo_inserto = request.args.get('tipo_inserto', 'SNMT 13T6')
+    diametro = request.args.get('diametro', 50.0)
+    dientes = request.args.get('dientes', None)
+    fz = request.args.get('fz', None)
+    ap = request.args.get('ap', 2.0)
+    ae = request.args.get('ae', 25.0)
+    longitud = request.args.get('longitud', 100.0)
+
+    resultado = calcular_fresado_sumitomo(
+        nombre_material=material,
+        serie_fresa=serie,
+        tipo_inserto_dgc=tipo_inserto,
+        diametro_mm=diametro,
+        dientes=dientes,
+        ap_mm=ap,
+        ae_mm=ae,
+        longitud_mm=longitud,
+        fz_manual=fz
+    )
+    return jsonify(resultado)
 
     if not material:
         return jsonify({})
@@ -442,6 +451,79 @@ def calcular_roscado_ajax():
         'vf': txt_vf,
         'tiempo': txt_tiempo,
         'tiempo_segundos': txt_tiempo_seg
+    })
+
+@app.route('/api/calcular_endmill_ajax', methods=['GET'])
+def calcular_endmill_ajax():
+    material = request.args.get('material', '').strip()
+    geometria = request.args.get('geometria', 'plano').strip() # 'plano' o 'bola'
+    d = float(request.args.get('diametro', 10.0))
+    z = int(request.args.get('dientes', 4))
+    fz = request.args.get('fz', None)
+    ap = float(request.args.get('ap', 2.0))
+    ae = float(request.args.get('ae', 5.0))
+    longitud = float(request.args.get('longitud', 50.0))
+
+    # Identificación automática de Grupo ISO
+    iso = 'P'
+    mat_lower = material.lower()
+    if any(x in mat_lower for x in ["304", "316", "inox", "inoxidable"]): iso = 'M'
+    elif any(x in mat_lower for x in ["gris", "nodular", "fundicion", "cast iron"]): iso = 'K'
+    elif any(x in mat_lower for x in ["aluminio", "6061", "7075", "bronce", "cobre"]): iso = 'N'
+    elif any(x in mat_lower for x in ["titanio", "inconel", "hastelloy"]): iso = 'S'
+    elif any(x in mat_lower for x in ["templado", "hrc", "d2", "skd"]): iso = 'H'
+
+    # Matriz de recomendaciones técnica por fabricante
+    RECOMENDACIONES_ENDMILL = {
+        'P': {'z': 4, 'recubrimiento': 'AlTiN / AlCrN', 'helice': 'Hélice Variable (35°/38°) - Reducción de Vibración'},
+        'M': {'z': 4, 'recubrimiento': 'AlCrN Nano-Lube', 'helice': 'Hélice Variable + Indexado Irregular (Evita Chattering)'},
+        'K': {'z': 4, 'recubrimiento': 'TiCN / AlTiN Abrasión', 'helice': 'Hélice Estándar 30° / 45°'},
+        'N': {'z': 3, 'recubrimiento': 'DLC / Pulido Espejo', 'helice': 'Hélice Alta 45° / 55° (Corte Suave)'},
+        'S': {'z': 5, 'recubrimiento': 'nACo / AlTiN Micrograin', 'helice': 'Indexado Irregular + Hélice Variable (Alta Rigidez)'},
+        'H': {'z': 6, 'recubrimiento': 'AlCrN Ultra-Hard', 'helice': 'Hélice Variable Asimétrica (Corte Seco / MQL)'}
+    }
+
+    rec_data = RECOMENDACIONES_ENDMILL.get(iso, RECOMENDACIONES_ENDMILL['P'])
+
+    # Parámetros base de velocidad de corte (Vc m/min)
+    VC_BASE = {'P': 140, 'M': 90, 'K': 120, 'N': 350, 'S': 45, 'H': 70}
+    vc = VC_BASE.get(iso, 120)
+
+    # Avance por diente base si no fue ingresado por usuario
+    if not fz or fz == '':
+        FZ_BASE = {'P': 0.05, 'M': 0.04, 'K': 0.06, 'N': 0.08, 'S': 0.03, 'H': 0.025}
+        fz = FZ_BASE.get(iso, 0.05)
+    else:
+        fz = float(fz)
+
+    # Cálculo de Diámetro Efectivo si es Endmill de Bola (Ball Nose)
+    d_efectivo = d
+    if geometria == 'bola' and ap < (d / 2.0):
+        import math
+        d_efectivo = 2.0 * math.sqrt(ap * (d - ap))
+        if d_efectivo <= 0: d_efectivo = d
+
+    # Cálculos dinámicos
+    import math
+    rpm = round((vc * 1000.0) / (math.pi * d_efectivo))
+    vf = round(fz * z * rpm)
+    mrr = round((ap * ae * vf) / 1000.0, 2)
+    tiempo = round(longitud / vf, 2) if vf > 0 else 0
+    potencia = round((mrr * 1.8) / 60.0, 2) # Estimación de potencia en kW
+
+    return jsonify({
+        'familia_iso': iso,
+        'flautas_sugeridas': rec_data['z'],
+        'recubrimiento': rec_data['recubrimiento'],
+        'geometria_helice': rec_data['helice'],
+        'diametro_efectivo': round(d_efectivo, 2),
+        'vc': vc,
+        'fz': fz,
+        'rpm': rpm,
+        'vf': vf,
+        'mrr': mrr,
+        'tiempo': tiempo,
+        'potencia': potencia
     })
 
 if __name__ == '__main__':
