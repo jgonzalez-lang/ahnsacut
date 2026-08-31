@@ -1,5 +1,3 @@
-# calc_service.py
-
 import math
 from data_tables import (
     TABLA_MATERIALES, 
@@ -270,53 +268,37 @@ def calcular_fresado_sumitomo(nombre_material, serie_fresa, tipo_inserto_dgc="SN
     ae = float(ae_mm) if ae_mm and float(ae_mm) > 0 else (dc * 0.5)
     longitud = float(longitud_mm) if longitud_mm and float(longitud_mm) > 0 else 100.0
 
-    # DICCIONARIO SERIE DGC (Planeado 45°)
-    GEOMETRIAS_DGC = {
-        "P": {"SNMT": "SNMT 13T6ANER-G", "ONMT": "ONMT 05T6ANER-G", "grado": "ACP2000", "rvp": "FL / G / H"},
-        "M": {"SNMT": "SNMT 13T6ANER-FG", "ONMT": "ONMT 05T6ANER-FG", "grado": "ACS3000", "rvp": "FG / G (Inox)"},
-        "K": {"SNMT": "SNMT 13T6ANER-H", "ONMT": "ONMT 05T6ANER-H", "grado": "ACK2000", "rvp": "G / H (Fundición)"},
-        "N": {"SNMT": "SNET 13T6ANFR-S", "ONMT": "ONET 05T6ANFR-S", "grado": "DL1000", "rvp": "S / L (Aluminio)"},
-        "S": {"SNMT": "SNMT 13T6ANER-FG", "ONMT": "ONMT 05T6ANER-FG", "grado": "ACS2500", "rvp": "G / FG (Superaleaciones)"},
-        "H": {"SNMT": "SNMT 13T6ANER-H", "ONMT": "ONMT 05T6ANER-H", "grado": "ACK3000", "rvp": "H (Templados)"}
-    }
-
-    # DICCIONARIO OFICIAL SERIE WEZ (Escuadrado 90° con AOMT 11T3... / AOET 11T3...)
-    GEOMETRIAS_WEZ = {
-        "P": {"codigo": "AOMT 11T308PEER-G", "grado": "ACP2000", "rvp": "G (General)"},
-        "M": {"codigo": "AOMT 11T308PEER-F", "grado": "ACS2500", "rvp": "F / G (Inoxidable)"},
-        "K": {"codigo": "AOMT 11T308PEER-H", "grado": "ACK2000", "rvp": "H / G (Fundición)"},
-        "N": {"codigo": "AOET 11T308PEFR-S", "grado": "DL2000",  "rvp": "S (Aluminio)"},
-        "S": {"codigo": "AOMT 11T308PEER-F", "grado": "ACS3000", "rvp": "F (Superaleaciones)"},
-        "H": {"codigo": "AOMT 11T308PEER-H", "grado": "ACK3000", "rvp": "H (Templados)"}
-    }
-
+    # LÓGICA DE EXTRACCIÓN ROBUSTA DE GRADO Y GEOMETRÍA
     vc = 210.0
     fz = 0.25
+    grado = "ACP2000"
+    codigo_inserto_sug = "AOMT 11T308PEER-G"
+    geom_cuerpo = "Escuadrado 90° (AOMT)"
+    rompevirutas_fresado = "G (General)"
 
     if serie_key == "DGC":
         sub_key = "ONMT" if "ONMT" in str(tipo_inserto_dgc).upper() else "SNMT"
-        rec_info = GEOMETRIAS_DGC.get(iso, GEOMETRIAS_DGC["P"])
-        codigo_inserto_sug = rec_info.get(sub_key, f"{sub_key} 13T6ANER-G")
-        grado = rec_info.get("grado", "ACP2000")
-        rompevirutas_fresado = rec_info.get("rvp", "General")
         geom_cuerpo = f"Planeado 45° ({sub_key})"
-    else:
-        rec_info = GEOMETRIAS_WEZ.get(iso, GEOMETRIAS_WEZ["P"])
-        codigo_inserto_sug = rec_info.get("codigo", "AOMT 11T308PEER-G")
-        grado = rec_info.get("grado", "ACP2000")
-        rompevirutas_fresado = rec_info.get("rvp", "General")
-        geom_cuerpo = "Escuadrado 90° (AOMT)"
-
-    if serie_key in MATRIZ_PARAMETROS_FRESADO and iso in MATRIZ_PARAMETROS_FRESADO[serie_key]:
-        params_iso = MATRIZ_PARAMETROS_FRESADO[serie_key][iso]
-        if serie_key == "DGC":
-            config = params_iso.get(sub_key, {}) if isinstance(params_iso, dict) else {}
-            vc = float(config.get("vc", vc))
+        
+        if "DGC" in MATRIZ_PARAMETROS_FRESADO and iso in MATRIZ_PARAMETROS_FRESADO["DGC"]:
+            params_iso = MATRIZ_PARAMETROS_FRESADO["DGC"][iso]
+            config = params_iso.get(sub_key, {})
+            vc = float(config.get("vc", 250.0))
             fz = float(config.get("fz_opt", 0.25))
-        else:
-            config = params_iso if isinstance(params_iso, dict) else {}
-            vc = float(config.get("vc", vc))
+            grado = config.get("grado", "ACP2000")
+            insertos = config.get("insertos", [])
+            codigo_inserto_sug = insertos[0] if insertos else f"{sub_key} 13T6ANER-G"
+            rompevirutas_fresado = "G / FL / H"
+    else:
+        geom_cuerpo = "Escuadrado 90° (AOMT)"
+        if "WEZ" in MATRIZ_PARAMETROS_FRESADO and iso in MATRIZ_PARAMETROS_FRESADO["WEZ"]:
+            config = MATRIZ_PARAMETROS_FRESADO["WEZ"][iso]
+            vc = float(config.get("vc", 220.0))
             fz = float(config.get("fz_opt", 0.18))
+            grado = config.get("grado", "ACP2000")
+            insertos = config.get("insertos", [])
+            codigo_inserto_sug = insertos[0] if insertos else "AOMT 11T308PEER-G"
+            rompevirutas_fresado = "G (General)" if iso == "P" else ("F (Inox/Titanio)" if iso in ["M", "S"] else "H (Pesado)")
 
     if fz_manual and float(fz_manual) > 0:
         fz = float(fz_manual)
@@ -347,6 +329,8 @@ def calcular_fresado_sumitomo(nombre_material, serie_fresa, tipo_inserto_dgc="SN
         "geometria_cuerpo": geom_cuerpo,
         "codigo_inserto": codigo_inserto_sug,
         "grado_sumitomo": grado,
+        "grado_calidad": grado,
+        "grado": grado,
         "rompevirutas": rompevirutas_fresado,
         "rompevirutas_sugerido": rompevirutas_fresado,
         "material_inserto_tipo": CLASIFICACION_MATERIAL_INSERTO.get(grado, "CVD Coated Carbide"),
