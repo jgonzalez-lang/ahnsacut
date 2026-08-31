@@ -220,7 +220,7 @@
             min-width: 24px;
             height: 24px;
             margin-right: 12px;
-            transition: margin 0.25s ease;
+            transition: margin 0.25s ease, transform 0.2s ease;
             flex-shrink: 0;
         }
 
@@ -261,6 +261,22 @@
             padding: 10px 0;
         }
 
+        /* ANIMACIÓN EN CASCADA MÁS LENTA QUE SE QUEDA FIJA EN CIAN */
+@keyframes efectoEntradaZoom {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.35);
+        color: #00e5ff !important;
+        filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.9));
+    }
+}
+
+.icono-animado-entrada {
+    animation: efectoEntradaZoom 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards !important;
+    z-index: 100 !important;
+}
         .main-content {
             margin-left: var(--sidebar-width);
             padding: 24px 28px;
@@ -989,17 +1005,17 @@
                     </a>
                 </li>
 
-<!-- ACCESO DIRECTO: FÓRMULAS CNC -->
-<li>
-    <a id="nav-formulas" onclick="abrirModalFormulas()" title="Fórmulas CNC">
-        <div class="nav-icon-box">
-            <i class="bi bi-calculator-fill text-info"></i>
-        </div>
-        <span class="nav-text text-info fw-bold">Fórmulas CNC</span>
-    </a>
-</li>
+                <!-- ACCESO DIRECTO 1: FÓRMULAS CNC -->
+                <li>
+                    <a id="nav-formulas" onclick="abrirModalFormulas()" title="Fórmulas CNC">
+                        <div class="nav-icon-box">
+                            <i class="bi bi-calculator-fill text-info"></i>
+                        </div>
+                        <span class="nav-text text-info fw-bold">Fórmulas CNC</span>
+                    </a>
+                </li>
 
-                <!-- ACCESO DIRECTO 1: SÍMBOLOS Y UNIDADES -->
+                <!-- ACCESO DIRECTO 2: SÍMBOLOS Y UNIDADES -->
                 <li>
                     <a id="nav-simbologia" onclick="abrirModalSimbologia()" title="Símbolos y Unidades">
                         <div class="nav-icon-box">
@@ -1009,7 +1025,7 @@
                     </a>
                 </li>
 
-                <!-- ACCESO DIRECTO 2: REFERENCIA GD&T -->
+                <!-- ACCESO DIRECTO 3: REFERENCIA GD&T -->
                 <li>
                     <a id="nav-gdt" onclick="abrirModalGDT()" title="Referencia GD&T">
                         <div class="nav-icon-box">
@@ -1233,7 +1249,7 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN INFERIOR REORGANIZADA -->
+            <!-- SECCIÓN INFERIOR REORGANIZADA CON PROPÓSITO DEL SISTEMA ESTANDARIZADO CIAN -->
             <div class="row g-3 mb-4 align-items-stretch">
                 <div class="col-lg-6">
                     <div class="ui-card h-100 d-flex flex-column justify-content-between">
@@ -1344,7 +1360,7 @@
                     </div>
                 </div>
 
-                <!-- TARJETA REDISEÑADA: PROPÓSITO DEL SISTEMA Y PRESENTACIÓN DE MÓDULOS -->
+                <!-- TARJETAS REDISEÑADAS: PROPÓSITO DEL SISTEMA -->
                 <div class="col-lg-6">
                     <div class="ui-card h-100 d-flex flex-column justify-content-between">
                         <div>
@@ -3032,8 +3048,20 @@
         };
 
         var serieSeleccionadaActual = "DGC";
+        var animacionEjecutada = false;
 
-        /* CONFIGURACIÓN DE AUTO-COLAPSO POR HOVER EN MENÚ LATERAL */
+        /* ANIMACIÓN MÁS LENTA Y PERMANENTE DE ARRIBA A ABAJO */
+function animarIconosSidebarEntrada() {
+    const elementosNav = document.querySelectorAll(".sidebar-nav a .nav-icon-box");
+    
+    elementosNav.forEach((box, index) => {
+        setTimeout(() => {
+            // Aplica la clase y la propiedad 'forwards' del CSS mantendrá el efecto fijo
+            box.classList.add("icono-animado-entrada");
+        }, index * 250); // Desfase de 250ms (más lento y paulatino de arriba a abajo)
+    });
+}
+
         function inicializarAutoHoverSidebar() {
             const sidebar = document.getElementById("sidebar");
             if (!sidebar) return;
@@ -3042,6 +3070,11 @@
 
             sidebar.addEventListener("mouseenter", function() {
                 document.body.classList.remove("sidebar-collapsed");
+                
+                if (!animacionEjecutada) {
+                    animarIconosSidebarEntrada();
+                    animacionEjecutada = true;
+                }
             });
 
             sidebar.addEventListener("mouseleave", function() {
