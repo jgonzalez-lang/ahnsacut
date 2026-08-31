@@ -1,8 +1,6 @@
-# app.py
-
 import os
 import math
-from flask import Flask, render_template, request, jsonify, current_app
+from flask import Flask, render_template, request, jsonify
 from calc_service import (
     obtener_materiales, 
     obtener_insertos_compatibles, 
@@ -250,15 +248,17 @@ def calcular_barrenado_ajax():
 
 @app.route('/api/calcular_fresado_ajax', methods=['GET'])
 def calcular_fresado_ajax():
-    material = request.args.get('material', '')
-    serie = request.args.get('serie', 'DGC')
-    tipo_inserto = request.args.get('tipo_inserto', 'SNMT 13T6')
-    diametro = request.args.get('diametro', 50.0)
+    material = request.args.get('material', '').strip()
+    serie = request.args.get('serie', 'DGC').strip()
+    tipo_inserto = request.args.get('tipo_inserto', 'SNMT 13T6').strip()
+    
+    try:
+        diametro = float(request.args.get('diametro') or 50.0)
+    except (ValueError, TypeError):
+        diametro = 50.0
+
     dientes = request.args.get('dientes', None)
     fz = request.args.get('fz', None)
-    ap = request.args.get('ap', 2.0)
-    ae = request.args.get('ae', 25.0)
-    longitud = request.args.get('longitud', 100.0)
 
     resultado = calcular_fresado_sumitomo(
         nombre_material=material,
@@ -266,80 +266,10 @@ def calcular_fresado_ajax():
         tipo_inserto_dgc=tipo_inserto,
         diametro_mm=diametro,
         dientes=dientes,
-        ap_mm=ap,
-        ae_mm=ae,
-        longitud_mm=longitud,
         fz_manual=fz
     )
-    return jsonify(resultado)
+    return jsonify(resultado if resultado else {})
 
-    if not material:
-        return jsonify({})
-
-    iso_detectado = 'P'
-    mat_lower = material.lower()
-    
-    if any(x in mat_lower for x in ['304', '316', 'inox', 'inoxidable']):
-        iso_detectado = 'M'
-    elif any(x in mat_lower for x in ['gris', 'nodular', 'fundicion', 'fundición', 'cast iron']):
-        iso_detectado = 'K'
-    elif any(x in mat_lower for x in ['aluminio', 'al ', '6061', '7075', 'bronce', 'cobre']):
-        iso_detectado = 'N'
-    elif any(x in mat_lower for x in ['titanio', 'inconel', 'hastelloy', 'waspaloy']):
-        iso_detectado = 'S'
-    elif any(x in mat_lower for x in ['templado', 'hrc', 'd2', 'skd']):
-        iso_detectado = 'H'
-
-    MAPA_ROMPEVIRUTAS_DGC = {
-        'P': {'rvp': 'G (Corte General / Aceros)',        'vc': 180.0, 'fz': 0.15},
-        'M': {'rvp': 'FL (Ligero / Anti-Adherente Inox)', 'vc': 120.0, 'fz': 0.12},
-        'K': {'rvp': 'H (Corte Pesado / Fundición)',       'vc': 160.0, 'fz': 0.18},
-        'N': {'rvp': 'FG (Filo Afilado / Pulido No-Ferrosos)', 'vc': 350.0, 'fz': 0.20},
-        'S': {'rvp': 'S (Alta Tenacidad / Titanio)',     'vc': 45.0,  'fz': 0.10},
-        'H': {'rvp': 'H (Alta Dureza / Reforzado)',       'vc': 60.0,  'fz': 0.08}
-    }
-
-    MAPA_ROMPEVIRUTAS_WEZ = {
-        'P': {'rvp': 'G (Geometría Universal Aceros)',    'vc': 200.0, 'fz': 0.14},
-        'M': {'rvp': 'F (Filo Afilado / Acero Inox)',     'vc': 130.0, 'fz': 0.10},
-        'K': {'rvp': 'H (Filo Reforzado Fundición)',      'vc': 170.0, 'fz': 0.16},
-        'N': {'rvp': 'F (Bajo Esfuerzo / No Ferrosos)',   'vc': 400.0, 'fz': 0.18},
-        'S': {'rvp': 'S (Corte Térmico Superaleaciones)','vc': 50.0,  'fz': 0.09},
-        'H': {'rvp': 'P (Corte Interrumpido Templados)', 'vc': 70.0,  'fz': 0.07}
-    }
-
-    if 'WEZ' in serie:
-        config = MAPA_ROMPEVIRUTAS_WEZ.get(iso_detectado, MAPA_ROMPEVIRUTAS_WEZ['P'])
-    else:
-        config = MAPA_ROMPEVIRUTAS_DGC.get(iso_detectado, MAPA_ROMPEVIRUTAS_DGC['P'])
-
-    rompevirutas_oficial = config['rvp']
-    vc_base = config['vc']
-    fz_base = config['fz']
-
-    fz_final = float(fz_in) if (fz_in and float(fz_in) > 0) else fz_base
-    
-    rpm = (vc_base * 1000) / (math.pi * dc) if dc > 0 else 0
-    vf = fz_final * z * rpm
-    mrr = (ap * ae * vf) / 1000.0
-    tiempo = longitud / vf if vf > 0 else 0
-    vtr = mrr * tiempo
-
-    return jsonify({
-        'iso_detectado': iso_detectado,
-        'rompevirutas': rompevirutas_oficial,
-        'vc': str(round(vc_base, 1)),
-        'fz': str(round(fz_final, 2)),
-        'rpm': str(round(rpm, 1)),
-        'vf': str(round(vf, 1)),
-        'mrr': str(round(mrr, 2)),
-        'tiempo': str(round(tiempo, 3)),
-        'vtr': str(round(vtr, 2))
-    })
-
-# ==========================================
-# API DE ROSCADO CNC (UNIFICADA Y GARANTIZADA)
-# ==========================================
 @app.route('/api/calcular_roscado_ajax')
 def calcular_roscado_ajax():
     material = request.args.get('material', '').strip()
@@ -361,7 +291,6 @@ def calcular_roscado_ajax():
 
     vc_raw = request.args.get('vc', '').strip()
 
-    # 1. Identificación de Grupo ISO
     iso_detectado = 'P'
     if material:
         mat_lower = material.lower()
@@ -394,7 +323,6 @@ def calcular_roscado_ajax():
     except ValueError:
         vc_final = vc_sugerido
 
-    # 2. Brocas Previas
     if d_machuelo > 0 and paso > 0:
         if tipo_machuelo == 'laminacion' and metodo == 'machuelo':
             b_std = d_machuelo - (0.5 * paso)
@@ -407,7 +335,6 @@ def calcular_roscado_ajax():
     else:
         txt_std, txt_pct = "-", "-"
 
-    # 3. Métricas de Operación (RPM, Vf y Tiempo)
     if metodo == 'fresa' and d_fresa > 0 and d_machuelo > 0 and paso > 0:
         rpm = (vc_final * 1000.0) / (math.pi * d_fresa)
         vf_periferia = rpm * z_fresa * fz_fresa
@@ -456,7 +383,7 @@ def calcular_roscado_ajax():
 @app.route('/api/calcular_endmill_ajax', methods=['GET'])
 def calcular_endmill_ajax():
     material = request.args.get('material', '').strip()
-    geometria = request.args.get('geometria', 'plano').strip() # 'plano' o 'bola'
+    geometria = request.args.get('geometria', 'plano').strip()
     d = float(request.args.get('diametro', 10.0))
     z = int(request.args.get('dientes', 4))
     fz = request.args.get('fz', None)
@@ -464,7 +391,6 @@ def calcular_endmill_ajax():
     ae = float(request.args.get('ae', 5.0))
     longitud = float(request.args.get('longitud', 50.0))
 
-    # Identificación automática de Grupo ISO
     iso = 'P'
     mat_lower = material.lower()
     if any(x in mat_lower for x in ["304", "316", "inox", "inoxidable"]): iso = 'M'
@@ -473,7 +399,6 @@ def calcular_endmill_ajax():
     elif any(x in mat_lower for x in ["titanio", "inconel", "hastelloy"]): iso = 'S'
     elif any(x in mat_lower for x in ["templado", "hrc", "d2", "skd"]): iso = 'H'
 
-    # Matriz de recomendaciones técnica por fabricante
     RECOMENDACIONES_ENDMILL = {
         'P': {'z': 4, 'recubrimiento': 'AlTiN / AlCrN', 'helice': 'Hélice Variable (35°/38°) - Reducción de Vibración'},
         'M': {'z': 4, 'recubrimiento': 'AlCrN Nano-Lube', 'helice': 'Hélice Variable + Indexado Irregular (Evita Chattering)'},
@@ -485,31 +410,25 @@ def calcular_endmill_ajax():
 
     rec_data = RECOMENDACIONES_ENDMILL.get(iso, RECOMENDACIONES_ENDMILL['P'])
 
-    # Parámetros base de velocidad de corte (Vc m/min)
     VC_BASE = {'P': 140, 'M': 90, 'K': 120, 'N': 350, 'S': 45, 'H': 70}
     vc = VC_BASE.get(iso, 120)
 
-    # Avance por diente base si no fue ingresado por usuario
     if not fz or fz == '':
         FZ_BASE = {'P': 0.05, 'M': 0.04, 'K': 0.06, 'N': 0.08, 'S': 0.03, 'H': 0.025}
         fz = FZ_BASE.get(iso, 0.05)
     else:
         fz = float(fz)
 
-    # Cálculo de Diámetro Efectivo si es Endmill de Bola (Ball Nose)
     d_efectivo = d
     if geometria == 'bola' and ap < (d / 2.0):
-        import math
         d_efectivo = 2.0 * math.sqrt(ap * (d - ap))
         if d_efectivo <= 0: d_efectivo = d
 
-    # Cálculos dinámicos
-    import math
     rpm = round((vc * 1000.0) / (math.pi * d_efectivo))
     vf = round(fz * z * rpm)
     mrr = round((ap * ae * vf) / 1000.0, 2)
     tiempo = round(longitud / vf, 2) if vf > 0 else 0
-    potencia = round((mrr * 1.8) / 60.0, 2) # Estimación de potencia en kW
+    potencia = round((mrr * 1.8) / 60.0, 2)
 
     return jsonify({
         'familia_iso': iso,
