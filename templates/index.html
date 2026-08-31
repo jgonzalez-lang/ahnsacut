@@ -239,28 +239,6 @@
             font-weight: 700;
         }
 
-        .sidebar-toggle-btn {
-            background-color: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--sidebar-border);
-            color: #94a3b8;
-            padding: 10px 12px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.82rem;
-            transition: all 0.2s ease;
-            white-space: nowrap;
-            min-height: 44px;
-        }
-
-        .sidebar-toggle-btn:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-        }
-
         body.sidebar-collapsed {
             --sidebar-width: 65px;
         }
@@ -270,8 +248,7 @@
             padding: 2px;
         }
 
-        body.sidebar-collapsed .nav-text,
-        body.sidebar-collapsed .toggle-text {
+        body.sidebar-collapsed .nav-text {
             display: none;
         }
 
@@ -900,10 +877,6 @@
                 margin-right: 6px;
             }
 
-            .sidebar-toggle-btn {
-                display: none !important;
-            }
-
             .main-content {
                 margin-left: 0;
                 padding: 16px 12px;
@@ -948,7 +921,7 @@
 </head>
 <body>
 
-    <!-- Sidebar Lateral Dinámico HOVER -->
+    <!-- Sidebar Lateral Dinámico con Auto-colapso por HOVER -->
     <div class="sidebar" id="sidebar">
         <div>
             <div class="sidebar-brand">
@@ -1016,13 +989,38 @@
                     </a>
                 </li>
 
-                <!-- NUEVO ACCESO DIRECTO A FÓRMULAS CNC -->
+<!-- ACCESO DIRECTO: FÓRMULAS CNC -->
+<li>
+    <a id="nav-formulas" onclick="abrirModalFormulas()" title="Fórmulas CNC">
+        <div class="nav-icon-box">
+            <i class="bi bi-calculator-fill text-info"></i>
+        </div>
+        <span class="nav-text text-info fw-bold">Fórmulas CNC</span>
+    </a>
+</li>
+
+                <!-- ACCESO DIRECTO 1: SÍMBOLOS Y UNIDADES -->
                 <li>
-                    <a id="nav-formulas" onclick="abrirModalFormulas()" title="Fórmulas CNC">
+                    <a id="nav-simbologia" onclick="abrirModalSimbologia()" title="Símbolos y Unidades">
                         <div class="nav-icon-box">
-                            <i class="bi bi-calculator-fill text-info"></i>
+                            <i class="bi bi-book-fill text-warning"></i>
                         </div>
-                        <span class="nav-text text-info fw-bold">Fórmulas CNC</span>
+                        <span class="nav-text text-warning fw-bold">Símbolos y Unidades</span>
+                    </a>
+                </li>
+
+                <!-- ACCESO DIRECTO 2: REFERENCIA GD&T -->
+                <li>
+                    <a id="nav-gdt" onclick="abrirModalGDT()" title="Referencia GD&T">
+                        <div class="nav-icon-box">
+                            <svg width="22" height="22" viewBox="0 0 100 100">
+                                <rect x="10" y="20" width="80" height="60" fill="#1e293b" stroke="#00e5ff" stroke-width="6" rx="4"/>
+                                <line x1="40" y1="20" x2="40" y2="80" stroke="#00e5ff" stroke-width="5"/>
+                                <circle cx="25" cy="50" r="10" fill="none" stroke="#f59e0b" stroke-width="5"/>
+                                <text x="50" y="62" fill="#ffffff" font-family="sans-serif" font-size="32" font-weight="bold">0.1</text>
+                            </svg>
+                        </div>
+                        <span class="nav-text text-primary fw-bold">Referencia GD&T</span>
                     </a>
                 </li>
             </ul>
@@ -1346,44 +1344,84 @@
                     </div>
                 </div>
 
+                <!-- TARJETA REDISEÑADA: PROPÓSITO DEL SISTEMA Y PRESENTACIÓN DE MÓDULOS -->
                 <div class="col-lg-6">
                     <div class="ui-card h-100 d-flex flex-column justify-content-between">
                         <div>
-                            <div class="ui-card-title mb-2"><i class="bi bi-calculator-fill me-2 text-primary"></i>Formulario de Ecuaciones CNC Completas</div>
-                            <p class="small text-muted mb-2">Formulario oficial de parámetros de corte para Torneado, Fresado, Barrenado y Roscado.</p>
+                            <!-- TÍTULO Y PROPÓSITO GENERAL DEL SISTEMA -->
+                            <div class="ui-card-title mb-2 d-flex align-items-center justify-content-between">
+                                <span style="color: #00e5ff !important;"><i class="bi bi-cpu-fill me-2"></i>Propósito del Sistema AhnsaCut</span>
+                                <span class="badge bg-dark text-info border border-info" style="font-size: 0.72rem; color: #00e5ff !important; border-color: #00e5ff !important;">CNC SCADA System</span>
+                            </div>
                             
-                            <div class="bg-dark text-white rounded p-2 small font-monospace overflow-x-auto border border-secondary">
-                                <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary gap-2">
-                                    <span class="text-info fw-bold">Velocidad Corte (Vc):</span>
-                                    <span class="text-warning text-nowrap">Vc = (π × D × n) / 1000 [m/min]</span>
+                            <p class="small mb-3 leading-relaxed" style="color: #cbd5e1 !important; font-size: 0.82rem;">
+                                Plataforma integral de cálculo de parámetros de corte y recomendador técnico oficial Sumitomo. Optimiza condiciones de mecanizado en tiempo real para maximizar la vida útil de las herramientas, reducir tiempos de ciclo e incrementar la productividad en taller.
+                            </p>
+
+                            <!-- RESUMEN TÉCNICO DE LOS MÓDULOS DE TRABAJO (UNIFICADO EN CIAN) -->
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <div class="p-2 rounded border bg-dark h-100" style="background-color: #111827 !important; border-color: #00e5ff !important;">
+                                        <div class="d-flex align-items-center gap-2 mb-1">
+                                            <svg width="18" height="18" viewBox="0 0 100 100">
+                                                <circle cx="50" cy="50" r="40" fill="none" stroke="#00e5ff" stroke-width="8"/>
+                                                <circle cx="50" cy="50" r="16" fill="#00e5ff"/>
+                                                <rect x="42" y="10" width="16" height="12" rx="2" fill="#00e5ff"/>
+                                                <rect x="42" y="78" width="16" height="12" rx="2" fill="#00e5ff"/>
+                                                <rect x="10" y="42" width="12" height="16" rx="2" fill="#00e5ff"/>
+                                                <rect x="78" y="42" width="12" height="16" rx="2" fill="#00e5ff"/>
+                                            </svg>
+                                            <span class="fw-bold small" style="font-size: 0.8rem; color: #00e5ff !important;">Fresado CNC</span>
+                                        </div>
+                                        <p class="mb-0 text-muted" style="font-size: 0.72rem; line-height: 1.25; color: #94a3b8 !important;">
+                                            Planeado 45° (DGC), escuadrado 90° (WEZ) y cortadores sólidos (Endmills).
+                                        </p>
+                                    </div>
                                 </div>
-                                <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary gap-2">
-                                    <span class="text-info fw-bold">RPM Husillo (n):</span>
-                                    <span class="text-warning text-nowrap">n = (Vc × 1000) / (π × D) [rev/min]</span>
+
+                                <div class="col-6">
+                                    <div class="p-2 rounded border bg-dark h-100" style="background-color: #111827 !important; border-color: #00e5ff !important;">
+                                        <div class="d-flex align-items-center gap-2 mb-1">
+                                            <svg width="18" height="18" viewBox="0 0 100 100">
+                                                <polygon points="50,12 88,50 50,88 12,50" fill="#00e5ff" stroke="#00e5ff" stroke-width="2"/>
+                                                <circle cx="50" cy="50" r="12" fill="#0f172a"/>
+                                            </svg>
+                                            <span class="fw-bold small" style="font-size: 0.8rem; color: #00e5ff !important;">Torneado CNC</span>
+                                        </div>
+                                        <p class="mb-0 text-muted" style="font-size: 0.72rem; line-height: 1.25; color: #94a3b8 !important;">
+                                            Selección de insertos, grados Sumitomo, rompevirutas y estimación de pasadas.
+                                        </p>
+                                    </div>
                                 </div>
-                                <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary gap-2">
-                                    <span class="text-info fw-bold">Avance por diente (fz):</span>
-                                    <span class="text-warning text-nowrap">fz = Vf / (z × n) [mm/diente]</span>
+
+                                <div class="col-6">
+                                    <div class="p-2 rounded border bg-dark h-100" style="background-color: #111827 !important; border-color: #00e5ff !important;">
+                                        <div class="d-flex align-items-center gap-2 mb-1">
+                                            <svg width="18" height="18" viewBox="0 0 100 100">
+                                                <path d="M 38,90 L 38,40 L 50,10 L 62,40 L 62,90 Z" fill="#00e5ff"/>
+                                                <polygon points="50,10 38,40 62,40" fill="#00e5ff"/>
+                                            </svg>
+                                            <span class="fw-bold small" style="font-size: 0.8rem; color: #00e5ff !important;">Barrenado</span>
+                                        </div>
+                                        <p class="mb-0 text-muted" style="font-size: 0.72rem; line-height: 1.25; color: #94a3b8 !important;">
+                                            Brocas de carburo, relación L/D y recomendaciones de refrigerante.
+                                        </p>
+                                    </div>
                                 </div>
-                                <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary gap-2">
-                                    <span class="text-info fw-bold">Avance de Máquina (Vf):</span>
-                                    <span class="text-warning text-nowrap">Vf = fz × z × n [mm/min]</span>
-                                </div>
-                                <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary gap-2">
-                                    <span class="text-info fw-bold">Prof. Axial / Radial (ap / ae):</span>
-                                    <span class="text-warning text-nowrap">ap = Prof. Corte | ae = Ancho Corte [mm]</span>
-                                </div>
-                                <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary gap-2">
-                                    <span class="text-info fw-bold">Tasa Remoción (MRR):</span>
-                                    <span class="text-warning text-nowrap">MRR = (ap × ae × Vf) / 1000 [cm³/min]</span>
-                                </div>
-                                <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary gap-2">
-                                    <span class="text-info fw-bold">Potencia Corte (Pc):</span>
-                                    <span class="text-warning text-nowrap">Pc = (MRR × kc) / 60000 [kW]</span>
-                                </div>
-                                <div class="d-flex justify-content-between gap-2">
-                                    <span class="text-info fw-bold">Tiempo de Corte (Tc):</span>
-                                    <span class="text-warning text-nowrap">Tc = Longitud L / Vf [minutos]</span>
+
+                                <div class="col-6">
+                                    <div class="p-2 rounded border bg-dark h-100" style="background-color: #111827 !important; border-color: #00e5ff !important;">
+                                        <div class="d-flex align-items-center gap-2 mb-1">
+                                            <svg width="18" height="18" viewBox="0 0 100 100">
+                                                <rect x="44" y="68" width="12" height="25" fill="#00e5ff"/>
+                                                <path d="M 40,68 L 40,15 C 40,10 60,10 60,15 L 60,68 Z" fill="#00e5ff"/>
+                                            </svg>
+                                            <span class="fw-bold small" style="font-size: 0.8rem; color: #00e5ff !important;">Roscado</span>
+                                        </div>
+                                        <p class="mb-0 text-muted" style="font-size: 0.72rem; line-height: 1.25; color: #94a3b8 !important;">
+                                            Machuelos de corte/laminación, tablas normalizadas y fresado de roscas.
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1518,6 +1556,7 @@
                     </div>
                 </div>
 
+                <!-- SECCIÓN DE RECOMENDACIÓN CON CONTRASTE MEJORADO EN TORNEADO -->
                 <div class="row g-3 mb-3">
                     <div class="col-lg-6">
                         <div class="ui-card">
@@ -1526,13 +1565,13 @@
                             <div class="highlight-blue">
                                 <div class="highlight-blue-title">Grado recomendado</div>
                                 <div class="fs-5 fw-bold text-light" id="valGrado">{% if resultado %}{{ resultado.grado_calidad }}{% else %}-{% endif %}</div>
-                                <div class="small text-muted" style="font-size: 0.75rem;">{% if resultado %}Gama Principal Sumitomo{% else %}-{% endif %}</div>
+                                <div class="fw-bold mt-1" style="font-size: 0.85rem; color: #00e5ff !important;">{% if resultado %}Gama Principal Sumitomo{% else %}-{% endif %}</div>
                             </div>
 
                             <div class="highlight-gold">
                                 <div class="highlight-gold-title">ROMPEVIRUTAS SUMITOMO RECOMENDADO</div>
                                 <div class="fs-5 fw-bold text-light mb-1" id="valRompevirutas">{% if resultado %}{{ resultado.rompevirutas }}{% else %}-{% endif %}</div>
-                                <div class="small text-warning-emphasis" style="font-size: 0.73rem;">Seleccionado según ISO, material, operación y tipo de corte.</div>
+                                <div class="fw-bold mt-1" style="font-size: 0.82rem; color: #fbbf24 !important;">Seleccionado según ISO, material, operación y tipo de corte.</div>
                             </div>
 
                             <div class="row g-2">
@@ -1651,6 +1690,7 @@
                     </div>
                 </div>
 
+                <!-- TARJETAS TÉCNICAS ESTANDARIZADAS EN OSCURO CON RESALTES -->
                 <div class="ui-card mb-3">
                     <div class="ui-card-title d-flex justify-content-between align-items-center">
                         <span>Parámetros CNC Calculados y Estimación de Pasadas</span>
@@ -2631,7 +2671,7 @@
 
     </div>
 
-    <!-- MODAL DE ZOOM -->
+    <!-- MODAL DE ZOOM DE IMÁGENES -->
     <div class="modal fade" id="modalImageZoom" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-fullscreen p-2">
             <div class="modal-content bg-dark text-white border-secondary">
@@ -2662,95 +2702,320 @@
         </div>
     </div>
 
-    <!-- MODAL DE FÓRMULAS CNC OFICIALES DEL SISTEMA -->
-<div class="modal fade" id="modalFormulasCNC" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content bg-dark text-white border-info shadow-lg">
-            <div class="modal-header border-secondary py-2 d-flex justify-content-between align-items-center">
-                <h5 class="modal-title fs-6 fw-bold mb-0 text-info">
-                    <i class="bi bi-calculator-fill me-2"></i>Formulario Oficial de la Aplicación AhnsaCut
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- MODAL 1: FÓRMULAS CNC -->
+    <div class="modal fade" id="modalFormulasCNC" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content bg-dark text-white border-info shadow-lg">
+                <div class="modal-header border-secondary py-2 d-flex justify-content-between align-items-center">
+                    <h5 class="modal-title fs-6 fw-bold mb-0 text-info">
+                        <i class="bi bi-calculator-fill me-2"></i>Formulario Oficial de la Aplicación AhnsaCut
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-3" style="max-height: 80vh; overflow-y: auto;">
+                    <div class="row g-3">
+                        
+                        <!-- TORNEADO CNC -->
+                        <div class="col-md-6">
+                            <div class="p-3 border border-secondary rounded bg-dark h-100">
+                                <h6 class="fw-bold text-primary border-bottom border-secondary pb-2 mb-2 d-flex align-items-center gap-2">
+                                    <svg width="20" height="22" viewBox="0 0 100 100">
+                                        <polygon points="50,12 88,50 50,88 12,50" fill="#f59e0b" stroke="currentColor" stroke-width="5"/>
+                                        <circle cx="50" cy="50" r="12" fill="#0f172a"/>
+                                    </svg>
+                                    <span>Torneado CNC</span>
+                                </h6>
+                                <div class="font-monospace small">
+                                    <p class="mb-2"><strong>Velocidad Ajustada (Vc):</strong><br><span class="text-warning">Vc = Vc_base × Factor_Operación</span> <span class="text-muted">[m/min]</span></p>
+                                    <p class="mb-2"><strong>RPM Husillo (n):</strong><br><span class="text-warning">n = (Vc × 1000) / (π × D_promedio)</span> <span class="text-muted">[rpm]</span></p>
+                                    <p class="mb-2"><strong>Avance de Máquina (Vf):</strong><br><span class="text-warning">Vf = n × fn_auto</span> <span class="text-muted">[mm/min]</span></p>
+                                    <p class="mb-2"><strong>N° de Pasadas Reales:</strong><br><span class="text-warning">Pasadas = ceil((D_init - D_fin) / (2 × ap))</span></p>
+                                    <p class="mb-2"><strong>ap Real por Pasada:</strong><br><span class="text-warning">ap_real = ((D_init - D_fin) / 2) / Pasadas</span> <span class="text-muted">[mm]</span></p>
+                                    <p class="mb-0"><strong>Potencia de Corte (Pc):</strong><br><span class="text-warning">Pc = (ap × fn × Vc × kc) / (60000 × 0.8)</span> <span class="text-muted">[kW]</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FRESADO CNC -->
+                        <div class="col-md-6">
+                            <div class="p-3 border border-secondary rounded bg-dark h-100">
+                                <h6 class="fw-bold text-warning border-bottom border-secondary pb-2 mb-2 d-flex align-items-center gap-2">
+                                    <svg width="20" height="22" viewBox="0 0 100 100">
+                                        <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="8"/>
+                                        <circle cx="50" cy="50" r="16" fill="currentColor"/>
+                                        <rect x="42" y="10" width="16" height="12" rx="2" fill="#f59e0b"/>
+                                        <rect x="42" y="78" width="16" height="12" rx="2" fill="#f59e0b"/>
+                                        <rect x="10" y="42" width="12" height="16" rx="2" fill="#f59e0b"/>
+                                        <rect x="78" y="42" width="12" height="16" rx="2" fill="#f59e0b"/>
+                                    </svg>
+                                    <span>Fresado de Insertos (DGC / WEZ)</span>
+                                </h6>
+                                <div class="font-monospace small">
+                                    <p class="mb-2"><strong>RPM Husillo (n):</strong><br><span class="text-warning">n = (Vc × 1000) / (π × D)</span> <span class="text-muted">[rpm]</span></p>
+                                    <p class="mb-2"><strong>Avance de Máquina (Vf):</strong><br><span class="text-warning">Vf = n × fz × z</span> <span class="text-muted">[mm/min]</span></p>
+                                    <p class="mb-2"><strong>Factor Adelgazamiento (ae/D &lt; 0.3):</strong><br><span class="text-warning">fz_corregido = fz × 1.20</span> <span class="text-muted">[mm/z]</span></p>
+                                    <p class="mb-2"><strong>Tasa de Remoción (MRR):</strong><br><span class="text-warning">MRR = (ap × ae × Vf) / 1000</span> <span class="text-muted">[cm³/min]</span></p>
+                                    <p class="mb-2"><strong>Volumen Total Viruta (VTR):</strong><br><span class="text-warning">VTR = MRR × (Longitud / Vf)</span> <span class="text-muted">[cm³]</span></p>
+                                    <p class="mb-0"><strong>Potencia de Corte (Pc):</strong><br><span class="text-warning">Pc = (MRR × kc) / (60000 × 0.8)</span> <span class="text-muted">[kW]</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- BARRENADO CNC -->
+                        <div class="col-md-6">
+                            <div class="p-3 border border-secondary rounded bg-dark h-100">
+                                <h6 class="fw-bold text-success border-bottom border-secondary pb-2 mb-2 d-flex align-items-center gap-2">
+                                    <svg width="20" height="22" viewBox="0 0 100 100">
+                                        <path d="M 38,90 L 38,40 L 50,10 L 62,40 L 62,90 Z" fill="currentColor"/>
+                                        <path d="M 38,60 C 48,50 52,40 62,30" stroke="#10b981" stroke-width="6" fill="none"/>
+                                        <polygon points="50,10 38,40 62,40" fill="#10b981"/>
+                                    </svg>
+                                    <span>Barrenado / Taladrado CNC</span>
+                                </h6>
+                                <div class="font-monospace small">
+                                    <p class="mb-2"><strong>Distancia Punta Broca (P):</strong><br><span class="text-warning">P = (D / 2) / tan(Ángulo / 2)</span> <span class="text-muted">[mm]</span></p>
+                                    <p class="mb-2"><strong>Profundidad Efectiva:</strong><br><span class="text-warning">L_efectiva = L + P</span> <span class="text-muted">(Agujero Pasante)</span></p>
+                                    <p class="mb-2"><strong>Avance por Diente (fn):</strong><br><span class="text-warning">fn = k_fn × (D ^ 0.85)</span> <span class="text-muted">[mm/rev]</span></p>
+                                    <p class="mb-2"><strong>MRR Barrenado:</strong><br><span class="text-warning">MRR = (π × D² / 4) × Vf / 1000</span> <span class="text-muted">[cm³/min]</span></p>
+                                    <p class="mb-0"><strong>Torque Estimado (Mc):</strong><br><span class="text-warning">Mc = (Pc × 9550) / n</span> <span class="text-muted">[N·m]</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ROSCADO CNC -->
+                        <div class="col-md-6">
+                            <div class="p-3 border border-secondary rounded bg-dark h-100">
+                                <h6 class="fw-bold text-info border-bottom border-secondary pb-2 mb-2 d-flex align-items-center gap-2">
+                                    <svg width="20" height="22" viewBox="0 0 100 100">
+                                        <rect x="44" y="68" width="12" height="25" fill="currentColor"/>
+                                        <path d="M 40,68 L 40,15 C 40,10 60,10 60,15 L 60,68 Z" fill="#3b82f6" stroke="currentColor" stroke-width="3"/>
+                                        <line x1="36" y1="22" x2="64" y2="26" stroke="#ffffff" stroke-width="4"/>
+                                        <line x1="36" y1="36" x2="64" y2="40" stroke="#ffffff" stroke-width="4"/>
+                                        <line x1="36" y1="50" x2="64" y2="54" stroke="#ffffff" stroke-width="4"/>
+                                    </svg>
+                                    <span>Roscado / Machuelos</span>
+                                </h6>
+                                <div class="font-monospace small">
+                                    <p class="mb-2"><strong>Broca Machuelo Corte Estándar:</strong><br><span class="text-warning">Ø Broca = D - Paso</span> <span class="text-muted">[mm]</span></p>
+                                    <p class="mb-2"><strong>Broca Machuelo Corte (% Altura):</strong><br><span class="text-warning">Ø Broca = D - (1.08253 × %Altura × Paso)</span></p>
+                                    <p class="mb-2"><strong>Broca Machuelo Laminación:</strong><br><span class="text-warning">Ø Broca = D - (0.53 × %Altura × Paso)</span></p>
+                                    <p class="mb-2"><strong>Vf Machuelo Tradicional:</strong><br><span class="text-warning">Vf = n × Paso</span> <span class="text-muted">[mm/min]</span></p>
+                                    <p class="mb-0"><strong>Vf Centro (Fresa de Rosca):</strong><br><span class="text-warning">Vf_centro = Vf_periferia × ((D - D_fresa) / D)</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary py-2">
+                    <button type="button" class="btn btn-sm btn-outline-light" data-bs-dismiss="modal">Cerrar Formulario</button>
+                </div>
             </div>
-            <div class="modal-body p-3" style="max-height: 80vh; overflow-y: auto;">
-                <div class="row g-3">
+        </div>
+    </div>
+
+    <!-- MODAL 2: GLOSARIO DE SÍMBOLOS Y UNIDADES (CONTRASTE HD MEJORADO) -->
+    <div class="modal fade" id="modalSimbologiaCNC" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content bg-dark text-white border-warning shadow-lg">
+                <div class="modal-header border-secondary py-2 d-flex justify-content-between align-items-center">
+                    <h5 class="modal-title fs-6 fw-bold mb-0 text-warning">
+                        <i class="bi bi-book-fill me-2"></i>Glosario de Símbolos y Unidades Tecnológicas
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-3">
+                    <div class="table-responsive border border-secondary rounded">
+                        <table class="table table-dark table-striped table-hover mb-0 align-middle text-center small">
+                            <thead class="text-uppercase" style="background-color: #0f172a; border-bottom: 2px solid #2a374e;">
+                                <tr>
+                                    <th style="color: #00e5ff !important; font-weight: 800; letter-spacing: 0.5px;">Símbolo</th>
+                                    <th style="color: #f8fafc !important; font-weight: 700;">Significado / Nombre Técnico</th>
+                                    <th style="color: #00e5ff !important; font-weight: 800; letter-spacing: 0.5px;">Símbolo</th>
+                                    <th style="color: #f8fafc !important; font-weight: 700;">Significado / Nombre Técnico</th>
+                                </tr>
+                            </thead>
+                            <tbody class="font-monospace">
+                                <tr>
+                                    <td class="fw-bold text-warning fs-6">mm</td>
+                                    <td class="text-start">Milímetros</td>
+                                    <td class="fw-bold text-warning fs-6">SFM</td>
+                                    <td class="text-start">Surface Feet per Minute (Pies de corte/min)</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-warning fs-6">μm</td>
+                                    <td class="text-start">Micrómetros (micras)</td>
+                                    <td class="fw-bold text-warning fs-6">mm/rev</td>
+                                    <td class="text-start">Avance por revolución (fn)</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-warning fs-6">in</td>
+                                    <td class="text-start">Pulgadas (Inches)</td>
+                                    <td class="fw-bold text-warning fs-6">mm/z</td>
+                                    <td class="text-start">Avance por diente (fz)</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-warning fs-6">rpm</td>
+                                    <td class="text-start">Revoluciones por minuto (n)</td>
+                                    <td class="fw-bold text-warning fs-6">mm/min</td>
+                                    <td class="text-start">Avance de trabajo / Máquina (Vf)</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-warning fs-6">m/min</td>
+                                    <td class="text-start">Metros por minuto (Velocidad Vc)</td>
+                                    <td class="fw-bold text-warning fs-6">ap</td>
+                                    <td class="text-start">Profundidad axial de corte</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-warning fs-6">ae</td>
+                                    <td class="text-start">Profundidad radial de corte (Ancho)</td>
+                                    <td class="fw-bold text-warning fs-6">MRR</td>
+                                    <td class="text-start">Tasa de remoción de material (cm³/min)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary py-2">
+                    <button type="button" class="btn btn-sm btn-outline-light" data-bs-dismiss="modal">Cerrar Glosario</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: REFERENCIA GD&T INTERACTIVO CON BOTONES Y DIBUJOS CIAN ESTANDARIZADOS -->
+    <div class="modal fade" id="modalGDT" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content bg-dark text-white border-primary shadow-lg">
+                <div class="modal-header border-secondary py-2 d-flex justify-content-between align-items-center">
+                    <h5 class="modal-title fs-6 fw-bold mb-0 text-primary d-flex align-items-center gap-2">
+                        <i class="bi bi-bounding-box fs-5"></i>Referencia de Tolerancias Dimensionamiento y Toleranciamiento Geométrico (GD&T)
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-3" style="max-height: 80vh; overflow-y: auto;">
                     
-                    <!-- 1. TORNEADO CNC -->
-                    <div class="col-md-6">
-                        <div class="p-3 border border-secondary rounded bg-dark h-100">
-                            <h6 class="fw-bold text-primary border-bottom border-secondary pb-2 mb-2">
-                                <i class="bi bi-circle-square me-2"></i>Torneado CNC
-                            </h6>
-                            <div class="font-monospace small">
-                                <p class="mb-2"><strong>Velocidad Ajustada (Vc):</strong><br><span class="text-warning">Vc = Vc_base × Factor_Operación</span> <span class="text-muted">[m/min]</span></p>
-                                <p class="mb-2"><strong>RPM Husillo (n):</strong><br><span class="text-warning">n = (Vc × 1000) / (π × D_promedio)</span> <span class="text-muted">[rev/min]</span></p>
-                                <p class="mb-2"><strong>Avance de Máquina (Vf):</strong><br><span class="text-warning">Vf = n × fn_auto</span> <span class="text-muted">[mm/min]</span></p>
-                                <p class="mb-2"><strong>N° de Pasadas Reales:</strong><br><span class="text-warning">Pasadas = ceil((D_init - D_fin) / (2 × ap))</span></p>
-                                <p class="mb-2"><strong>ap Real por Pasada:</strong><br><span class="text-warning">ap_real = ((D_init - D_fin) / 2) / Pasadas</span> <span class="text-muted">[mm]</span></p>
-                                <p class="mb-0"><strong>Potencia de Corte (Pc):</strong><br><span class="text-warning">Pc = (ap × fn × Vc × kc) / (60000 × 0.8)</span> <span class="text-muted">[kW]</span></p>
+                    <!-- MALLA PRINCIPAL DE SÍMBOLOS CIAN ESTANDARIZADOS -->
+                    <div id="gdtGridPrincipal">
+                        
+                        <!-- CATEGORÍA 1: FORMA -->
+                        <div class="mb-3">
+                            <div class="small fw-bold text-info text-uppercase mb-2 border-bottom border-secondary pb-1">
+                                Tolerancias de Forma (Nunca Hacen Referencia a Datum)
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-md-3 col-6">
+                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info" onclick="verDetalleGDT('rectitud')">
+                                        <svg width="40" height="40" viewBox="0 0 100 100" class="mb-1"><line x1="15" y1="50" x2="85" y2="50" stroke="#00e5ff" stroke-width="12" stroke-linecap="round"/></svg>
+                                        <div class="fw-bold small text-light">Rectitud</div>
+                                    </button>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info" onclick="verDetalleGDT('planicidad')">
+                                        <svg width="40" height="40" viewBox="0 0 100 100" class="mb-1"><polygon points="20,25 80,25 65,75 5,75" fill="none" stroke="#00e5ff" stroke-width="10"/></svg>
+                                        <div class="fw-bold small text-light">Planicidad</div>
+                                    </button>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info" onclick="verDetalleGDT('circularidad')">
+                                        <svg width="40" height="40" viewBox="0 0 100 100" class="mb-1"><circle cx="50" cy="50" r="32" fill="none" stroke="#00e5ff" stroke-width="10"/></svg>
+                                        <div class="fw-bold small text-light">Circularidad</div>
+                                    </button>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info" onclick="verDetalleGDT('cilindricidad')">
+                                        <svg width="40" height="40" viewBox="0 0 100 100" class="mb-1">
+                                            <circle cx="50" cy="50" r="32" fill="none" stroke="#00e5ff" stroke-width="8"/>
+                                            <line x1="18" y1="50" x2="82" y2="50" stroke="#00e5ff" stroke-width="8"/>
+                                        </svg>
+                                        <div class="fw-bold small text-light">Cilindricidad</div>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- 2. FRESADO DGC / WEZ -->
-                    <div class="col-md-6">
-                        <div class="p-3 border border-secondary rounded bg-dark h-100">
-                            <h6 class="fw-bold text-warning border-bottom border-secondary pb-2 mb-2">
-                                <i class="bi bi-gear-fill me-2"></i>Fresado de Insertos (DGC / WEZ)
-                            </h6>
-                            <div class="font-monospace small">
-                                <p class="mb-2"><strong>RPM Husillo (n):</strong><br><span class="text-warning">n = (Vc × 1000) / (π × D)</span> <span class="text-muted">[rev/min]</span></p>
-                                <p class="mb-2"><strong>Avance de Máquina (Vf):</strong><br><span class="text-warning">Vf = n × fz × z</span> <span class="text-muted">[mm/min]</span></p>
-                                <p class="mb-2"><strong>Factor Adelgazamiento Viruta (ae/D &lt; 0.3):</strong><br><span class="text-warning">fz_corregido = fz × 1.20</span> <span class="text-muted">[mm/t]</span></p>
-                                <p class="mb-2"><strong>Tasa de Remoción (MRR):</strong><br><span class="text-warning">MRR = (ap × ae × Vf) / 1000</span> <span class="text-muted">[cm³/min]</span></p>
-                                <p class="mb-2"><strong>Volumen Total Viruta (VTR):</strong><br><span class="text-warning">VTR = MRR × (Longitud / Vf)</span> <span class="text-muted">[cm³]</span></p>
-                                <p class="mb-0"><strong>Potencia de Corte (Pc):</strong><br><span class="text-warning">Pc = (MRR × kc) / (60000 × 0.8)</span> <span class="text-muted">[kW]</span></p>
+                        <!-- CATEGORÍA 2: ORIENTACIÓN -->
+                        <div class="mb-3">
+                            <div class="small fw-bold text-info text-uppercase mb-2 border-bottom border-secondary pb-1">
+                                Tolerancias de Orientación (Siempre Hacen Referencia a Datum)
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-md-4 col-4">
+                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info" onclick="verDetalleGDT('angularidad')">
+                                        <svg width="40" height="40" viewBox="0 0 100 100" class="mb-1"><path d="M 20,80 L 80,80 M 20,80 L 70,20" fill="none" stroke="#00e5ff" stroke-width="10" stroke-linecap="round"/></svg>
+                                        <div class="fw-bold small text-light">Angularidad</div>
+                                    </button>
+                                </div>
+                                <div class="col-md-4 col-4">
+                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info" onclick="verDetalleGDT('perpendicularidad')">
+                                        <svg width="40" height="40" viewBox="0 0 100 100" class="mb-1"><path d="M 20,80 L 80,80 M 50,80 L 50,20" fill="none" stroke="#00e5ff" stroke-width="10" stroke-linecap="round"/></svg>
+                                        <div class="fw-bold small text-light">Perpendicularidad</div>
+                                    </button>
+                                </div>
+                                <div class="col-md-4 col-4">
+                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info" onclick="verDetalleGDT('paralelismo')">
+                                        <svg width="40" height="40" viewBox="0 0 100 100" class="mb-1"><line x1="35" y1="20" x2="35" y2="80" stroke="#00e5ff" stroke-width="10"/><line x1="65" y1="20" x2="65" y2="80" stroke="#00e5ff" stroke-width="10"/></svg>
+                                        <div class="fw-bold small text-light">Paralelismo</div>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- 3. BARRENADO CNC -->
-                    <div class="col-md-6">
-                        <div class="p-3 border border-secondary rounded bg-dark h-100">
-                            <h6 class="fw-bold text-success border-bottom border-secondary pb-2 mb-2">
-                                <i class="bi bi-pin-angle-fill me-2"></i>Barrenado / Taladrado CNC
-                            </h6>
-                            <div class="font-monospace small">
-                                <p class="mb-2"><strong>Distancia Punta Broca (P):</strong><br><span class="text-warning">P = (D / 2) / tan(Ángulo / 2)</span> <span class="text-muted">[mm]</span></p>
-                                <p class="mb-2"><strong>Profundidad Efectiva:</strong><br><span class="text-warning">L_efectiva = L + P</span> <span class="text-muted">(Agujero Pasante)</span></p>
-                                <p class="mb-2"><strong>Avance por Diente (fn):</strong><br><span class="text-warning">fn = k_fn × (D ^ 0.85)</span> <span class="text-muted">[mm/rev]</span></p>
-                                <p class="mb-2"><strong>MRR Barrenado:</strong><br><span class="text-warning">MRR = (π × D² / 4) × Vf / 1000</span> <span class="text-muted">[cm³/min]</span></p>
-                                <p class="mb-0"><strong>Torque Estimado (Mc):</strong><br><span class="text-warning">Mc = (Pc × 9550) / n</span> <span class="text-muted">[N·m]</span></p>
+                        <!-- CATEGORÍA 3: UBICACIÓN Y CABECEO -->
+                        <div>
+                            <div class="small fw-bold text-info text-uppercase mb-2 border-bottom border-secondary pb-1">
+                                Tolerancias de Ubicación y Cabeceo (Runout)
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-md-4 col-4">
+                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info" onclick="verDetalleGDT('posicion')">
+                                        <svg width="40" height="40" viewBox="0 0 100 100" class="mb-1"><circle cx="50" cy="50" r="28" fill="none" stroke="#00e5ff" stroke-width="8"/><line x1="50" y1="10" x2="50" y2="90" stroke="#00e5ff" stroke-width="8"/><line x1="10" y1="50" x2="90" y2="50" stroke="#00e5ff" stroke-width="8"/></svg>
+                                        <div class="fw-bold small text-light">Posición Verdader.</div>
+                                    </button>
+                                </div>
+                                <div class="col-md-4 col-4">
+                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info" onclick="verDetalleGDT('concentricidad')">
+                                        <svg width="40" height="40" viewBox="0 0 100 100" class="mb-1"><circle cx="50" cy="50" r="32" fill="none" stroke="#00e5ff" stroke-width="8"/><circle cx="50" cy="50" r="16" fill="none" stroke="#00e5ff" stroke-width="8"/></svg>
+                                        <div class="fw-bold small text-light">Concentricidad</div>
+                                    </button>
+                                </div>
+                                <div class="col-md-4 col-4">
+                                    <button type="button" class="btn btn-outline-info w-100 p-2 text-center h-100 bg-opacity-10 bg-info" onclick="verDetalleGDT('cabeceo')">
+                                        <svg width="40" height="40" viewBox="0 0 100 100" class="mb-1"><path d="M 20,70 L 60,30 L 60,50 M 60,30 L 80,70" fill="none" stroke="#00e5ff" stroke-width="8" stroke-linecap="round"/></svg>
+                                        <div class="fw-bold small text-light">Cabeceo (Runout)</div>
+                                    </button>
+                                </div>
                             </div>
                         </div>
+
                     </div>
 
-                    <!-- 4. ROSCADO Y THREAD MILLING -->
-                    <div class="col-md-6">
-                        <div class="p-3 border border-secondary rounded bg-dark h-100">
-                            <h6 class="fw-bold text-info border-bottom border-secondary pb-2 mb-2">
-                                <i class="bi bi-symmetry-horizontal me-2"></i>Roscado / Machuelos
-                            </h6>
-                            <div class="font-monospace small">
-                                <p class="mb-2"><strong>Broca Machuelo Corte Estándar:</strong><br><span class="text-warning">Ø Broca = D - Paso</span> <span class="text-muted">[mm]</span></p>
-                                <p class="mb-2"><strong>Broca Machuelo Corte (% Altura):</strong><br><span class="text-warning">Ø Broca = D - (1.08253 × %Altura × Paso)</span></p>
-                                <p class="mb-2"><strong>Broca Machuelo Laminación:</strong><br><span class="text-warning">Ø Broca = D - (0.53 × %Altura × Paso)</span></p>
-                                <p class="mb-2"><strong>Vf Machuelo Tradicional:</strong><br><span class="text-warning">Vf = n × Paso</span> <span class="text-muted">[mm/min]</span></p>
-                                <p class="mb-0"><strong>Vf Centro (Fresa de Rosca):</strong><br><span class="text-warning">Vf_centro = Vf_periferia × ((D - D_fresa) / D)</span></p>
+                    <!-- VISTA DETALLE GD&T CON CONTRASTE ALTO CORREGIDO EN FONDO OSCURO -->
+                    <div id="gdtVistaDetalle" style="display: none;" class="p-3 border border-secondary rounded bg-opacity-20 bg-dark">
+                        <div class="d-flex justify-content-between align-items-center mb-3 border-bottom border-secondary pb-2">
+                            <h5 class="fw-bold text-info mb-0" id="gdtTituloDetalle">-</h5>
+                            <button type="button" class="btn btn-sm btn-outline-light" onclick="volverMallaGDT()"><i class="bi bi-arrow-left me-1"></i>Volver a la lista</button>
+                        </div>
+
+                        <div class="row align-items-center">
+                            <div class="col-md-5 text-center mb-3 mb-md-0">
+                                <div class="p-3 bg-dark border border-secondary rounded" id="gdtEsquemaGrafico">
+                                    <!-- Dibujo Vectorial dinámico -->
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <p class="small text-light leading-relaxed mb-3" id="gdtDescripcionTexto">-</p>
+                                <div class="p-3 rounded border border-info" style="background-color: #0b0f19 !important;">
+                                    <strong class="d-block text-white mb-1" style="font-size: 0.85rem; letter-spacing: 0.5px;">Marco de Control / Referencia:</strong>
+                                    <span class="d-block fw-bold font-monospace" id="gdtReglaDatum" style="color: #00e5ff !important; font-size: 0.95rem;">-</span>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                 </div>
-            </div>
-            <div class="modal-footer border-secondary py-2">
-                <button type="button" class="btn btn-sm btn-outline-light" data-bs-dismiss="modal">Cerrar Formulario</button>
-            </div>
-        </div>
-    </div>
-</div>
                 <div class="modal-footer border-secondary py-2">
-                    <button type="button" class="btn btn-sm btn-outline-light" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-sm btn-outline-light" data-bs-dismiss="modal">Cerrar Referencia</button>
                 </div>
             </div>
         </div>
@@ -2784,10 +3049,144 @@
             });
         }
 
-        /* FUNCIÓN PARA ABRIR MODAL DE FÓRMULAS */
+        /* FUNCIONES PARA NAVEGACIÓN Y APERTURA DE MODALES */
         function abrirModalFormulas() {
             const modalFormulas = new bootstrap.Modal(document.getElementById('modalFormulasCNC'));
             modalFormulas.show();
+        }
+
+        function abrirModalSimbologia() {
+            const modalSimbologia = new bootstrap.Modal(document.getElementById('modalSimbologiaCNC'));
+            modalSimbologia.show();
+        }
+
+        function abrirModalGDT() {
+            volverMallaGDT();
+            const modalGDT = new bootstrap.Modal(document.getElementById('modalGDT'));
+            modalGDT.show();
+        }
+
+        function volverMallaGDT() {
+            document.getElementById("gdtGridPrincipal").style.display = "block";
+            document.getElementById("gdtVistaDetalle").style.display = "none";
+        }
+
+        /* BASE DE DATOS VECTORIAL CIAN ESTANDARIZADA DE GD&T */
+        const BASE_DATOS_GDT = {
+            'cilindricidad': {
+                titulo: 'Cilindricidad (Cylindricity)',
+                dibujo: `<svg width="220" height="120" viewBox="0 0 200 100">
+                            <rect x="20" y="20" width="160" height="60" fill="none" stroke="#00e5ff" stroke-width="3" rx="3"/>
+                            <path d="M 20,20 C 60,10 140,30 180,20 M 20,80 C 60,70 140,90 180,80" fill="none" stroke="#00e5ff" stroke-width="4"/>
+                            <ellipse cx="20" cy="50" rx="10" ry="30" fill="none" stroke="#00e5ff" stroke-width="3"/>
+                            <ellipse cx="180" cy="50" rx="10" ry="30" fill="none" stroke="#00e5ff" stroke-width="3"/>
+                        </svg>`,
+                descripcion: 'La tolerancia de cilindricidad especifica una zona de tolerancia definida por dos cilindros concéntricos. Se aplica tanto a elementos circulares como longitudinales de toda la superficie de forma simultánea.',
+                datum: 'Tolerancia de Forma: NUNCA hace referencia a ningún Datum.'
+            },
+            'rectitud': {
+                titulo: 'Rectitud (Straightness)',
+                dibujo: `<svg width="220" height="120" viewBox="0 0 200 100">
+                            <line x1="20" y1="30" x2="180" y2="30" stroke="#00e5ff" stroke-width="3" stroke-dasharray="4"/>
+                            <line x1="20" y1="70" x2="180" y2="70" stroke="#00e5ff" stroke-width="3" stroke-dasharray="4"/>
+                            <path d="M 20,50 Q 100,35 180,50" fill="none" stroke="#00e5ff" stroke-width="5"/>
+                        </svg>`,
+                descripcion: 'Especifica que una línea sobre la superficie o un eje central debe permanecer dentro de una zona delimitada por dos líneas paralelas o un cilindro.',
+                datum: 'Tolerancia de Forma: NUNCA hace referencia a Datum.'
+            },
+            'planicidad': {
+                titulo: 'Planicidad (Flatness)',
+                dibujo: `<svg width="220" height="120" viewBox="0 0 200 100">
+                            <polygon points="30,20 170,20 150,40 10,40" fill="none" stroke="#00e5ff" stroke-width="3"/>
+                            <polygon points="30,60 170,60 150,80 10,80" fill="none" stroke="#00e5ff" stroke-width="3"/>
+                            <polygon points="25,35 165,35 145,55 12,55" fill="#00e5ff" fill-opacity="0.3" stroke="#00e5ff" stroke-width="3"/>
+                        </svg>`,
+                descripcion: 'Especifica que todos los puntos de una superficie deben estar contenidos entre dos planos paralelos separados por la tolerancia especificada.',
+                datum: 'Tolerancia de Forma: NUNCA hace referencia a Datum.'
+            },
+            'circularidad': {
+                titulo: 'Circularidad / Redondez (Circularity)',
+                dibujo: `<svg width="220" height="120" viewBox="0 0 200 100">
+                            <circle cx="100" cy="50" r="40" fill="none" stroke="#00e5ff" stroke-width="3" stroke-dasharray="4"/>
+                            <circle cx="100" cy="50" r="28" fill="none" stroke="#00e5ff" stroke-width="3" stroke-dasharray="4"/>
+                            <path d="M 100,14 C 135,18 132,80 100,80 C 65,75 70,20 100,14 Z" fill="none" stroke="#00e5ff" stroke-width="4"/>
+                        </svg>`,
+                descripcion: 'Garantiza que todos los puntos de una sección transversal circular pertenezcan a una zona delimitada por dos círculos concéntricos coplanares.',
+                datum: 'Tolerancia de Forma: NUNCA hace referencia a Datum.'
+            },
+            'perpendicularidad': {
+                titulo: 'Perpendicularidad (Perpendicularity)',
+                dibujo: `<svg width="220" height="120" viewBox="0 0 200 100">
+                            <line x1="20" y1="85" x2="180" y2="85" stroke="#00e5ff" stroke-width="6"/>
+                            <line x1="100" y1="85" x2="100" y2="15" stroke="#00e5ff" stroke-width="5"/>
+                            <rect x="100" y="65" width="20" height="20" fill="none" stroke="#00e5ff" stroke-width="3"/>
+                        </svg>`,
+                descripcion: 'Controla que una superficie, eje o línea central forme exactamente un ángulo de 90° con respecto a un plano de referencia (Datum).',
+                datum: 'Tolerancia de Orientación: SIEMPRE requiere un Datum de referencia.'
+            },
+            'paralelismo': {
+                titulo: 'Paralelismo (Parallelism)',
+                dibujo: `<svg width="220" height="120" viewBox="0 0 200 100">
+                            <line x1="20" y1="80" x2="180" y2="80" stroke="#00e5ff" stroke-width="6"/>
+                            <line x1="20" y1="20" x2="180" y2="20" stroke="#00e5ff" stroke-width="5"/>
+                            <line x1="20" y1="35" x2="180" y2="35" stroke="#00e5ff" stroke-width="2" stroke-dasharray="4"/>
+                        </svg>`,
+                descripcion: 'Asegura que todos los puntos de una superficie o eje permanezcan a una distancia constante con respecto a un plano o eje Datum.',
+                datum: 'Tolerancia de Orientación: SIEMPRE requiere un Datum de referencia.'
+            },
+            'angularidad': {
+                titulo: 'Angularidad (Angularity)',
+                dibujo: `<svg width="220" height="120" viewBox="0 0 200 100">
+                            <line x1="20" y1="80" x2="180" y2="80" stroke="#00e5ff" stroke-width="6"/>
+                            <line x1="30" y1="80" x2="140" y2="20" stroke="#00e5ff" stroke-width="5"/>
+                        </svg>`,
+                descripcion: 'Controla una superficie o eje para que mantenga un ángulo especificado (distinto a 90°) relativo a una referencia Datum.',
+                datum: 'Tolerancia de Orientación: SIEMPRE requiere un Datum de referencia.'
+            },
+            'posicion': {
+                titulo: 'Posición Verdadera (True Position)',
+                dibujo: `<svg width="220" height="120" viewBox="0 0 200 100">
+                            <circle cx="100" cy="50" r="35" fill="none" stroke="#00e5ff" stroke-width="3" stroke-dasharray="4"/>
+                            <circle cx="105" cy="48" r="12" fill="#00e5ff" fill-opacity="0.5" stroke="#00e5ff" stroke-width="3"/>
+                            <line x1="100" y1="10" x2="100" y2="90" stroke="#00e5ff" stroke-width="2"/>
+                            <line x1="20" y1="50" x2="180" y2="50" stroke="#00e5ff" stroke-width="2"/>
+                        </svg>`,
+                descripcion: 'Define una zona cilíndrica o rectangular dentro de la cual el eje central o centro de un elemento (agujero/perno) puede variar respecto a su ubicación teórica exacta.',
+                datum: 'Tolerancia de Ubicación: SIEMPRE requiere Datums (Primario, Secundario, Terciario).'
+            },
+            'concentricidad': {
+                titulo: 'Concentricidad (Concentricity)',
+                dibujo: `<svg width="220" height="120" viewBox="0 0 200 100">
+                            <circle cx="100" cy="50" r="40" fill="none" stroke="#00e5ff" stroke-width="5"/>
+                            <circle cx="102" cy="49" r="20" fill="none" stroke="#00e5ff" stroke-width="4"/>
+                            <circle cx="100" cy="50" r="3" fill="#ffffff"/>
+                        </svg>`,
+                descripcion: 'Asegura que los puntos medios de todas las secciones transversales opuestas de una superficie de revolución se encuentren sobre el eje Datum.',
+                datum: 'Tolerancia de Ubicación: SIEMPRE requiere un eje Datum.'
+            },
+            'cabeceo': {
+                titulo: 'Cabeceo Circular / Total (Runout)',
+                dibujo: `<svg width="220" height="120" viewBox="0 0 200 100">
+                            <circle cx="80" cy="50" r="35" fill="none" stroke="#00e5ff" stroke-width="5"/>
+                            <path d="M 130,20 L 150,40 M 150,40 L 125,45" fill="none" stroke="#00e5ff" stroke-width="4"/>
+                            <rect x="145" y="40" width="30" height="20" fill="#1e293b" stroke="#00e5ff" stroke-width="2"/>
+                        </svg>`,
+                descripcion: 'Controla la variación de la superficie durante una rotación completa de 360° alrededor del eje Datum (probado con un comparador de carátula).',
+                datum: 'Tolerancia de Cabeceo: SIEMPRE requiere un eje Datum de rotación.'
+            }
+        };
+
+        function verDetalleGDT(key) {
+            const data = BASE_DATOS_GDT[key];
+            if (!data) return;
+
+            document.getElementById("gdtTituloDetalle").textContent = data.titulo;
+            document.getElementById("gdtEsquemaGrafico").innerHTML = data.dibujo;
+            document.getElementById("gdtDescripcionTexto").textContent = data.descripcion;
+            document.getElementById("gdtReglaDatum").textContent = data.datum;
+
+            document.getElementById("gdtGridPrincipal").style.display = "none";
+            document.getElementById("gdtVistaDetalle").style.display = "block";
         }
 
         /* CONTROLADOR DE DESPLEGABLE PERSONALIZADO DE MATERIALES (DARK SCADA) */
