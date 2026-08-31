@@ -268,7 +268,6 @@ def calcular_fresado_sumitomo(nombre_material, serie_fresa, tipo_inserto_dgc="SN
     ae = float(ae_mm) if ae_mm and float(ae_mm) > 0 else (dc * 0.5)
     longitud = float(longitud_mm) if longitud_mm and float(longitud_mm) > 0 else 100.0
 
-    # LÓGICA DE EXTRACCIÓN ROBUSTA DE GRADO Y GEOMETRÍA
     vc = 210.0
     fz = 0.25
     grado = "ACP2000"
