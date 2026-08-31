@@ -239,44 +239,28 @@ def obtener_dientes_automaticos(serie, dc):
     cercana = min(llaves, key=lambda x: abs(x - dc_int))
     return matriz[cercana]
 
-# MATRIZ OFICIAL DE ROMPEVIRUTAS SUMITOMO SEGÚN GRUPO ISO
-    MATRIZ_ROMPEVIRUTAS_FRESADO = {
-        "DGC": {
-            "P": "FL / G / H (General a Pesado)",
-            "M": "FG / G (Inoxidables)",
-            "K": "G / H (Fundición)",
-            "N": "S / L (Aluminio)",
-            "S": "G / FG (Superaleaciones)",
-            "H": "H (Templados)"
-        },
-        "WEZ": {
-            "P": "G / L (General / Ligero)",
-            "M": "F / G (Inoxidables)",
-            "K": "G / H (Fundición)",
-            "N": "S (Aluminio / No Ferrosos)",
-            "S": "F / G (Titanio e Inconel)",
-            "H": "H (Aceros Templados)"
-        }
-    }
-    
-    rompevirutas_fresado = MATRIZ_ROMPEVIRUTAS_FRESADO.get(serie_key, {}).get(iso, "General")
-
 def calcular_fresado_sumitomo(nombre_material, serie_fresa, tipo_inserto_dgc="SNMT 13T6", diametro_mm=50.0, dientes=None, ap_mm=2.0, ae_mm=25.0, longitud_mm=100.0, fz_manual=None, tipo_corte="General"):
     mat_name = str(nombre_material).strip().lower() if nombre_material else ""
     
     mat = None
     if mat_name:
-        # Búsqueda por coincidencia parcial (encuentra "1045", "4140", "304", "inox", "aluminio", etc.)
-        mat = next((m for m in TABLA_MATERIALES if mat_name in m["material"].lower()), None)
+        mat = next((m for m in TABLA_MATERIALES if mat_name in m["material"].lower() or m["material"].lower() in mat_name), None)
     
-    # Si no hay coincidencia o la casilla está vacía, no retorna vacío si hay texto
-    if not mat and mat_name:
-        mat = TABLA_MATERIALES[0] # Toma el primer material como base para evitar responder {}
+    iso = "P"
+    if mat:
+        iso = mat.get("familia_iso", "P")
+    elif mat_name:
+        if any(x in mat_name for x in ["304", "316", "inox", "inoxidable", "420", "410"]):
+            iso = "M"
+        elif any(x in mat_name for x in ["gris", "nodular", "fundicion", "fundición", "cast iron"]):
+            iso = "K"
+        elif any(x in mat_name for x in ["aluminio", "6061", "7075", "bronce", "cobre"]):
+            iso = "N"
+        elif any(x in mat_name for x in ["titanio", "inconel", "hastelloy", "waspaloy"]):
+            iso = "S"
+        elif any(x in mat_name for x in ["templado", "hrc", "d2", "skd"]):
+            iso = "H"
 
-    if not mat:
-        return {}
-
-    iso = mat.get("familia_iso", "P")
     serie_upper = str(serie_fresa).upper()
     serie_key = "WEZ" if "WEZ" in serie_upper else "DGC"
 
@@ -286,38 +270,56 @@ def calcular_fresado_sumitomo(nombre_material, serie_fresa, tipo_inserto_dgc="SN
     ae = float(ae_mm) if ae_mm and float(ae_mm) > 0 else (dc * 0.5)
     longitud = float(longitud_mm) if longitud_mm and float(longitud_mm) > 0 else 100.0
 
-    vc = float(mat.get("vc_fres", 210.0))
+    # DICCIONARIO SERIE DGC (Planeado 45°)
+    GEOMETRIAS_DGC = {
+        "P": {"SNMT": "SNMT 13T6ANER-G", "ONMT": "ONMT 05T6ANER-G", "grado": "ACP2000", "rvp": "FL / G / H"},
+        "M": {"SNMT": "SNMT 13T6ANER-FG", "ONMT": "ONMT 05T6ANER-FG", "grado": "ACS3000", "rvp": "FG / G (Inox)"},
+        "K": {"SNMT": "SNMT 13T6ANER-H", "ONMT": "ONMT 05T6ANER-H", "grado": "ACK2000", "rvp": "G / H (Fundición)"},
+        "N": {"SNMT": "SNET 13T6ANFR-S", "ONMT": "ONET 05T6ANFR-S", "grado": "DL1000", "rvp": "S / L (Aluminio)"},
+        "S": {"SNMT": "SNMT 13T6ANER-FG", "ONMT": "ONMT 05T6ANER-FG", "grado": "ACS2500", "rvp": "G / FG (Superaleaciones)"},
+        "H": {"SNMT": "SNMT 13T6ANER-H", "ONMT": "ONMT 05T6ANER-H", "grado": "ACK3000", "rvp": "H (Templados)"}
+    }
+
+    # DICCIONARIO OFICIAL SERIE WEZ (Escuadrado 90° con AOMT 11T3... / AOET 11T3...)
+    GEOMETRIAS_WEZ = {
+        "P": {"codigo": "AOMT 11T308PEER-G", "grado": "ACP2000", "rvp": "G (General)"},
+        "M": {"codigo": "AOMT 11T308PEER-F", "grado": "ACS2500", "rvp": "F / G (Inoxidable)"},
+        "K": {"codigo": "AOMT 11T308PEER-H", "grado": "ACK2000", "rvp": "H / G (Fundición)"},
+        "N": {"codigo": "AOET 11T308PEFR-S", "grado": "DL2000",  "rvp": "S (Aluminio)"},
+        "S": {"codigo": "AOMT 11T308PEER-F", "grado": "ACS3000", "rvp": "F (Superaleaciones)"},
+        "H": {"codigo": "AOMT 11T308PEER-H", "grado": "ACK3000", "rvp": "H (Templados)"}
+    }
+
+    vc = 210.0
     fz = 0.25
-    grado = "ACP2000"
-    codigo_inserto_sug = "SNMT 13T6ANER-G"
-    geom_cuerpo = "Planeado 45°"
+
+    if serie_key == "DGC":
+        sub_key = "ONMT" if "ONMT" in str(tipo_inserto_dgc).upper() else "SNMT"
+        rec_info = GEOMETRIAS_DGC.get(iso, GEOMETRIAS_DGC["P"])
+        codigo_inserto_sug = rec_info.get(sub_key, f"{sub_key} 13T6ANER-G")
+        grado = rec_info.get("grado", "ACP2000")
+        rompevirutas_fresado = rec_info.get("rvp", "General")
+        geom_cuerpo = f"Planeado 45° ({sub_key})"
+    else:
+        rec_info = GEOMETRIAS_WEZ.get(iso, GEOMETRIAS_WEZ["P"])
+        codigo_inserto_sug = rec_info.get("codigo", "AOMT 11T308PEER-G")
+        grado = rec_info.get("grado", "ACP2000")
+        rompevirutas_fresado = rec_info.get("rvp", "General")
+        geom_cuerpo = "Escuadrado 90° (AOMT)"
 
     if serie_key in MATRIZ_PARAMETROS_FRESADO and iso in MATRIZ_PARAMETROS_FRESADO[serie_key]:
         params_iso = MATRIZ_PARAMETROS_FRESADO[serie_key][iso]
-        
         if serie_key == "DGC":
-            sub_key = "ONMT" if "ONMT" in str(tipo_inserto_dgc).upper() else "SNMT"
             config = params_iso.get(sub_key, {}) if isinstance(params_iso, dict) else {}
             vc = float(config.get("vc", vc))
             fz = float(config.get("fz_opt", 0.25))
-            grado = config.get("grado", "ACP2000")
-            insertos = config.get("insertos", ["SNMT 13T6ANER-G"])
-            codigo_inserto_sug = insertos[0] if insertos else "SNMT 13T6ANER-G"
-            geom_cuerpo = f"Planeado 45° ({sub_key})"
         else:
             config = params_iso if isinstance(params_iso, dict) else {}
             vc = float(config.get("vc", vc))
             fz = float(config.get("fz_opt", 0.18))
-            grado = config.get("grado", "ACP2000")
-            insertos = config.get("insertos", ["AOMT 110350-G"])
-            codigo_inserto_sug = insertos[0] if insertos else "AOMT 110350-G"
-            geom_cuerpo = "Escuadrado 90° (AOMT)"
 
     if fz_manual and float(fz_manual) > 0:
         fz = float(fz_manual)
-    else:
-        if (ae / dc) < 0.3:
-            fz *= 1.20
 
     rpm = (vc * 1000.0) / (math.pi * dc) if dc > 0 else 0
     vf = rpm * fz * z
@@ -326,26 +328,29 @@ def calcular_fresado_sumitomo(nombre_material, serie_fresa, tipo_inserto_dgc="SN
     tiempo_maquinado = longitud / vf if vf > 0 else 0
     vtr = mrr * tiempo_maquinado
 
-    kc = mat.get("kc", 1800)
+    kc = mat.get("kc", 1800) if mat else 1800
     pc = (mrr * kc) / (60000.0 * 0.8)
 
-    # MATRIZ DE ROMPEVIRUTAS DE FRESADO
-    MATRIZ_ROMPEVIRUTAS = {
-        "DGC": {"P": "FL / G / H", "M": "FG / G", "K": "G / H", "N": "S / L", "S": "G / FG", "H": "H"},
-        "WEZ": {"P": "G / L", "M": "F / G", "K": "G / H", "N": "S", "S": "F / G", "H": "H"}
-    }
-    rompevirutas_fresado = MATRIZ_ROMPEVIRUTAS.get(serie_key, {}).get(iso, "General")
+    lista_recomendaciones = [{
+        "numero": 1,
+        "codigo_inserto": codigo_inserto_sug,
+        "grado_sumitomo": grado,
+        "rompevirutas": rompevirutas_fresado,
+        "es_principal": True
+    }]
 
     return {
-        "material": mat["material"],
+        "material": mat["material"] if mat else nombre_material,
         "familia_iso": iso,
-        "dureza": mat.get("dureza", "-"),
+        "dureza": mat.get("dureza", "-") if mat else "-",
         "serie_fresa": serie_fresa,
         "geometria_cuerpo": geom_cuerpo,
         "codigo_inserto": codigo_inserto_sug,
         "grado_sumitomo": grado,
         "rompevirutas": rompevirutas_fresado,
+        "rompevirutas_sugerido": rompevirutas_fresado,
         "material_inserto_tipo": CLASIFICACION_MATERIAL_INSERTO.get(grado, "CVD Coated Carbide"),
+        "lista_recomendaciones": lista_recomendaciones,
         "diametro": dc,
         "dientes": z,
         "ap": ap,
