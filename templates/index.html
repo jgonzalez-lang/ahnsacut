@@ -558,6 +558,7 @@
             margin-bottom: 2px;
         }
 
+        /* MARCO FIJO CIAN CUBRIENDO TODAS LAS CELDAS DE PARÁMETROS EN TODOS LOS MÓDULOS */
         .cnc-card {
             background-color: var(--dark-card-bg);
             border: 1px solid #00e5ff !important;
@@ -763,6 +764,7 @@
             opacity: 0.85;
         }
 
+        /* ALTO CONTRASTE NORMATIVA GRUPOS ISO FORZADO PARA IMÁGENES M Y S Y BOTONES DE FILTRO */
         .badge-iso-p, .iso-theme-P { 
             background-color: var(--iso-p) !important; 
             color: #ffffff !important; 
@@ -907,6 +909,7 @@
                 padding: 16px 12px;
             }
 
+            /* ADAPTACIÓN MÓVIL CAJA EMERGENTE DE MATERIALES ISO */
             .iso-tooltip-box {
                 bottom: 110%;
                 top: auto;
@@ -945,14 +948,13 @@
 </head>
 <body>
 
-    <!-- Sidebar Lateral Dinámico (Web) / Barra Superior Adaptable Deslizable (Móvil) -->
+    <!-- Sidebar Lateral Dinámico -->
     <div class="sidebar" id="sidebar">
         <div>
             <div class="sidebar-brand">
                 <img src="/static/logo.png" alt="AHNSA TOOLS AhnsaCut">
             </div>
             <ul class="sidebar-nav">
-                <!-- 1. DASHBOARD -->
                 <li>
                     <a id="nav-dashboard" onclick="mostrarPestana('dashboard')" class="active" title="Dashboard">
                         <div class="nav-icon-box">
@@ -961,8 +963,6 @@
                         <span class="nav-text">Dashboard</span>
                     </a>
                 </li>
-
-                <!-- 2. FRESADO (Render Shell Mill) -->
                 <li>
                     <a id="nav-fresado" onclick="mostrarPestana('fresado')" title="Fresado">
                         <div class="nav-icon-box">
@@ -978,8 +978,6 @@
                         <span class="nav-text">Fresado</span>
                     </a>
                 </li>
-
-                <!-- 3. TORNEADO (Render CNMG Inserto) -->
                 <li>
                     <a id="nav-torneado" onclick="mostrarPestana('torneado')" title="Torneado">
                         <div class="nav-icon-box">
@@ -991,8 +989,6 @@
                         <span class="nav-text">Torneado</span>
                     </a>
                 </li>
-
-                <!-- 4. BARRENADO (Render Broca Carburo) -->
                 <li>
                     <a id="nav-barrenado" onclick="mostrarPestana('barrenado')" title="Barrenado">
                         <div class="nav-icon-box">
@@ -1005,8 +1001,6 @@
                         <span class="nav-text">Barrenado</span>
                     </a>
                 </li>
-
-                <!-- 5. ROSCADO (Render Machuelo / Thread Mill) -->
                 <li>
                     <a id="nav-roscado" onclick="mostrarPestana('roscado')" title="Roscado">
                         <div class="nav-icon-box">
@@ -1024,7 +1018,6 @@
             </ul>
         </div>
 
-        <!-- Botón de Colapsar / Expandir Menú en Escritorio -->
         <div class="sidebar-toggle-btn" id="sidebarToggle" onclick="toggleSidebar()" title="Colapsar / Expandir Menú">
             <i class="bi bi-chevron-left me-2" id="toggleIcon"></i>
             <span class="toggle-text">Colapsar Menú</span>
@@ -1040,7 +1033,6 @@
             <p class="page-subtitle">Resumen ejecutivo, base de datos de herramientas e métricas del sistema AhnsaCut.</p>
 
             <div class="row g-3 mb-4">
-                <!-- KPI 1: MATERIALES REGISTRADOS -->
                 <div class="col-xl-3 col-sm-6">
                     <div class="dash-metric-card">
                         <div>
@@ -1053,7 +1045,6 @@
                     </div>
                 </div>
 
-                <!-- KPI 2: INSERTO CNMG RENDERIZADO (Métrica Sincronizada a 11) -->
                 <div class="col-xl-3 col-sm-6">
                     <div class="dash-metric-card">
                         <div>
@@ -1070,7 +1061,6 @@
                     </div>
                 </div>
 
-                <!-- KPI 3: BARRA HORIZONTAL CONTINUA DE COLORES GRUPOS ISO -->
                 <div class="col-xl-3 col-sm-6">
                     <div class="dash-metric-card">
                         <div class="w-100 me-2">
@@ -1090,7 +1080,6 @@
                     </div>
                 </div>
 
-                <!-- KPI 4: EFICIENCIA MÁQUINA (TACÓMETRO / RENDIMIENTO OEE) -->
                 <div class="col-xl-3 col-sm-6">
                     <div class="dash-metric-card">
                         <div>
@@ -1109,7 +1098,6 @@
                 </div>
             </div>
 
-            <!-- CATÁLOGO INTERACTIVO CON CHIPS DE FILTRO POR ISO Y REDIRECCIÓN AL CLIC -->
             <div class="row g-3 mb-4">
                 <div class="col-12">
                     <div class="ui-card">
@@ -1658,6 +1646,7 @@
                     </div>
                 </div>
 
+                <!-- TARJETAS TÉCNICAS ESTANDARIZADAS EN OSCURO CON RESALTES -->
                 <div class="ui-card mb-3">
                     <div class="ui-card-title d-flex justify-content-between align-items-center">
                         <span>Parámetros CNC Calculados y Estimación de Pasadas</span>
@@ -1871,7 +1860,7 @@
                 <div class="row g-2 mb-3 align-items-end">
                     <div class="col-md-3 position-relative">
                         <label class="form-label small mb-1">Buscar Material</label>
-                        <input type="text" id="material_fresado" class="form-control form-control-sm fw-semibold text-primary material-input-scada" placeholder="Escriba ej: 4140, Inox, Aluminio..." oninput="alCambiarMaterialFresado()" onchange="alCambiarMaterialFresado()" autocomplete="off">
+                        <input type="text" id="material_fresado" class="form-control form-control-sm fw-semibold text-primary material-input-scada" placeholder="Escriba ej: 4140, Inox, Aluminio..." oninput="alCambiarMaterialFresado()" onchange="alCambiarMaterialFresado()" onblur="alCambiarMaterialFresado()" autocomplete="off">
                         <div class="custom-mat-dropdown" id="dropdown_material_fresado"></div>
                     </div>
                     
@@ -1938,22 +1927,22 @@
                 </div>
 
                 <!-- TARJETA DE RECOMENDACIÓN DE INSERTO PARA DGC / WEZ -->
-                <div id="panel_recomendacion_inserto_fresado" class="row g-2 mb-3">
-                    <div class="col-md-6">
-                        <div class="highlight-blue mb-0">
-                            <div class="highlight-blue-title">Inserto Recomendado (Geometría / Grado)</div>
-                            <div class="fs-5 fw-bold text-light" id="fresInsertoCodigo">-</div>
-                            <div class="small text-muted" id="fresGradoNombre" style="font-size: 0.78rem;">Grado Sumitomo: -</div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="highlight-gold mb-0">
-                            <div class="highlight-gold-title">Tipo de Maquinado y Geometría de Cuerpo</div>
-                            <div class="fs-5 fw-bold text-light" id="fresGeometriaCuerpo">-</div>
-                            <div class="small text-warning-emphasis" id="fresRompevirutasDetalle" style="font-size: 0.78rem;">Rompevirutas: -</div>
-                        </div>
-                    </div>
-                </div>
+<div id="panel_recomendacion_inserto_fresado" class="row g-2 mb-3">
+    <div class="col-md-6">
+        <div class="highlight-blue mb-0">
+            <div class="highlight-blue-title">Inserto Recomendado (Geometría / Grado)</div>
+            <div class="fs-5 fw-bold text-light" id="fresInsertoCodigo">-</div>
+            <div class="fw-bold mt-1" id="fresGradoNombre" style="font-size: 0.95rem; color: #00e5ff !important;">Grado Sumitomo: -</div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="highlight-gold mb-0">
+            <div class="highlight-gold-title">Tipo de Maquinado y Geometría de Cuerpo</div>
+            <div class="fs-5 fw-bold text-light" id="fresGeometriaCuerpo">-</div>
+            <div class="small text-warning-emphasis fw-bold mt-1" id="fresRompevirutasDetalle">Rompevirutas: -</div>
+        </div>
+    </div>
+</div>
 
                 <!-- RECOMENDACIONES DE CORTADORES ENDMILL -->
                 <div id="panel_recomendaciones_endmill" class="row g-2 mb-3" style="display: none;">
@@ -2250,7 +2239,7 @@
                     <span><i class="bi bi-pin-angle me-2 text-primary"></i>Calculadora de Barrenado CNC</span>
                     <svg width="30" height="30" viewBox="0 0 100 100" title="Broca de Carburo Sólido">
                         <path d="M 38,90 L 38,40 L 50,10 L 62,40 L 62,90 Z" fill="#334155" stroke="#0f172a" stroke-width="3"/>
-                        <path d="M 38,60 C 48,50 52,40 62,30" stroke="#10b981" stroke-width="4" fill="none"/>
+                        <path d="M 38,60 C 48,50 52,40 62,30" stroke="#10b981" stroke-width="6" fill="none"/>
                         <path d="M 38,80 C 48,70 52,60 62,50" stroke="#10b981" stroke-width="4" fill="none"/>
                         <polygon points="50,10 38,40 62,40" fill="#059669"/>
                     </svg>
@@ -3080,7 +3069,7 @@
                 .catch(err => console.error("Error en actualizarValoresEnVivo:", err));
         }
 
-        /* CONTROLADOR DE FRESADO AUTOMÁTICO DINÁMICO (DGC / WEZ / ENDMILLS) CON GARANTÍA DE RENDERIZADO */
+        /* CONTROLADOR DE FRESADO AUTOMÁTICO DINÁMICO (DGC / WEZ / ENDMILLS) */
         function actualizarFresadoEnVivo() {
             var mat = getValSeguro("material_fresado");
             var rvpElem = document.getElementById("valRompevirutasFresado");
@@ -3176,7 +3165,7 @@
                 return;
             }
 
-            // RUTA ESTÁNDAR DE FRESADO DE INSERTOS SUMITOMO (DGC / WEZ)
+            // RUTA DGC Y WEZ CON ASIGNACIÓN DE GRADO GARANTIZADA
             setTexto("lbl_fresado_vtr", "6. Vol. Total (VTR)");
             setTexto("unit_fresado_vtr", "cm³");
 
@@ -3207,16 +3196,22 @@
                         if (badgeFz && data.fz !== undefined) badgeFz.textContent = data.fz + " mm/t";
                         if (rvpElem) rvpElem.value = data.rompevirutas || data.rompevirutas_sugerido || "-";
 
-                        // ASIGNACIÓN GARANTIZADA DE DATOS A LAS CELDAS DE INSERTO RECOMENDADO
-                        var insCod = data.codigo_inserto || (sKey === "WEZ" ? "AOMT 110350-G" : "SNMT 13T6ANER-G");
-                        var grdNom = data.grado_sumitomo || "ACP2000";
-                        var geomCuerpo = data.geometria_cuerpo || (sKey === "WEZ" ? "Escuadrado 90° (AOMT)" : "Planeado 45°");
-                        var rvpDetalle = data.rompevirutas || "FL / G / H";
+                        // EXTRACCIÓN ROBUSTA DE PARÁMETROS
+                        var insCod = data.codigo_inserto || "-";
+                        var grdNom = data.grado_sumitomo || data.grado_calidad || data.grado || "ACP2000";
+                        var geomCuerpo = data.geometria_cuerpo || "Planeado 45°";
+                        var rvpDetalle = data.rompevirutas || "General";
 
-                        setTexto("fresInsertoCodigo", insCod);
-                        setTexto("fresGradoNombre", "Grado Sumitomo: " + grdNom);
-                        setTexto("fresGeometriaCuerpo", geomCuerpo);
-                        setTexto("fresRompevirutasDetalle", "Rompevirutas: " + rvpDetalle);
+                        // ASIGNACIÓN A CELDAS
+                        var elCod = document.getElementById("fresInsertoCodigo");
+                        var elGrd = document.getElementById("fresGradoNombre");
+                        var elGeo = document.getElementById("fresGeometriaCuerpo");
+                        var elRvp = document.getElementById("fresRompevirutasDetalle");
+
+                        if (elCod) elCod.textContent = insCod;
+                        if (elGrd) elGrd.textContent = "Grado Sumitomo: " + grdNom;
+                        if (elGeo) elGeo.textContent = geomCuerpo;
+                        if (elRvp) elRvp.textContent = "Rompevirutas: " + rvpDetalle;
 
                         setTexto("fresRpm", data.rpm !== undefined ? data.rpm : "0");
                         setTexto("fresVf", data.vf !== undefined ? data.vf : "0");
